@@ -1,5 +1,5 @@
 site:
-  name: AstroWind
+  name: Vipyr Security
   site: 'https://astrowind.vercel.app'
   base: '/'
   trailingSlash: false
@@ -9,14 +9,14 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: AstroWind
-    template: '%s — AstroWind'
+    default: Vipyr Security
+    template: '%s — Vipyr Security'
   description: "\U0001F680 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs."
   robots:
     index: true
     follow: true
   openGraph:
-    siteName: AstroWind
+    siteName: Vipyr Security
     images:
       - url: '~/assets/images/default.jpg'
         width: 1200

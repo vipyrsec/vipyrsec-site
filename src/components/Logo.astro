@@ -1,7 +1,13 @@
 ---
-import { SITE_CONFIG } from '~/utils/config';
+ // import { SITE_CONFIG } from '~/utils/config';
+import { Image } from '@astrojs/image/components';
+import logo_black from  '~/assets/images/logo_black.svg';
 ---
 
-<span class="self-center ml-2 text-2xl md:text-xl font-bold text-gray-900 whitespace-nowrap dark:text-white">
-  🚀 {SITE_CONFIG?.name}
+<span class="self-center ml-2 text-2xl md:text-xl font-bold text-gray-900 whitespace-nowrap dark:image-white">
+   <Image
+   src={logo_black}
+   width={250}
+   alt="Vipyr Security"
+/>
 </span>

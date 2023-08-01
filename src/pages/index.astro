@@ -10,10 +10,9 @@ import Content from '~/components/widgets/Content.astro';
 import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
 import FAQs from '~/components/widgets/FAQs.astro';
 import Stats from '~/components/widgets/Stats.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
 
 const metadata = {
-  title: "AstroWind — Free template for create a website with Astro + Tailwind CSS",
+  title: "Home",
   dontUseTitleTemplate: true,
 };
 ---
@@ -22,21 +21,18 @@ const metadata = {
   <!-- Hero Widget ******************* -->
 
   <Hero
-    callToAction={{ text: 'Get template', href: 'https://github.com/onwidget/astrowind', icon: 'tabler:download' }}
-    callToAction2={{ text: 'Learn more', href: '#features' }}
+    callToAction={{ text: 'See How', href: '#features', icon: 'tabler:circle-arrow-down-filled' }}
     image={{ src: import('~/assets/images/hero.png'), alt: 'AstroWind Hero Image' }}
   >
     <Fragment slot="title">
-      Free template for <span class="hidden xl:inline">creating websites with</span>
-      <span class="text-accent dark:text-white highlight"> Astro 2.0</span> + Tailwind CSS    </Fragment>
+      Your Packaging Ecosystem <span class="hidden xl:inline">-</span>
+      <span class="text-primary dark:text-white highlight"> Malware Free</span> </Fragment>
 
     <Fragment slot="subtitle">
       <span class="hidden sm:inline">
-        <span class="font-semibold">AstroWind</span> is a free, customizable and production-ready template for Astro 2.0 +
-        Tailwind CSS.</span
-      >
-      <span class="block mb-1 sm:hidden font-bold text-blue-600">AstroWind: Production-ready.</span> Suitable for Startups,
-      Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs.
+        Developing <span class="font-semibold">open source tools</span> to promote <span class="font-semibold">open source security</span>.</span
+        >
+
     </Fragment>
   </Hero>
 
@@ -49,49 +45,49 @@ const metadata = {
   <Features
     id="features"
     tagline="Features"
-    title="What you get with AstroWind"
-    subtitle="Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque rem aperiam, eaque ipsa quae."
+    title="How does Vipyr Security protect you?"
+    subtitle="Here are a few reasons we think we stand out from the crowd."
     items={[
       {
-        title: 'Astro + Tailwind CSS Integration',
+        title: '500+ Positive Detections',
         description:
-          'A seamless integration between two great frameworks that offer high productivity, performance and versatility.',
-        icon: 'tabler:brand-tailwind',
+          'A structured incident response pipeline triaging and analyzing potential malware with an average takedown of 10 minutes or less.',
+        icon: 'tabler:bug-off',
       },
       {
-        title: 'Ready-to-use Components',
+        title: 'Open Source Development',
         description:
-          'Widgets made with Tailwind CSS ready to be used in Marketing Websites, SaaS, Blogs, Personal Profiles, Small Business...',
-        icon: 'tabler:components',
+          'End user configurable, language agnostic design can be extended to scan and triage any type of file, and scaled to fit any workload.',
+        icon: 'tabler:git-merge',
       },
       {
-        title: 'Best Practices',
+        title: 'All Volunteer Team',
         description:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sagittis, quam nec venenatis lobortis, mi risus tempus nulla.',
-        icon: 'tabler:list-check',
+          'Maintained by a dedicated team of open source security enthusiasts rapidly adapting to tomorrow\'s cyber threat landscape.',
+        icon: 'tabler:users',
       },
       {
-        title: 'Excellent Page Speed',
+        title: '24/7 Packaging Ecosystem Scanning',
         description:
-          'Having a good page speed impacts organic search ranking, improves user experience (UI/UX) and increase conversion rates.',
-        icon: 'tabler:rocket',
-      },
-      {
-        title: 'Search Engine Optimization (SEO)',
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sagittis, quam nec venenatis lobortis, mi risus tempus nulla.',
-        icon: 'tabler:arrows-right-left',
-      },
-      {
-        title: 'Open to new ideas and contributions',
-        description:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sagittis, quam nec venenatis lobortis, mi risus tempus nulla.',
-        icon: 'tabler:bulb',
+          'Utilizing cloud-native application development and cutting-edge monitoring to maintain constant vigilance over the open source supply chain.',
+        icon: 'tabler:rotate-clockwise',
       },
     ]}
   />
 
+    <!-- Stats Widget ****************** -->
+
+    <Stats
+    items={[
+      { name: 'Packages Scanned', value: '244K' },
+      { name: 'Package Takedowns', value: '577' },
+      { name: 'Detection Signatures', value: '100+' },
+      { name: 'Contributors', value: '16' },
+    ]}
+  />
+
   <!-- Content Widget **************** -->
+  
 
   <Content
     tagline="Inside template"
@@ -261,10 +257,9 @@ const metadata = {
   <!-- HighlightedPosts Widget ******* -->
 
   <BlogLatestPosts
-    title="Find out more content in our Blog"
-    information={`The blog is used to display AstroWind documentation.
-                        Each new article will be an important step that you will need to know to be an expert in creating a website using Astro + Tailwind CSS.
-                        Astro is a very interesting technology. Thanks.
+    title="Catch up with our latest research!"
+    information={`Want to know what threats are affecting the software supply chain? Check out some of the articles by
+                  our team of malware analysts and engineers. 
                 `}
   />
 
@@ -307,34 +302,3 @@ const metadata = {
       },
     ]}
   />
-
-  <!-- Stats Widget ****************** -->
-
-  <Stats
-    items={[
-      { name: 'Downloads', value: '132K' },
-      { name: 'Stars', value: '24.8K' },
-      { name: 'Forks', value: '10.3K' },
-      { name: 'Users', value: '48.4K' },
-    ]}
-  />
-
-  <!-- CallToAction Widget *********** -->
-
-  <CallToAction
-    callToAction={{
-      text: 'Get template',
-      href: 'https://github.com/onwidget/astrowind',
-      icon: 'tabler:download',
-    }}
-  >
-    <Fragment slot="title">
-      Astro + <br class="block sm:hidden" /><span class="sm:whitespace-nowrap">Tailwind CSS</span>
-    </Fragment>
-
-    <Fragment slot="subtitle">
-      Be very surprised by these huge fake numbers you are seeing on this page. <br class="hidden md:inline" />Don't
-      waste more time! :P
-    </Fragment>
-  </CallToAction>
-</Layout>

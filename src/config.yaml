@@ -11,7 +11,7 @@ metadata:
   title:
     default: Vipyr Security
     template: '%s — Vipyr Security'
-  description: "\U0001F680 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs."
+  description: "Your Ecosystem - Malware Free"
   robots:
     index: true
     follow: true

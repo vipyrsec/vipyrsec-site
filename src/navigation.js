@@ -16,7 +16,7 @@ export const headerData = {
     },
     {
       text: 'Projects',
-      href: '#',
+      href: getPermalink('/projects'),
     },
     {
       text: 'Contact',
@@ -31,7 +31,7 @@ export const footerData = {
       title: 'Product',
       links: [
         { text: 'Features', href: '#features' },
-        { text: 'Projects', href: '#projects' },
+        { text: 'Projects', href: getPermalink('/projects') },
       ],
     },
     {

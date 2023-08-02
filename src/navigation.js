@@ -55,30 +55,15 @@ export const footerData = {
     {
       title: 'Product',
       links: [
-        { text: 'Features', href: '#' },
-        { text: 'Security', href: '#' },
-        { text: 'Team', href: '#' },
-        { text: 'Enterprise', href: '#' },
-        { text: 'Customer stories', href: '#' },
-        { text: 'Pricing', href: '#' },
-        { text: 'Resources', href: '#' },
-      ],
-    },
-    {
-      title: 'Platform',
-      links: [
-        { text: 'Developer API', href: '#' },
-        { text: 'Partners', href: '#' },
-        { text: 'Atom', href: '#' },
-        { text: 'Electron', href: '#' },
-        { text: 'AstroWind Desktop', href: '#' },
+        { text: 'Features', href: '#features' },
+        { text: 'Projects', href: '#projects' },
       ],
     },
     {
       title: 'Support',
       links: [
         { text: 'Docs', href: '#' },
-        { text: 'Community Discord', href: '#' },
+        { text: 'Discord', href: 'https://discord.gg/72vH6ZJNUW' },
       ],
     },
     {

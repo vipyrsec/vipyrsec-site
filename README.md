@@ -1,5 +1,11 @@
 # VipyrSec Website
 
+## Quick Start
+
+- Clone the project.
+- From the root directory, `npm install` to install dependencies.
+- From the root directory, `npm run dev` to host the development environment. `localhost:3000` is the default binding.
+
 ## Project structure
 
 Inside the project, you'll see the following folders and files:

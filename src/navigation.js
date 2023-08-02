@@ -19,10 +19,6 @@ export const headerData = {
       text: 'Projects',
       href: getPermalink('/projects'),
     },
-    {
-      text: 'Contact',
-      href: '#',
-    },
   ],
 };
 
@@ -38,7 +34,6 @@ export const footerData = {
     {
       title: 'Support',
       links: [
-        { text: 'Contact', href: getPermalink('/contact') },
         { text: 'Discord', href: 'https://discord.gg/72vH6ZJNUW' },
       ],
     },

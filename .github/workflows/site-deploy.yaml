@@ -3,6 +3,7 @@ name: "Deploy to GitHub Pages"
 on:
   push:
     branches: [ main ]
+  pull_request:
 
 permissions:
   contents: read
@@ -20,6 +21,7 @@ jobs:
         uses: withastro/action@dc081df9eacdb11181ea51e5d05853faa5aee891 # v0.2.0
 
   deploy:
+    if: ${{ github.ref == 'refs/heads/main' }}
     needs: build
     runs-on: ubuntu-latest
     environment:

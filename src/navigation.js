@@ -29,23 +29,19 @@ export const headerData = {
 export const footerData = {
   links: [
     {
-      title: 'Support',
-      links: [
-        { text: 'Docs', href: '#' },
-        { text: 'Discord', href: 'https://discord.gg/72vH6ZJNUW' },
-      ],
-    },
-    {
-      title: 'Vipyr',
+      title: 'Info',
       links: [
         { text: 'About', href: getPermalink('/about') },
         { text: 'Blog', href: getBlogPermalink() },
       ],
     },
-  ],
-  secondaryLinks: [
-    { text: 'Terms', href: getPermalink('/terms') },
-    { text: 'Privacy Policy', href: getPermalink('/privacy') },
+    {
+      title: 'Support',
+      links: [
+        { text: 'Contact', href: getPermalink('/contact') },
+        { text: 'Discord', href: 'https://discord.gg/72vH6ZJNUW' },
+      ],
+    },
   ],
   socialLinks: [
     { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },

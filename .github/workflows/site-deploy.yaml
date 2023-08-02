@@ -1,0 +1,32 @@
+name: "Deploy to GitHub Pages"
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+
+      - name: "Install, build, and upload your site"
+        uses: withastro/action@dc081df9eacdb11181ea51e5d05853faa5aee891 # v0.2.0
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: "github-pages"
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: "Deploy to GitHub Pages"
+        id: deployment
+        uses: actions/deploy-pages@12ab2b16cf43a7a061fe99da74b6f8f11fb77f5b # v2.0.3

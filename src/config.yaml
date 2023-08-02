@@ -1,6 +1,6 @@
 site:
   name: Vipyr Security
-  site: 'https://astrowind.vercel.app'
+  site: 'https://vipyrsec.com'
   base: '/'
   trailingSlash: false
 

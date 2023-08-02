@@ -21,7 +21,7 @@
     "@astrojs/tailwind": "^4.0.0",
     "@astrolib/analytics": "^0.3.0",
     "@astrolib/seo": "^0.4.0",
-    "@fontsource-variable/inter": "^5.0.5",
+    "@fontsource-variable/inter": "^5.0.6",
     "@iconify-json/flat-color-icons": "^1.1.6",
     "@iconify-json/ri": "^1.1.10",
     "@iconify-json/tabler": "^1.1.85",

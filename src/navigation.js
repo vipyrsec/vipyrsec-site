@@ -28,13 +28,6 @@ export const headerData = {
 export const footerData = {
   links: [
     {
-      title: 'Product',
-      links: [
-        { text: 'Features', href: '#features' },
-        { text: 'Projects', href: getPermalink('/projects') },
-      ],
-    },
-    {
       title: 'Support',
       links: [
         { text: 'Docs', href: '#' },
@@ -42,7 +35,7 @@ export const footerData = {
       ],
     },
     {
-      title: 'Company',
+      title: 'Vipyr',
       links: [
         { text: 'About', href: getPermalink('/about') },
         { text: 'Blog', href: getBlogPermalink() },

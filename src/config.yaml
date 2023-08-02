@@ -4,14 +4,14 @@ site:
   base: '/'
   trailingSlash: false
 
-  googleSiteVerificationId: 
+  googleSiteVerificationId:
 
 # Default SEO metadata
 metadata:
   title:
     default: Vipyr Security
     template: '%s — Vipyr Security'
-  description: "Your Ecosystem - Malware Free"
+  description: 'Your Ecosystem - Malware Free'
   robots:
     index: true
     follow: true

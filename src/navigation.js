@@ -2,39 +2,8 @@ import { getPermalink, getBlogPermalink, getAsset } from './utils/permalinks';
 
 export const headerData = {
   links: [
-    {
-      text: 'Pages',
-      links: [
-        {
-          text: 'Features (Anchor Link)',
-          href: getPermalink('/#features'),
-        },
-        {
-          text: 'Services',
-          href: getPermalink('/services'),
-        },
-        {
-          text: 'Pricing',
-          href: getPermalink('/pricing'),
-        },
-        {
-          text: 'About us',
-          href: getPermalink('/about'),
-        },
-        {
-          text: 'Contact',
-          href: getPermalink('/contact'),
-        },
-        {
-          text: 'Terms',
-          href: getPermalink('/terms'),
-        },
-        {
-          text: 'Privacy policy',
-          href: getPermalink('/privacy'),
-        },
-      ],
-    },
+    { text: 'About',
+      href: getPermalink('/about')},
     {
       text: 'Research',
       href: getBlogPermalink(),
@@ -62,7 +31,7 @@ export const footerData = {
     {
       title: 'Support',
       links: [
-        { text: 'Docs', href: '#' },
+        { text: 'Documentation', href: '#' },
         { text: 'Discord', href: 'https://discord.gg/72vH6ZJNUW' },
       ],
     },
@@ -70,7 +39,7 @@ export const footerData = {
       title: 'Company',
       links: [
         { text: 'About', href: getPermalink('/about') },
-        { text: 'Blog', href: getPermalink('/blog') },
+        { text: 'Blog', href: getBlogPermalink() },
       ],
     },
   ],

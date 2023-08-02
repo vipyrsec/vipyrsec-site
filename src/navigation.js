@@ -1,8 +1,15 @@
 import { getPermalink, getBlogPermalink, getAsset } from './utils/permalinks';
+import { getHomePermalink } from "~/utils/permalinks";
 
 export const headerData = {
   links: [
-    { text: 'About', href: getPermalink('/about') },
+    {
+      text: 'Home',
+      href: getHomePermalink(),
+    },
+    { 
+      text: 'About', 
+      href: getPermalink('/about') },
     {
       text: 'Research',
       href: getBlogPermalink(),

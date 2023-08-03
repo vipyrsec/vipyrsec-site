@@ -145,9 +145,9 @@ Numerous organizations occupy a similar space as we do, performing supply chain 
 
 - [Phylum](https://phylum.io) - Phylum publishes excellent research and maintains their own dependency scanning and CI/CD software to enumerate these types of attacks.
 
-- [Snyk](https://snyk.io/)- Snyk maintains a dependency scanning and SAST service for use in development to detect malicious packages and security vulnerabilities in codebases.
+- [Snyk](https://snyk.io/) - Snyk maintains a dependency scanning and SAST service for use in development to detect malicious packages and security vulnerabilities in codebases.
 
-- [PyUp](https://pyup.io/)- Automated dependency scanning and CI/CD workflows for Python environments.
+- [PyUp](https://pyup.io/) - Automated dependency scanning and CI/CD workflows for Python environments.
 
 ## Summary
 

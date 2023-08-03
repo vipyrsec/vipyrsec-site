@@ -19,8 +19,16 @@ pnpm-debug.log*
 # macOS-specific files
 .DS_Store
 
-package-lock.json
-pnpm-lock.yaml
+# Editor
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
 
 .astro
-.vscode/settings.json
+

@@ -141,7 +141,7 @@ Furthermore, ensuring CI/CD and pre-commit processes are checked thoroughly in t
 
 ## Resources
 
-Numerous organizations occupy a similar space as we do, performing supply chain security scanning and dependency assurance. The cool part about being Vipyr Security is that we don't really have a product to sell, so we can offer a comprehensive list of tools that may help you prevent these types of attacks.
+Numerous organizations occupy a similar space as we do, performing supply chain security scanning and dependency assurance. The cool part about being Vipyr Security is that we don't really have a product to sell, so we can offer an unbiased list of tools that may help you prevent these types of attacks.
 
 - [Phylum](https://phylum.io) - Phylum publishes excellent research and maintains their own dependency scanning and CI/CD software to enumerate these types of attacks.
 

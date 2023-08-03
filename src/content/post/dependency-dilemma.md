@@ -122,6 +122,7 @@ Are you thinking about supply chain security yet?
 On January 31st 2021, a threat actor gained access to Codecov's Bash Uploader script credentials and modified it without their permission.
 
 > The actor gained access because of an error in Codecov's Docker image creation process that allowed the actor to extract the credential required to modify our Bash Uploader Script
+
 *[Codecov Security Update](https://about.codecov.io/security-update/)*
 
 This attack utilized a CI/CD tool to compromise user credentials and exfiltrate them to an external service. The attack was able to make numerous changes to the original repository (and subsequently any repositories or codebases that might be affected in these credential breaches). Moreso, this code was repeatedly inserted into the codebase until an observant Codecov consumer noted that the hash for the Bash Uploader script did not match the reported hash.

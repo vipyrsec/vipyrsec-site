@@ -1,10 +1,14 @@
 # Vipyr Security Website
 
+📌 <https://vipyrsec.com/>
+
+<br>
+
 ## Quick Start
 
 - Clone the project.
 - From the root directory, `npm install` to install dependencies.
-- From the root directory, `npm run dev` to host the development environment. `localhost:3000` is the default binding.
+- From the root directory, `npm run dev` to host the development environment. `localhost:4321` is the default binding.
 
 ## Commands
 
@@ -13,7 +17,7 @@ All commands are run from the root of the project, from a terminal:
 | Command               | Action                                             |
 | :-------------------- | :------------------------------------------------- |
 | `npm install`         | Installs dependencies                              |
-| `npm run dev`         | Starts local dev server at `localhost:3000`        |
+| `npm run dev`         | Starts local dev server at `localhost:4321`        |
 | `npm run build`       | Build your production site to `./dist/`            |
 | `npm run preview`     | Preview your build locally, before deploying       |
 | `npm run format`      | Format codes with Prettier                         |

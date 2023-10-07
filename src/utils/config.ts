@@ -2,7 +2,7 @@ import fs from 'fs';
 import yaml from 'js-yaml';
 import merge from 'lodash.merge';
 
-import type { MetaSEO } from '~/types';
+import type { MetaData } from '~/types';
 
 export interface SiteConfig {
   name: string;
@@ -11,7 +11,7 @@ export interface SiteConfig {
   trailingSlash?: boolean;
   googleSiteVerificationId?: string;
 }
-export interface MetaDataConfig extends Omit<MetaSEO, 'title'> {
+export interface MetaDataConfig extends Omit<MetaData, 'title'> {
   title?: {
     default: string;
     template: string;
@@ -20,7 +20,7 @@ export interface MetaDataConfig extends Omit<MetaSEO, 'title'> {
 export interface I18NConfig {
   language: string;
   textDirection: string;
-  dateFormatter: unknown;
+  dateFormatter?: Intl.DateTimeFormat;
 }
 export interface AppBlogConfig {
   isEnabled: boolean;
@@ -61,8 +61,8 @@ export interface AppBlogConfig {
 export interface AnalyticsConfig {
   vendors: {
     googleAnalytics: {
-      isEnabled?: boolean;
       id?: string;
+      partytown?: boolean;
     };
   };
 }
@@ -187,8 +187,8 @@ const getAnalytics = () => {
   const _default = {
     vendors: {
       googleAnalytics: {
-        isEnabled: false,
         id: undefined,
+        partytown: true,
       },
     },
   };
@@ -196,9 +196,9 @@ const getAnalytics = () => {
   return merge({}, _default, config?.analytics ?? {}) as AnalyticsConfig;
 };
 
-export const SITE_CONFIG = getSite();
-export const I18N_CONFIG = getI18N();
-export const METADATA_CONFIG = getMetadata();
-export const APP_BLOG_CONFIG = getAppBlog();
-export const UI_CONFIG = getUI();
-export const ANALYTICS_CONFIG = getAnalytics();
+export const SITE = getSite();
+export const I18N = getI18N();
+export const METADATA = getMetadata();
+export const APP_BLOG = getAppBlog();
+export const UI = getUI();
+export const ANALYTICS = getAnalytics();

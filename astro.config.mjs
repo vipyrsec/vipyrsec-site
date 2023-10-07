@@ -3,43 +3,39 @@ import { fileURLToPath } from 'url';
 
 import { defineConfig } from 'astro/config';
 
-import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
-import image from '@astrojs/image';
+import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
-import icon from 'astro-icon';
 import partytown from '@astrojs/partytown';
 import compress from 'astro-compress';
+import icon from 'astro-icon';
+import tasks from './src/utils/tasks';
+
 import { readingTimeRemarkPlugin } from './src/utils/frontmatter.mjs';
 
-import { SITE_CONFIG, ANALYTICS_CONFIG } from './src/utils/config.ts';
+import { ANALYTICS, SITE } from './src/utils/config.ts';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const whenExternalScripts = (items = []) =>
-  ANALYTICS_CONFIG.vendors.googleAnalytics.isEnabled
+  ANALYTICS.vendors.googleAnalytics.id && ANALYTICS.vendors.googleAnalytics.partytown
     ? Array.isArray(items)
       ? items.map((item) => item())
       : [items()]
     : [];
 
 export default defineConfig({
-  site: SITE_CONFIG.site,
-  base: SITE_CONFIG.base,
-  trailingSlash: SITE_CONFIG.trailingSlash ? 'always' : 'never',
+  site: SITE.site,
+  base: SITE.base,
+  trailingSlash: SITE.trailingSlash ? 'always' : 'never',
 
   output: 'static',
 
   integrations: [
     tailwind({
-      config: {
-        applyBaseStyles: false,
-      },
+      applyBaseStyles: false,
     }),
     sitemap(),
-    image({
-      serviceEntryPoint: '@astrojs/image/sharp',
-    }),
     mdx(),
     icon({
       include: {
@@ -55,7 +51,6 @@ export default defineConfig({
           'business-contact',
           'database',
         ],
-        ri: ['twitter-fill', 'facebook-box-fill', 'linkedin-box-fill', 'whatsapp-fill', 'mail-fill'],
       },
     }),
 
@@ -65,16 +60,17 @@ export default defineConfig({
       })
     ),
 
+    tasks(),
+
     compress({
-      css: true,
-      html: {
+      CSS: true,
+      HTML: {
         removeAttributeQuotes: false,
       },
-      img: false,
-      js: true,
-      svg: false,
-
-      logger: 1,
+      Image: false,
+      JavaScript: true,
+      SVG: false,
+      Logger: 1,
     }),
   ],
 

@@ -1,8 +1,8 @@
 ---
-import favIcon from '~/assets/favicons/favicon32x32.ico';
-import favIconSvg from '~/assets/favicons/favicon32x32.png';
+import favIcon from '~/assets/favicons/favicon.ico';
+import favIconPng from '~/assets/favicons/favicon.png';
 ---
 
 <link rel="shortcut icon" href={favIcon} />
-<link rel="icon" type="image/svg+xml" href={favIcon} />
-<link rel="mask-icon" href={String(favIconSvg)} color="#8D46E7" />
+<link rel="icon" type="image/png" href={favIconPng.src} />
+<link rel="mask-icon" href={favIconPng.src} color="#003C95" />

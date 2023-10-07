@@ -9,35 +9,30 @@ import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
 import Stats from '~/components/widgets/Stats.astro';
 
 const metadata = {
-  title: "Home",
-  dontUseTitleTemplate: true,
+  title: 'Home',
+  ignoreTitleTemplate: true,
 };
 ---
 
 <Layout metadata={metadata}>
-  <!-- Hero Widget ******************* -->
-
   <Hero
-    callToAction={{ text: 'See How', href: '#features', icon: 'tabler:circle-arrow-down-filled' }}
-    image={{ src: import('~/assets/images/hero2.svg'), alt: 'Vipyr Hero Image' }}
+    actions={[{ variant: 'primary', text: 'See How', href: '#features', icon: 'tabler:circle-arrow-down-filled' }]}
+    image={{ src: '~/assets/images/hero.svg', alt: 'Vipyr Hero Image' }}
   >
     <Fragment slot="title">
-      Your Packaging Ecosystem <span class="hidden xl:inline">-</span>
-      <span class="text-primary dark:text-white highlight"> Malware Free</span> </Fragment>
+      Your Packaging Ecosystem<br />
+      <span class="text-primary dark:text-white highlight">Malware Free</span>
+    </Fragment>
 
     <Fragment slot="subtitle">
       <span class="hidden sm:inline">
-        Developing <span class="font-semibold">open source tools</span> to promote <span class="font-semibold">open source security</span>.</span
-        >
-
+        Developing <span class="font-semibold">open source tools</span> to promote
+        <span class="font-semibold">open source security</span>.
+      </span>
     </Fragment>
   </Hero>
 
-  <!-- Note Widget ******************* -->
-
   <Note />
-
-  <!-- Features Widget *************** -->
 
   <Features
     id="features"
@@ -60,7 +55,7 @@ const metadata = {
       {
         title: 'All Volunteer Team',
         description:
-          'Maintained by a dedicated team of open source security enthusiasts rapidly adapting to tomorrow\'s cyber threat landscape.',
+          "Maintained by a dedicated team of open source security enthusiasts rapidly adapting to tomorrow's cyber threat landscape.",
         icon: 'tabler:users',
       },
       {
@@ -72,19 +67,14 @@ const metadata = {
     ]}
   />
 
-    <!-- Stats Widget ****************** -->
-
-    <Stats
-    items={[
-      { name: 'Packages Scanned', value: '244K' },
-      { name: 'Package Takedowns', value: '577' },
-      { name: 'Detection Signatures', value: '100+' },
-      { name: 'Contributors', value: '16' },
+  <Stats
+    stats={[
+      { title: 'Packages Scanned', amount: '244K' },
+      { title: 'Package Takedowns', amount: '577' },
+      { title: 'Detection Signatures', amount: '100+' },
+      { title: 'Contributors', amount: '16' },
     ]}
   />
-
-  <!-- Content Widget **************** -->
-  
 
   <Content
     tagline="projects"
@@ -107,22 +97,18 @@ const metadata = {
       },
     ]}
     image={{
-      src: import('~/assets/images/chris-ried-unsplash.jpg'),
+      src: '~/assets/images/chris-ried-unsplash.jpg',
       alt: 'Python Code',
     }}
   >
     <Fragment slot="content">
       <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Dragonfly</h3>
-      A scalable suite of detection applications and automated triaging for analysis results.
+       A scalable suite of detection applications and automated triaging for analysis results.
     </Fragment>
   </Content>
 
-  <!-- HighlightedPosts Widget ******* -->
-
   <BlogLatestPosts
     title="Catch up with our latest research!"
-    information={`Want to know what threats are affecting the software supply chain? Check out some of the articles by
-                  our team of malware analysts and engineers. 
-                `}
+    information="Want to know what threats are affecting the software supply chain? Check out some of the articles by our team of malware analysts and engineers."
   />
 </Layout>

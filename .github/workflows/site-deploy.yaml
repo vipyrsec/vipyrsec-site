@@ -1,8 +1,9 @@
-name: "Deploy to GitHub Pages"
+---
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
 
 permissions:
@@ -14,21 +15,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: "Checkout repository"
+      - name: Checkout repository
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
 
-      - name: "Install, build, and upload your site"
-        uses: withastro/action@f122c0232093b3504e4c841a46c2eebd07c47392 # v0.3.0
+      - name: Install, build, and upload your site
+        uses: withastro/action@f122c0232093b3504e4c841a46c2eebd07c47392  # v0.3.0
 
   deploy:
     if: ${{ github.ref == 'refs/heads/main' }}
     needs: build
     runs-on: ubuntu-latest
     environment:
-      name: "github-pages"
+      name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: "Deploy to GitHub Pages"
+      - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@9dbe3824824f8a1377b8e298bafde1a50ede43e5 # v2.0.4
+        uses: actions/deploy-pages@9dbe3824824f8a1377b8e298bafde1a50ede43e5  # v2.0.4

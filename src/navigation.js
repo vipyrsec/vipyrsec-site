@@ -1,5 +1,8 @@
-import { getPermalink, getBlogPermalink, getAsset } from './utils/permalinks';
-import { getHomePermalink } from '~/utils/permalinks';
+import { getAsset, getBlogPermalink, getHomePermalink, getPermalink } from './utils/permalinks';
+
+const aboutPermalink = getPermalink('/about');
+const blogPermalink = getBlogPermalink();
+const discordInviteLink = 'https://discord.gg/72vH6ZJNUW';
 
 export const headerData = {
   links: [
@@ -9,11 +12,11 @@ export const headerData = {
     },
     {
       text: 'About',
-      href: getPermalink('/about'),
+      href: aboutPermalink,
     },
     {
       text: 'Research',
-      href: getBlogPermalink(),
+      href: blogPermalink,
     },
     {
       text: 'Projects',
@@ -27,21 +30,20 @@ export const footerData = {
     {
       title: 'Info',
       links: [
-        { text: 'About', href: getPermalink('/about') },
-        { text: 'Blog', href: getBlogPermalink() },
+        { text: 'About', href: aboutPermalink },
+        { text: 'Blog', href: blogPermalink },
       ],
     },
     {
       title: 'Support',
-      links: [{ text: 'Discord', href: 'https://discord.gg/72vH6ZJNUW' }],
+      links: [{ text: 'Discord', href: discordInviteLink }],
     },
   ],
+  secondaryLinks: [],
   socialLinks: [
     { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
-    { ariaLabel: 'Discord', icon: 'tabler:brand-discord', href: 'https://discord.gg/72vH6ZJNUW' },
-    { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/vipyrsec' },
+    { ariaLabel: 'Discord', icon: 'tabler:brand-discord', href: discordInviteLink },
+    { ariaLabel: 'GitHub', icon: 'tabler:brand-github', href: 'https://github.com/vipyrsec' },
   ],
-  footNote: `
-   Vipyr Security © 2023 - All Rights Reserved
-  `,
+  footNote: 'Vipyr Security © 2023 - All Rights Reserved',
 };

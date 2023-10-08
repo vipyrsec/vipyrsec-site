@@ -7,7 +7,11 @@ import Pagination from '~/components/blog/Pagination.astro';
 
 import { blogListRobots, getStaticPathsBlogList } from '~/utils/blog';
 
-export const getStaticPaths = getStaticPathsBlogList();
+export const prerender = true;
+
+export async function getStaticPaths({ paginate }) {
+  return await getStaticPathsBlogList({ paginate });
+}
 
 const { page } = Astro.props;
 const currentPage = page.currentPage ?? 1;
@@ -29,9 +33,7 @@ const metadata = {
 
 <Layout metadata={metadata}>
   <section class="px-6 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
-    <Headline
-      subtitle="Curated cybersecurity content from our malware analysts and detection engineers."
-    >
+    <Headline subtitle="Curated cybersecurity content from our malware analysts and detection engineers.">
       Research
     </Headline>
     <BlogList posts={page.data} />

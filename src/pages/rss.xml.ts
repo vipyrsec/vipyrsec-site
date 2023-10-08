@@ -1,11 +1,11 @@
-import rss from '@astrojs/rss';
+import { getRssString } from '@astrojs/rss';
 
-import { SITE_CONFIG, METADATA_CONFIG, APP_BLOG_CONFIG } from '~/utils/config';
+import { SITE, METADATA, APP_BLOG } from '~/utils/config';
 import { fetchPosts } from '~/utils/blog';
 import { getPermalink } from '~/utils/permalinks';
 
-export const get = async () => {
-  if (!APP_BLOG_CONFIG.isEnabled) {
+export const GET = async () => {
+  if (!APP_BLOG.isEnabled) {
     return new Response(null, {
       status: 404,
       statusText: 'Not found',
@@ -14,9 +14,9 @@ export const get = async () => {
 
   const posts = await fetchPosts();
 
-  return rss({
-    title: `${SITE_CONFIG.name}’s Blog`,
-    description: METADATA_CONFIG?.description,
+  const rss = await getRssString({
+    title: `${SITE.name}’s Blog`,
+    description: METADATA?.description || '',
     site: import.meta.env.SITE,
 
     items: posts.map((post) => ({
@@ -26,6 +26,12 @@ export const get = async () => {
       pubDate: post.publishDate,
     })),
 
-    trailingSlash: SITE_CONFIG.trailingSlash,
+    trailingSlash: SITE.trailingSlash,
+  });
+
+  return new Response(rss, {
+    headers: {
+      'Content-Type': 'application/xml',
+    },
   });
 };

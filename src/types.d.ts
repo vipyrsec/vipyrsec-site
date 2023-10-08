@@ -1,3 +1,6 @@
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+import type { HTMLAttributes } from 'astro/types';
+
 export interface Post {
   /** A unique ID number that identifies a post. */
   id: string;
@@ -34,7 +37,7 @@ export interface Post {
   draft?: boolean;
 
   /**  */
-  Content?: unknown;
+  Content?: AstroComponentFactory;
   content?: string;
 
   /**  */
@@ -135,6 +138,7 @@ export interface Item {
 
 export interface Price {
   title?: string;
+  subtitle?: string;
   description?: string;
   price?: number;
   period?: string;
@@ -149,15 +153,32 @@ export interface Testimonial {
   testimonial?: string;
   name?: string;
   job?: string;
-  image?: Image;
+  image?: string | unknown;
+}
+
+export interface Input {
+  type: HTMLInputTypeAttribute;
+  name: string;
+  label?: string;
+  autocomplete?: string;
+  placeholder?: string;
+}
+
+export interface Textarea {
+  label?: string;
+  placeholder?: string;
+  rows?: number;
+}
+
+export interface Disclaimer {
+  label?: string;
 }
 
 // COMPONENTS
-export interface CallToAction {
-  targetBlank: boolean;
+export interface CallToAction extends HTMLAttributes<a> {
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'link';
   text?: string;
   icon?: string;
-  href?: string;
   classes?: Record<string, string>;
 }
 
@@ -176,9 +197,18 @@ export interface Collapse {
   classes?: Record<string, string>;
 }
 
+export interface Form {
+  inputs?: Array<Input>;
+  textarea?: Textarea;
+  disclaimer?: Disclaimer;
+  button?: string;
+  description?: string;
+}
+
 // WIDGETS
 export interface Hero extends Headline, Widget {
-  image?: Image;
+  content?: string;
+  image?: string | unknown;
   callToAction1?: CallToAction;
   callToAction2?: CallToAction;
   isReversed?: boolean;
@@ -201,19 +231,22 @@ export interface Testimonials extends Headline, Widget {
   callToAction?: CallToAction;
 }
 
-export interface Clients extends Headline, Widget {
+export interface Brands extends Headline, Widget {
   icons?: Array<string>;
   images?: Array<Image>;
 }
 
 export interface Features extends Headline, Widget {
-  image?: Image;
+  image?: string | unknown;
   video?: Video;
   items: Array<Item>;
   columns: number;
+  defaultIcon?: string;
   callToAction1?: CallToAction;
   callToAction2?: CallToAction;
   isReversed?: boolean;
+  isBeforeContent?: boolean;
+  isAfterContent?: boolean;
 }
 
 export interface Faqs extends Headline, Widget {
@@ -230,13 +263,19 @@ export interface Steps extends Headline, Widget {
     icon?: string;
     classes?: Record<string, string>;
   }>;
+  callToAction?: string | CallToAction;
   image?: string | Image;
   isReversed?: boolean;
 }
 
 export interface Content extends Headline, Widget {
-  image?: string;
+  content?: string;
+  image?: string | unknown;
   items?: Array<Item>;
   columns?: number;
   isReversed?: boolean;
+  isAfterContent?: boolean;
+  callToAction?: CallToAction;
 }
+
+export interface Contact extends Headline, Form, Widget {}

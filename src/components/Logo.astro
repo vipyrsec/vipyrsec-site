@@ -1,13 +1,10 @@
 ---
- // import { SITE_CONFIG } from '~/utils/config';
-import { Image } from '@astrojs/image/components';
-import logo_black from  '~/assets/images/logo_black.svg';
+import Image from '~/components/common/Image.astro';
+import logo from '~/assets/images/logo_black.svg';
 ---
 
-<span class="self-center ml-2 text-2xl md:text-xl font-bold text-gray-900 whitespace-nowrap dark:image-white">
-   <Image
-   src={logo_black}
-   width={250}
-   alt="Vipyr Security"
-/>
+<span
+  class="self-center ml-2 rtl:ml-0 rtl:mr-2 text-2xl md:text-xl font-bold text-gray-900 whitespace-nowrap dark:image-white"
+>
+  <Image src={logo} width={100} alt="Vipyr Security" layout="fixed" />
 </span>

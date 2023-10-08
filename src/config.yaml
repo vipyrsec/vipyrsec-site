@@ -1,7 +1,8 @@
+---
 site:
   name: Vipyr Security
-  site: 'https://vipyrsec.com'
-  base: '/'
+  site: https://vipyrsec.com
+  base: /
   trailingSlash: false
 
   googleSiteVerificationId:
@@ -11,17 +12,21 @@ metadata:
   title:
     default: Vipyr Security
     template: '%s — Vipyr Security'
-  description: 'Your Ecosystem - Malware Free'
+  description: Your Ecosystem - Malware Free
   robots:
     index: true
     follow: true
   openGraph:
-    siteName: Vipyr Security
+    site_name: Vipyr Security
     images:
-      - url: '~/assets/images/default.jpg'
+      - url: ~/assets/images/default.jpg
         width: 1200
         height: 628
     type: website
+  # twitter:
+  #   handle: '@onwidget'
+  #   site: '@onwidget'
+  #   cardType: summary_large_image
 
 i18n:
   language: en
@@ -34,36 +39,35 @@ apps:
 
     post:
       isEnabled: true
-      permalink: '/%slug%' # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
+      permalink: /%slug% # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
       robots:
         index: true
 
     list:
       isEnabled: true
-      pathname: 'blog' # Blog main path, you can change this to "articles" (/articles)
+      pathname: blog # Blog main path, you can change this to "articles" (/articles)
       robots:
         index: true
 
     category:
       isEnabled: true
-      pathname: 'category' # Category main path /category/some-category, you can change this to "group" (/group/some-category)
+      pathname: category # Category main path /category/some-category, you can change this to "group" (/group/some-category)
       robots:
         index: true
 
     tag:
       isEnabled: true
-      pathname: 'tag' # Tag main path /tag/some-tag, you can change this to "topics" (/topics/some-category)
+      pathname: tag # Tag main path /tag/some-tag, you can change this to "topics" (/topics/some-category)
       robots:
         index: false
 
 analytics:
   vendors:
     googleAnalytics:
-      isEnabled: false
-      id: null # or "G-XXXXXXXXXX"
+      id: # or "G-XXXXXXXXXX"
 
 ui:
-  theme: 'system' # Values: "system" | "light" | "dark" | "light:only" | "dark:only"
+  theme: system # Values: system | light | dark | light:only | dark:only
 
   tokens:
     default:

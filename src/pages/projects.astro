@@ -3,12 +3,12 @@ import Layout from '~/layouts/PageLayout.astro';
 import Features2 from '~/components/widgets/Features2.astro';
 
 const metadata = {
-  title: "Projects",
+  title: 'Projects',
 };
 ---
 
 <Layout metadata={metadata}>
-    <Features2
+  <Features2
     id="project"
     tagline="Anti-Malware"
     title="Dragonfly"
@@ -20,7 +20,7 @@ const metadata = {
         description:
           'A FastAPI job distribution and threat aggregation framework currently being utilized to parse Python Package Index metadata.',
         icon: 'tabler:brand-python',
-        callToAction:{
+        callToAction: {
           icon: 'tabler:external-link',
           text: 'Source',
           href: 'https://github.com/vipyrsec/dragonfly-mainframe',
@@ -31,7 +31,7 @@ const metadata = {
         description:
           'A blazing fast Rust scanner designed to safely handle and process potentially malicious files against VirusTotal YARA rules.',
         icon: 'tabler:brand-rust',
-        callToAction:{
+        callToAction: {
           icon: 'tabler:external-link',
           text: 'Source',
           href: 'https://github.com/vipyrsec/dragonfly-client-rs',
@@ -42,12 +42,12 @@ const metadata = {
         description:
           'A Discord front end for the Dragonfly framework to allow community analysis and triaging of potentially malicious files based on results from the Client scanning service.',
         icon: 'tabler:brand-discord',
-        callToAction:{
+        callToAction: {
           icon: 'tabler:external-link',
           text: 'Source',
           href: 'https://github.com/vipyrsec/bot',
         },
       },
     ]}
-  /> 
+  />
 </Layout>

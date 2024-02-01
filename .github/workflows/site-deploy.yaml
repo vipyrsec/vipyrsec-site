@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: Install, build, and upload your site
-        uses: withastro/action@f122c0232093b3504e4c841a46c2eebd07c47392  # v0.3.0
+        uses: withastro/action@9a7959a16949e620a22e74f81c10cb7ce3b76924  # v0.3.0
 
   deploy:
     if: ${{ github.ref == 'refs/heads/main' }}
@@ -32,4 +32,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@9dbe3824824f8a1377b8e298bafde1a50ede43e5  # v2.0.4
+        uses: actions/deploy-pages@87c3283f01cd6fe19a0ab93a23b2f6fcba5a8e42  # v4.0.3

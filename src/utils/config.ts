@@ -138,7 +138,7 @@ const getAppBlog = () => {
     postsPerPage: 6,
     post: {
       isEnabled: true,
-      permalink: '/blog/%slug%',
+      permalink: '/research/%slug%',
       robots: {
         index: true,
         follow: true,
@@ -146,7 +146,7 @@ const getAppBlog = () => {
     },
     list: {
       isEnabled: true,
-      pathname: 'blog',
+      pathname: 'research',
       robots: {
         index: true,
         follow: true,

@@ -19,9 +19,9 @@ metadata:
   openGraph:
     site_name: Vipyr Security
     images:
-      - url: ~/assets/images/default.jpg
+      - url: ~/assets/images/vipyr-thumbnail.jpg
         width: 1200
-        height: 628
+        height: 630
     type: website
   # twitter:
   #   handle: '@onwidget'
@@ -45,7 +45,7 @@ apps:
 
     list:
       isEnabled: true
-      pathname: blog # Blog main path, you can change this to "articles" (/articles)
+      pathname: research # Blog main path, you can change this to "articles" (/articles)
       robots:
         index: true
 

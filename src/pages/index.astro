@@ -11,6 +11,7 @@ import Stats from '~/components/widgets/Stats.astro';
 const metadata = {
   title: 'Home',
   ignoreTitleTemplate: true,
+  description: 'Vipyr Security is a community-driven open source project that provides malware detection and takedown services for the open source software supply chain.',
 };
 ---
 
@@ -41,7 +42,7 @@ const metadata = {
     subtitle="Here are a few reasons we think we stand out from the crowd."
     items={[
       {
-        title: '750+ Positive Detections',
+        title: '1000+ Positive Detections',
         description:
           'A structured incident response pipeline triaging and analyzing potential malware with an average takedown of 10 minutes or less.',
         icon: 'tabler:bug-off',
@@ -69,8 +70,8 @@ const metadata = {
 
   <Stats
     stats={[
-      { title: 'Packages Scanned', amount: '906K' },
-      { title: 'Package Takedowns', amount: '785' },
+      { title: 'Packages Scanned', amount: '1.16M' },
+      { title: 'Package Takedowns', amount: '1322' },
       { title: 'Detection Signatures', amount: '150+' },
       { title: 'Contributors', amount: '16' },
     ]}

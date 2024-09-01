@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
       - name: Install, build, and upload your site
-        uses: withastro/action@877fd7e5cf5dc5d213f6701c790972aa25452ad3  # v2.0.1
+        uses: withastro/action@604679169f7a347c33065aab494742732d401e0e  # v2.0.2
 
   deploy:
     if: ${{ github.ref == 'refs/heads/main' }}

@@ -1,4 +1,4 @@
-import { getAsset, getBlogPermalink, getHomePermalink, getPermalink } from './utils/permalinks';
+import { getPermalink, getBlogPermalink, getHomePermalink, getAsset } from './utils/permalinks';
 
 const aboutPermalink = getPermalink('/about');
 const blogPermalink = getBlogPermalink();
@@ -45,5 +45,5 @@ export const footerData = {
     { ariaLabel: 'Discord', icon: 'tabler:brand-discord', href: discordInviteLink },
     { ariaLabel: 'GitHub', icon: 'tabler:brand-github', href: 'https://github.com/vipyrsec' },
   ],
-  footNote: 'Vipyr Security © 2023 - All Rights Reserved',
+  footNote: 'Vipyr Security © 2025 - All Rights Reserved',
 };

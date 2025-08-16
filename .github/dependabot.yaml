@@ -1,3 +1,4 @@
+---
 version: 2
 
 updates:
@@ -6,7 +7,7 @@ updates:
     groups:
       github-actions:
         patterns:
-          - "*"
+          - '*'
     schedule:
       interval: monthly
     commit-message:
@@ -17,17 +18,17 @@ updates:
     groups:
       astro-packages:
         patterns:
-          - "@astrojs/*"
-          - "@astrolib/*"
-          - "astro"
-          - "astro-*"
+          - '@astrojs/*'
+          - '@astrolib/*'
+          - astro
+          - astro-*
         dependency-type: production
       prod-deps:
         exclude-patterns:
-          - "@astrojs/*"
-          - "@astrolib/*"
-          - "astro"
-          - "astro-*"
+          - '@astrojs/*'
+          - '@astrolib/*'
+          - astro
+          - astro-*
         dependency-type: production
       dev-deps:
         dependency-type: development

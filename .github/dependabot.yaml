@@ -1,33 +1,38 @@
 version: 2
 
-multi-ecosystem-groups:
-  infra:
-    schedule:
-      interval: monthly
-    commit-message:
-      prefix: deps(infra)
-    labels:
-      - dependencies
-      - infra
-
-  apps:
-    schedule:
-      interval: monthly
-    commit-message:
-      prefix: deps(apps)
-    labels:
-      - dependencies
-      - apps
-
 updates:
   - package-ecosystem: github-actions
     directory: /
-    multi-ecosystem-group: infra
-    patterns:
-      - "*"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: deps(github-actions)
 
   - package-ecosystem: npm
     directory: /
-    multi-ecosystem-group: apps
-    patterns:
-      - "*"
+    groups:
+      astro-packages:
+        patterns:
+          - "@astrojs/*"
+          - "@astrolib/*"
+          - "astro"
+          - "astro-*"
+        dependency-type: production
+      prod-deps:
+        exclude-patterns:
+          - "@astrojs/*"
+          - "@astrolib/*"
+          - "astro"
+          - "astro-*"
+        dependency-type: production
+      dev-deps:
+        dependency-type: development
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: deps(prod)
+      prefix-development: deps(dev)

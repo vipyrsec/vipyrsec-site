@@ -4,16 +4,36 @@ version: 2
 updates:
   - package-ecosystem: github-actions
     directory: /
+    groups:
+      github-actions:
+        patterns:
+          - '*'
     schedule:
       interval: monthly
-    groups:
-      ci-dependencies:
-        patterns: ['*']
+    commit-message:
+      prefix: deps(github-actions)
 
   - package-ecosystem: npm
     directory: /
+    groups:
+      astro-packages:
+        patterns:
+          - '@astrojs/*'
+          - '@astrolib/*'
+          - astro
+          - astro-*
+        dependency-type: production
+      prod-deps:
+        exclude-patterns:
+          - '@astrojs/*'
+          - '@astrolib/*'
+          - astro
+          - astro-*
+        dependency-type: production
+      dev-deps:
+        dependency-type: development
     schedule:
       interval: monthly
-    groups:
-      js-dependencies:
-        patterns: ['*']
+    commit-message:
+      prefix: deps(prod)
+      prefix-development: deps(dev)

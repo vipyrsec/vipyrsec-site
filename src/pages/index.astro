@@ -11,14 +11,15 @@ import Stats from '~/components/widgets/Stats.astro';
 const metadata = {
   title: 'Home',
   ignoreTitleTemplate: true,
-  description: 'Vipyr Security is a community-driven open source project that provides malware detection and takedown services for the open source software supply chain.',
+  description:
+    'Vipyr Security is a community-driven open source project that provides malware detection and takedown services for the open source software supply chain.',
 };
 ---
 
 <Layout metadata={metadata}>
   <Hero
     actions={[{ variant: 'primary', text: 'See How', href: '#features', icon: 'tabler:circle-arrow-down-filled' }]}
-    image={{ src: '~/assets/images/hero.svg', alt: 'Vipyr Hero Image' }}
+    image={{ src: '~/assets/images/hero.svg', alt: 'Hero' }}
   >
     <Fragment slot="title">
       Your Packaging Ecosystem<br />
@@ -33,7 +34,7 @@ const metadata = {
     </Fragment>
   </Hero>
 
-  <Note />
+  <Note title="Our Goal:" description="A safer supply chain and a more resilient open source ecosystem." />
 
   <Features
     id="features"
@@ -104,7 +105,7 @@ const metadata = {
   >
     <Fragment slot="content">
       <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Dragonfly</h3>
-       A scalable suite of detection applications and automated triaging for analysis results.
+      A scalable suite of detection applications and automated triaging for analysis results.
     </Fragment>
   </Content>
 

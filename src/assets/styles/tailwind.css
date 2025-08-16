@@ -60,6 +60,8 @@
   padding: 0 5px;
 }
 
+.dropdown:focus .dropdown-menu,
+.dropdown:focus-within .dropdown-menu,
 .dropdown:hover .dropdown-menu {
   display: block;
 }
@@ -87,10 +89,4 @@
 
 .dd *:first-child {
   margin-top: 0;
-}
-
-/* Custom non-template styles */
-
-.dark .dark\:image-white {
-  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(205deg) brightness(102%) contrast(104%);
 }

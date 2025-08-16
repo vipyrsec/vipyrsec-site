@@ -1,4 +1,4 @@
-import { getPermalink, getBlogPermalink, getHomePermalink, getAsset } from './utils/permalinks';
+import { getAsset, getBlogPermalink, getHomePermalink, getPermalink } from './utils/permalinks';
 
 const aboutPermalink = getPermalink('/about');
 const blogPermalink = getBlogPermalink();

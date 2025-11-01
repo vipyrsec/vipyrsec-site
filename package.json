@@ -22,12 +22,12 @@
     "fix:prettier": "prettier -w ."
   },
   "dependencies": {
-    "@astrojs/rss": "^4.0.12",
+    "@astrojs/rss": "^4.0.13",
     "@astrojs/sitemap": "^3.6.0",
     "@astrolib/analytics": "^0.6.1",
     "@astrolib/seo": "^1.0.0-beta.8",
     "@fontsource-variable/inter": "^5.2.8",
-    "astro": "^5.14.4",
+    "astro": "^5.15.3",
     "astro-embed": "^0.9.1",
     "astro-icon": "^1.1.5",
     "limax": "4.2.1",

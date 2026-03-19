@@ -1,10 +1,9 @@
 ---
-import merge from 'lodash.merge';
 import { AstroSeo } from '@astrolib/seo';
 
 import type { Props as AstroSeoProps } from '@astrolib/seo';
 
-import { SITE, METADATA, I18N } from 'astrowind:config';
+import { SITE, METADATA, I18N } from '~/config/site';
 import type { MetaData } from '~/types';
 import { getCanonical } from '~/utils/permalinks';
 
@@ -24,45 +23,38 @@ const {
   twitter = {},
 } = Astro.props;
 
-const seoProps: AstroSeoProps = merge(
-  {
-    title: '',
-    titleTemplate: '%s',
-    canonical: canonical,
-    noindex: true,
-    nofollow: true,
-    description: undefined,
-    openGraph: {
-      url: canonical,
-      site_name: SITE?.name,
-      images: [],
-      locale: I18N?.language || 'en',
-      type: 'website',
-    },
-    twitter: {
-      cardType: openGraph?.images?.length ? 'summary_large_image' : 'summary',
-    },
+const defaultOpenGraph = {
+  url: canonical,
+  site_name: SITE.name,
+  images: [],
+  locale: I18N.language,
+  type: 'website',
+};
+
+const metadataOpenGraph = {
+  ...METADATA.openGraph,
+  site_name: METADATA.openGraph?.siteName,
+};
+
+const seoProps: AstroSeoProps = {
+  title: title ?? METADATA.title.default,
+  titleTemplate: ignoreTitleTemplate ? '%s' : METADATA.title.template,
+  canonical,
+  noindex: typeof robots.index !== 'undefined' ? !robots.index : !METADATA.robots?.index,
+  nofollow: typeof robots.follow !== 'undefined' ? !robots.follow : !METADATA.robots?.follow,
+  description: description ?? METADATA.description,
+  openGraph: {
+    ...defaultOpenGraph,
+    ...metadataOpenGraph,
+    ...openGraph,
+    url: canonical,
   },
-  {
-    title: METADATA?.title?.default,
-    titleTemplate: METADATA?.title?.template,
-    noindex: typeof METADATA?.robots?.index !== 'undefined' ? !METADATA.robots.index : undefined,
-    nofollow: typeof METADATA?.robots?.follow !== 'undefined' ? !METADATA.robots.follow : undefined,
-    description: METADATA?.description,
-    openGraph: METADATA?.openGraph,
-    twitter: METADATA?.twitter,
+  twitter: {
+    cardType: openGraph?.images?.length ? 'summary_large_image' : 'summary',
+    ...METADATA.twitter,
+    ...twitter,
   },
-  {
-    title: title,
-    titleTemplate: ignoreTitleTemplate ? '%s' : undefined,
-    canonical: canonical,
-    noindex: typeof robots?.index !== 'undefined' ? !robots.index : undefined,
-    nofollow: typeof robots?.follow !== 'undefined' ? !robots.follow : undefined,
-    description: description,
-    openGraph: { url: canonical, ...openGraph },
-    twitter: twitter,
-  }
-);
+};
 ---
 
 <AstroSeo {...{ ...seoProps, openGraph: await adaptOpenGraphImages(seoProps?.openGraph, Astro.site) }} />

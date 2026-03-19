@@ -1,7 +1,6 @@
 ---
 import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
 
-import merge from 'lodash.merge';
 import type { ImageMetadata } from 'astro';
 import Layout from '~/layouts/PageLayout.astro';
 import SinglePost from '~/components/blog/SinglePost.astro';
@@ -10,7 +9,7 @@ import ToBlogLink from '~/components/blog/ToBlogLink.astro';
 import { getCanonical, getPermalink } from '~/utils/permalinks';
 import { getStaticPathsBlogPost, blogPostRobots } from '~/utils/blog';
 import { findImage } from '~/utils/images';
-import type { MetaData } from '~/types';
+import type { MetaData, MetaDataImage } from '~/types';
 import RelatedPosts from '~/components/blog/RelatedPosts.astro';
 
 export const prerender = true;
@@ -25,24 +24,41 @@ const { post } = Astro.props as Props;
 
 const url = getCanonical(getPermalink(post.permalink, 'post'));
 const image = (await findImage(post.image)) as ImageMetadata | string | undefined;
+const canonical = String(post.metadata?.canonical || url);
+const openGraphImage: MetaDataImage | undefined =
+  typeof post.image === 'string'
+    ? { url: post.image }
+    : image
+      ? {
+          url: typeof image === 'string' ? image : image.src,
+          width: typeof image === 'string' ? undefined : image.width,
+          height: typeof image === 'string' ? undefined : image.height,
+        }
+      : undefined;
+const metadataOpenGraph = post.metadata?.openGraph;
 
-const metadata = merge(
-  {
-    title: post.title,
-    description: post.excerpt,
-    robots: {
-      index: blogPostRobots?.index,
-      follow: blogPostRobots?.follow,
-    },
-    openGraph: {
-      type: 'article',
-      ...(image
-        ? { images: [{ url: image, width: (image as ImageMetadata)?.width, height: (image as ImageMetadata)?.height }] }
-        : {}),
-    },
+const metadata: MetaData = {
+  title: post.title,
+  description: post.excerpt,
+  robots: {
+    index: blogPostRobots?.index,
+    follow: blogPostRobots?.follow,
   },
-  { ...(post?.metadata ? { ...post.metadata, canonical: post.metadata?.canonical || url } : {}) }
-) as MetaData;
+  ...post.metadata,
+  canonical,
+  openGraph: {
+    type: 'article',
+    url: metadataOpenGraph?.url,
+    siteName: metadataOpenGraph?.siteName,
+    locale: metadataOpenGraph?.locale,
+    ...metadataOpenGraph,
+    ...(openGraphImage
+      ? { images: [openGraphImage] }
+      : metadataOpenGraph?.images
+        ? { images: metadataOpenGraph.images }
+        : {}),
+  },
+};
 ---
 
 <Layout metadata={metadata}>

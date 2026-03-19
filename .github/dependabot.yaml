@@ -9,7 +9,7 @@ updates:
         patterns:
           - '*'
     schedule:
-      interval: monthly
+      interval: weekly
     commit-message:
       prefix: deps(github-actions)
 
@@ -19,21 +19,30 @@ updates:
       astro-packages:
         patterns:
           - '@astrojs/*'
-          - '@astrolib/*'
           - astro
           - astro-*
-        dependency-type: production
+      tailwind-packages:
+        patterns:
+          - '@tailwindcss/*'
+          - tailwindcss
+          - tailwind-merge
+        dependency-type: development
       prod-deps:
         exclude-patterns:
           - '@astrojs/*'
-          - '@astrolib/*'
           - astro
           - astro-*
+          - '@tailwindcss/*'
+          - tailwindcss
         dependency-type: production
       dev-deps:
+        exclude-patterns:
+          - '@tailwindcss/*'
+          - tailwindcss
+          - tailwind-merge
         dependency-type: development
     schedule:
-      interval: monthly
+      interval: weekly
     commit-message:
       prefix: deps(prod)
       prefix-development: deps(dev)

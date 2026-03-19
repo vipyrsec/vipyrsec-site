@@ -1,7 +1,7 @@
 ---
 import '~/assets/styles/tailwind.css';
 
-import { I18N } from 'astrowind:config';
+import { I18N } from '~/config/site';
 
 import CommonMeta from '~/components/common/CommonMeta.astro';
 import Favicons from '~/components/Favicons.astro';
@@ -37,7 +37,7 @@ const { language, textDirection } = I18N;
     <Analytics />
 
     <!-- Comment the line below to disable View Transitions -->
-    <ClientRouter fallback="swap" />
+    <ClientRouter />
   </head>
 
   <body class="antialiased text-default bg-page tracking-tight">

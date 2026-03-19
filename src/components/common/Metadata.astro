@@ -1,11 +1,6 @@
 ---
-import merge from 'lodash.merge';
-import { AstroSeo } from '@astrolib/seo';
-
-import type { Props as AstroSeoProps } from '@astrolib/seo';
-
-import { SITE, METADATA, I18N } from 'astrowind:config';
-import type { MetaData } from '~/types';
+import { SITE, METADATA, I18N } from '~/config/site';
+import type { MetaData, MetaDataImage, MetaDataOpenGraph, MetaDataTwitter } from '~/types';
 import { getCanonical } from '~/utils/permalinks';
 
 import { adaptOpenGraphImages } from '~/utils/images';
@@ -24,45 +19,80 @@ const {
   twitter = {},
 } = Astro.props;
 
-const seoProps: AstroSeoProps = merge(
-  {
-    title: '',
-    titleTemplate: '%s',
-    canonical: canonical,
-    noindex: true,
-    nofollow: true,
-    description: undefined,
-    openGraph: {
-      url: canonical,
-      site_name: SITE?.name,
-      images: [],
-      locale: I18N?.language || 'en',
-      type: 'website',
-    },
-    twitter: {
-      cardType: openGraph?.images?.length ? 'summary_large_image' : 'summary',
-    },
-  },
-  {
-    title: METADATA?.title?.default,
-    titleTemplate: METADATA?.title?.template,
-    noindex: typeof METADATA?.robots?.index !== 'undefined' ? !METADATA.robots.index : undefined,
-    nofollow: typeof METADATA?.robots?.follow !== 'undefined' ? !METADATA.robots.follow : undefined,
-    description: METADATA?.description,
-    openGraph: METADATA?.openGraph,
-    twitter: METADATA?.twitter,
-  },
-  {
-    title: title,
-    titleTemplate: ignoreTitleTemplate ? '%s' : undefined,
-    canonical: canonical,
-    noindex: typeof robots?.index !== 'undefined' ? !robots.index : undefined,
-    nofollow: typeof robots?.follow !== 'undefined' ? !robots.follow : undefined,
-    description: description,
-    openGraph: { url: canonical, ...openGraph },
-    twitter: twitter,
-  }
-);
+const resolvedTitle = title ?? METADATA.title.default;
+const titleTemplate = ignoreTitleTemplate ? '%s' : METADATA.title.template;
+const pageTitle =
+  resolvedTitle && titleTemplate.includes('%s') ? titleTemplate.replace('%s', resolvedTitle) : resolvedTitle;
+const robotsContent = [
+  typeof robots.index !== 'undefined'
+    ? robots.index
+      ? 'index'
+      : 'noindex'
+    : METADATA.robots?.index
+      ? 'index'
+      : 'noindex',
+  typeof robots.follow !== 'undefined'
+    ? robots.follow
+      ? 'follow'
+      : 'nofollow'
+    : METADATA.robots?.follow
+      ? 'follow'
+      : 'nofollow',
+].join(', ');
+const resolvedDescription = description ?? METADATA.description;
+
+const defaultOpenGraph: MetaDataOpenGraph = {
+  url: canonical,
+  siteName: SITE.name,
+  images: [],
+  locale: I18N.language,
+  type: 'website',
+};
+
+const resolvedOpenGraph: MetaDataOpenGraph = {
+  ...defaultOpenGraph,
+  ...METADATA.openGraph,
+  ...openGraph,
+  url: canonical,
+};
+
+const resolvedOpenGraphImages = (await adaptOpenGraphImages(resolvedOpenGraph, Astro.site)).images ?? [];
+
+const resolvedTwitter: MetaDataTwitter = {
+  cardType: resolvedOpenGraphImages.length ? 'summary_large_image' : 'summary',
+  ...METADATA.twitter,
+  ...twitter,
+};
+
+const twitterTitle = resolvedTitle;
+const twitterDescription = resolvedDescription;
 ---
 
-<AstroSeo {...{ ...seoProps, openGraph: await adaptOpenGraphImages(seoProps?.openGraph, Astro.site) }} />
+<title>{pageTitle}</title>
+<link rel="canonical" href={canonical} />
+<meta name="robots" content={robotsContent} />
+
+{resolvedDescription && <meta name="description" content={resolvedDescription} />}
+
+<meta property="og:title" content={resolvedTitle} />
+<meta property="og:type" content={resolvedOpenGraph.type ?? 'website'} />
+<meta property="og:url" content={resolvedOpenGraph.url ?? canonical} />
+<meta property="og:site_name" content={resolvedOpenGraph.siteName ?? SITE.name} />
+{resolvedDescription && <meta property="og:description" content={resolvedDescription} />}
+{resolvedOpenGraph.locale && <meta property="og:locale" content={resolvedOpenGraph.locale} />}
+{
+  resolvedOpenGraphImages.map((image: MetaDataImage) => (
+    <>
+      <meta property="og:image" content={image.url} />
+      {image.width && <meta property="og:image:width" content={String(image.width)} />}
+      {image.height && <meta property="og:image:height" content={String(image.height)} />}
+    </>
+  ))
+}
+
+{resolvedTwitter.cardType && <meta name="twitter:card" content={resolvedTwitter.cardType} />}
+{resolvedTwitter.site && <meta name="twitter:site" content={resolvedTwitter.site} />}
+{resolvedTwitter.handle && <meta name="twitter:creator" content={resolvedTwitter.handle} />}
+{twitterTitle && <meta name="twitter:title" content={twitterTitle} />}
+{twitterDescription && <meta name="twitter:description" content={twitterDescription} />}
+{resolvedOpenGraphImages[0]?.url && <meta name="twitter:image" content={resolvedOpenGraphImages[0].url} />}

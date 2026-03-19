@@ -2,6 +2,8 @@
 
 📌 <https://vipyrsec.com/>
 
+This repository is the standalone codebase for the Vipyr Security website. It is no longer maintained as a template-derived site.
+
 ## Quick Start
 
 - Use Node.js `20+`.

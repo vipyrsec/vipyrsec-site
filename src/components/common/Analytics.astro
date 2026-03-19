@@ -1,13 +1,17 @@
 ---
-import { GoogleAnalytics } from '@astrolib/analytics';
 import { ANALYTICS } from '~/config/site';
+
+const googleAnalyticsId = ANALYTICS.vendors.googleAnalytics.id;
 ---
 
 {
-  ANALYTICS?.vendors?.googleAnalytics?.id ? (
-    <GoogleAnalytics
-      id={String(ANALYTICS.vendors.googleAnalytics.id)}
-      partytown={ANALYTICS?.vendors?.googleAnalytics?.partytown}
-    />
+  googleAnalyticsId ? (
+    <>
+      <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`} />
+      <script is:inline define:vars={{ googleAnalyticsId }}>
+        window.dataLayer = window.dataLayer || []; window.dataLayer.push(['js', new Date()]);
+        window.dataLayer.push(['config', googleAnalyticsId]);
+      </script>
+    </>
   ) : null
 }

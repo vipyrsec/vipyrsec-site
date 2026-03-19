@@ -14,6 +14,7 @@
     if (!themeApi) return;
 
     const activeTheme = document.documentElement.dataset.theme || themeApi.resolveTheme();
+    themeApi.applyTheme(activeTheme);
     themeApi.syncThemeControls(activeTheme);
   };
 
@@ -131,7 +132,6 @@
   };
   const onPageShow = function () {
     syncTheme();
-    document.documentElement.classList.add('motion-safe:scroll-smooth');
     const elem = document.querySelector('[data-aw-toggle-menu]');
     if (elem) {
       elem.classList.remove('expanded');

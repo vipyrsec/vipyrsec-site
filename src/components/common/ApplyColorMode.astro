@@ -15,10 +15,10 @@ const defaultTheme = UI.theme || 'system';
 <script is:inline define:vars={{ defaultTheme }}>
   (() => {
     const storageKey = 'theme';
-    const root = document.documentElement;
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
     const isLockedTheme = defaultTheme.endsWith(':only');
     const fallbackTheme = defaultTheme.replace(':only', '');
+    const getRoot = () => document.documentElement;
 
     const syncThemeControls = (theme) => {
       document.querySelectorAll('[data-aw-toggle-color-scheme]').forEach((button) => {
@@ -44,6 +44,7 @@ const defaultTheme = UI.theme || 'system';
     };
 
     const applyTheme = (theme, { persist = false } = {}) => {
+      const root = getRoot();
       root.dataset.awThemeTransition = 'false';
       root.classList.toggle('dark', theme === 'dark');
       root.style.colorScheme = theme;
@@ -82,6 +83,7 @@ const defaultTheme = UI.theme || 'system';
     window.__vipyrTheme = {
       applyTheme,
       defaultTheme,
+      getTheme: resolveTheme,
       isLockedTheme,
       resetTheme,
       resolveTheme,

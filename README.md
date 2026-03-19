@@ -6,7 +6,7 @@ This repository is the standalone codebase for the Vipyr Security website. It is
 
 ## Quick Start
 
-- Use Node.js `20+`.
+- Use Node.js `24+`.
 - Run `npm install`.
 - Run `npm run dev` and open `http://localhost:4321`.
 

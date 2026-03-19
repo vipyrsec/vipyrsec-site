@@ -1,35 +1,23 @@
----
-import { UI } from '~/config/site';
----
-
-<script is:inline define:vars={{ defaultTheme: UI.theme }}>
+<script is:inline>
   if (window.basic_script) {
     return;
   }
 
   window.basic_script = true;
 
-  function applyTheme(theme) {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }
-
-  const initTheme = function () {
-    if ((defaultTheme && defaultTheme.endsWith(':only')) || (!localStorage.theme && defaultTheme !== 'system')) {
-      applyTheme(defaultTheme.replace(':only', ''));
-    } else if (
-      localStorage.theme === 'dark' ||
-      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    ) {
-      applyTheme('dark');
-    } else {
-      applyTheme('light');
-    }
+  const getThemeApi = function () {
+    return window.__vipyrTheme || null;
   };
-  initTheme();
+
+  const syncTheme = function () {
+    const themeApi = getThemeApi();
+    if (!themeApi) return;
+
+    const activeTheme = document.documentElement.dataset.theme || themeApi.resolveTheme();
+    themeApi.syncThemeControls(activeTheme);
+  };
+
+  syncTheme();
 
   function attachEvent(selector, event, fn) {
     const matches = typeof selector === 'string' ? document.querySelectorAll(selector) : selector;
@@ -65,11 +53,13 @@ import { UI } from '~/config/site';
     });
 
     attachEvent('[data-aw-toggle-color-scheme]', 'click', function () {
-      if (defaultTheme.endsWith(':only')) {
+      const themeApi = getThemeApi();
+      if (!themeApi || themeApi.isLockedTheme) {
         return;
       }
-      document.documentElement.classList.toggle('dark');
-      localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+
+      const nextTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+      themeApi.setTheme(nextTheme);
     });
 
     attachEvent('[data-aw-social-share]', 'click', function (_, elem) {
@@ -140,6 +130,7 @@ import { UI } from '~/config/site';
     });
   };
   const onPageShow = function () {
+    syncTheme();
     document.documentElement.classList.add('motion-safe:scroll-smooth');
     const elem = document.querySelector('[data-aw-toggle-menu]');
     if (elem) {
@@ -155,7 +146,7 @@ import { UI } from '~/config/site';
   window.onpageshow = onPageShow;
 
   document.addEventListener('astro:after-swap', () => {
-    initTheme();
+    syncTheme();
     onLoad();
     onPageShow();
   });

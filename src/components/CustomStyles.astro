@@ -25,24 +25,41 @@ import '@fontsource-variable/inter';
     --aw-font-serif: 'Inter Variable';
     --aw-font-heading: 'Inter Variable';
 
-    --aw-color-primary: rgb(1 97 239);
-    --aw-color-secondary: rgb(1 84 207);
-    --aw-color-accent: rgb(109 40 217);
+    --aw-color-primary: rgb(72 170 255);
+    --aw-color-secondary: rgb(33 123 235);
+    --aw-color-accent: rgb(58 208 187);
 
-    --aw-color-text-heading: rgb(0 0 0);
-    --aw-color-text-default: rgb(16 16 16);
-    --aw-color-text-muted: rgb(16 16 16 / 66%);
-    --aw-color-bg-page: rgb(255 255 255);
+    --aw-color-text-heading: rgb(238 244 255);
+    --aw-color-text-default: rgb(222 231 245);
+    --aw-color-text-muted: rgb(154 170 195);
+    --aw-color-bg-page: rgb(4 10 24);
+    --aw-color-bg-page-dark: rgb(4 10 24);
 
-    --aw-color-bg-page-dark: rgb(3 6 32);
+    --vipyr-bg: rgb(4 10 24);
+    --vipyr-bg-elevated: rgb(9 17 39 / 88%);
+    --vipyr-bg-panel: rgb(13 23 48 / 92%);
+    --vipyr-bg-panel-strong: rgb(16 29 59 / 96%);
+    --vipyr-border: rgb(107 142 196 / 16%);
+    --vipyr-border-strong: rgb(120 163 225 / 26%);
+    --vipyr-text-strong: rgb(240 244 251);
+    --vipyr-text-soft: rgb(153 168 195);
+    --vipyr-signal: rgb(86 188 255);
+    --vipyr-success: rgb(47 192 146);
+    --vipyr-shadow: 0 24px 80px rgb(2 7 18 / 42%);
 
     ::selection {
-      background-color: lavender;
+      background-color: rgb(72 170 255 / 28%);
+      color: rgb(245 248 255);
     }
   }
 
   html {
     scroll-behavior: smooth;
+    background:
+      radial-gradient(circle at top left, rgb(31 102 196 / 16%), transparent 32%),
+      radial-gradient(circle at 82% 12%, rgb(37 182 166 / 12%), transparent 18%),
+      linear-gradient(180deg, rgb(5 12 27), rgb(4 10 24));
+    background-color: var(--vipyr-bg);
   }
 
   .dark {
@@ -50,19 +67,46 @@ import '@fontsource-variable/inter';
     --aw-font-serif: 'Inter Variable';
     --aw-font-heading: 'Inter Variable';
 
-    --aw-color-primary: rgb(1 97 239);
-    --aw-color-secondary: rgb(1 84 207);
-    --aw-color-accent: rgb(109 40 217);
+    --aw-color-primary: rgb(72 170 255);
+    --aw-color-secondary: rgb(33 123 235);
+    --aw-color-accent: rgb(58 208 187);
 
-    --aw-color-text-heading: rgb(247, 248, 248);
-    --aw-color-text-default: rgb(229 236 246);
-    --aw-color-text-muted: rgb(229 236 246 / 66%);
-    --aw-color-bg-page: rgb(3 6 32);
+    --aw-color-text-heading: rgb(238 244 255);
+    --aw-color-text-default: rgb(222 231 245);
+    --aw-color-text-muted: rgb(154 170 195);
+    --aw-color-bg-page: rgb(4 10 24);
 
     ::selection {
-      background-color: black;
-      color: snow;
+      background-color: rgb(72 170 255 / 28%);
+      color: rgb(245 248 255);
     }
+  }
+
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 8% 18%, rgb(42 106 183 / 12%), transparent 16%),
+      radial-gradient(circle at 84% 12%, rgb(29 188 172 / 10%), transparent 14%),
+      linear-gradient(180deg, rgb(5 12 27), rgb(4 10 24));
+    color: var(--aw-color-text-default);
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgb(83 103 139 / 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(83 103 139 / 0.06) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(circle at center, black 26%, transparent 100%);
+    opacity: 0.38;
+    z-index: -1;
+  }
+
+  a {
+    color: inherit;
   }
 
   @media (prefers-reduced-motion: reduce) {

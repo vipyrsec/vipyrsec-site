@@ -102,8 +102,8 @@ const { post, url } = Astro.props;
       >
         <slot />
       </div>
-      <aside data-article-toc class="hidden self-start lg:block">
-        <div class="sticky top-28 w-full max-w-[250px] max-h-[calc(100vh-8rem)] overflow-y-auto pr-1">
+      <aside data-article-toc class="hidden self-start lg:sticky lg:top-28 lg:block">
+        <div class="w-full max-w-[250px] max-h-[calc(100vh-8rem)] overflow-y-auto pr-1">
           <div class="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-slate-500">On this page</div>
           <nav class="mt-4" aria-label="Table of contents">
             <ol data-article-toc-list class="space-y-1"></ol>

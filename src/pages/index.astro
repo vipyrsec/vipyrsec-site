@@ -29,13 +29,6 @@ const operatingSequence = [
   { title: 'Reporter + analyst review', status: 'Actioned' },
 ];
 
-const operatingStatusClasses = {
-  Queued: 'text-sky-200 hero-status-glow-sky',
-  Assigned: 'text-indigo-200 hero-status-glow-indigo',
-  Returned: 'text-amber-200 hero-status-glow-amber',
-  Actioned: 'text-emerald-200 hero-status-glow-emerald',
-};
-
 const capabilityCards = [
   {
     title: 'Observe package ecosystems',
@@ -204,10 +197,8 @@ const formatDate = (date: Date) =>
                       <span>{step.title}</span>
                     </span>
                     <span
-                      class:list={[
-                        'hero-sequence-status text-[0.68rem] font-semibold uppercase tracking-[0.24em] transition',
-                        operatingStatusClasses[step.status as keyof typeof operatingStatusClasses] ?? 'text-slate-300',
-                      ]}
+                      class="hero-sequence-status text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-slate-500 transition"
+                      data-hero-sequence-status={step.status}
                     >
                       {step.status}
                     </span>
@@ -479,19 +470,23 @@ const formatDate = (date: Date) =>
       animation: heroCardGlow 3.4s ease-in-out infinite;
     }
 
-    .hero-status-glow-sky {
+    .hero-sequence-row.is-active .hero-sequence-status[data-hero-sequence-status='Queued'] {
+      color: rgb(186 230 253);
       text-shadow: 0 0 16px rgb(86 188 255 / 0.26);
     }
 
-    .hero-status-glow-indigo {
+    .hero-sequence-row.is-active .hero-sequence-status[data-hero-sequence-status='Assigned'] {
+      color: rgb(224 231 255);
       text-shadow: 0 0 16px rgb(165 180 252 / 0.24);
     }
 
-    .hero-status-glow-amber {
+    .hero-sequence-row.is-active .hero-sequence-status[data-hero-sequence-status='Returned'] {
+      color: rgb(253 230 138);
       text-shadow: 0 0 16px rgb(251 191 36 / 0.22);
     }
 
-    .hero-status-glow-emerald {
+    .hero-sequence-row.is-active .hero-sequence-status[data-hero-sequence-status='Actioned'] {
+      color: rgb(167 243 208);
       text-shadow: 0 0 16px rgb(52 211 153 / 0.24);
     }
   </style>

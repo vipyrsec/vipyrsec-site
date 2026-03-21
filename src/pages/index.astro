@@ -21,26 +21,66 @@ const stats = [
   { title: 'Contributors', amount: '16' },
 ];
 
+const topPackageSeeds = [
+  'boto3',
+  'urllib3',
+  'packaging',
+  'setuptools',
+  'certifi',
+  'requests',
+  'typing-extensions',
+  'idna',
+  'charset-normalizer',
+  'botocore',
+  'python-dateutil',
+  'six',
+  'aiobotocore',
+  'cryptography',
+  'pyyaml',
+  'pip',
+  'cffi',
+  'numpy',
+  'pycparser',
+  'pluggy',
+];
+
+const detectionCatalog = [
+  'suspicious_setup_file',
+  'exec_base64',
+  'data_exfil',
+  'read_secrets',
+  'win_persist',
+  'lin_persist',
+  'raw_exec',
+  'fetch_exec',
+  'pyarmor_obf',
+  'known_threat_actor',
+  'apt_lazarus',
+  'infostealer',
+  'read_chrome_pass',
+  'regex_cryptowallets',
+];
+
 const operatingSequence = [
   {
     title: 'PyPI RSS loader',
     status: 'Queued',
-    detail: 'requestd@1.1.0 observed in package feed',
+    detailType: 'loader',
   },
   {
     title: 'Mainframe job dispatch',
     status: 'Assigned',
-    detail: 'queued for Dragonfly client review',
+    detailType: 'dispatch',
   },
   {
     title: 'Client scan results',
     status: 'Returned',
-    detail: 'matched: suspicious_setup_file, base64_decode',
+    detailType: 'results',
   },
   {
     title: 'Reporter + analyst review',
     status: 'Actioned',
-    detail: 'report filed; package removed from index',
+    detailType: 'action',
   },
 ];
 
@@ -62,6 +102,27 @@ const capabilityCards = [
     description:
       'Queue, reporting, and recent-activity flows exist across Dragonfly services so detections can move toward package reports and writeups.',
     icon: 'tabler:shield-check',
+  },
+];
+
+const protectedGroups = [
+  {
+    title: 'Students and teachers',
+    description:
+      'A single typo during coursework, classroom setup, or lab work can turn a routine install into credential theft or device compromise.',
+    icon: 'tabler:school',
+  },
+  {
+    title: 'Developers and operators',
+    description:
+      'Typos such as `pip install requestss` or a misplaced `uv` command can pull in a malicious package before anyone notices the mistake.',
+    icon: 'tabler:terminal-2',
+  },
+  {
+    title: 'Businesses and communities',
+    description:
+      'One package can expose local secrets, cloud credentials, or customer data. Vipyr exists to reduce that blast radius before it spreads.',
+    icon: 'tabler:building-community',
   },
 ];
 
@@ -178,15 +239,21 @@ const formatDate = (date: Date) =>
             </div>
             <div class="hero-response-card rounded-[1.5rem] border border-white/8 bg-[var(--vipyr-bg-panel)] p-5">
               <div class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">Response</div>
-              <div class="mt-3 text-4xl font-semibold tracking-[-0.05em] text-white">10m</div>
+              <div class="mt-3 flex items-end gap-2 text-white">
+                <span class="text-4xl font-semibold tracking-[-0.05em]">10</span>
+                <span class="pb-1 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-slate-300">Minutes</span
+                >
+              </div>
               <p class="mt-3 text-sm leading-7 text-slate-400">
-                Malicious packages often sit undetected for days or months. Confirmed packages we report are typically
-                acted on in about 10 minutes.
+                Confirmed packages Vipyr reports are usually actioned in about 10 minutes, not days or months.
               </p>
             </div>
           </div>
 
-          <div class="mt-4 rounded-[1.5rem] border border-white/8 bg-[var(--vipyr-bg-panel)] p-5">
+          <div
+            data-hero-sequence-panel
+            class="hero-sequence-panel mt-4 rounded-[1.5rem] border border-white/8 bg-[var(--vipyr-bg-panel)] px-4 py-3.5"
+          >
             <div class="flex flex-wrap items-center justify-between gap-3">
               <div class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">
                 Operating sequence
@@ -197,13 +264,14 @@ const formatDate = (date: Date) =>
                 Structured
               </div>
             </div>
-            <p class="mt-4 text-lg font-semibold text-white">Observe, triage, remediate, publish</p>
-            <div class="mt-5 space-y-3">
+            <p class="mt-3 text-lg font-semibold text-white">Observe, triage, remediate, publish</p>
+            <div class="mt-3.5 space-y-3">
               {
                 operatingSequence.map((step, index) => (
                   <div
                     class="hero-sequence-row rounded-[1.25rem] border border-white/6 bg-[#081427] px-4 py-3 text-sm"
                     data-hero-sequence-row
+                    data-hero-sequence-detail-type={step.detailType}
                     data-hero-sequence-index={index}
                   >
                     <div class="flex items-start justify-between gap-4">
@@ -221,15 +289,15 @@ const formatDate = (date: Date) =>
                         {step.status}
                       </span>
                     </div>
-                    <div
-                      class="hero-sequence-detail pl-5 text-[0.75rem] leading-6 text-slate-600"
-                      data-hero-sequence-detail
-                    >
-                      {step.detail}
-                    </div>
                   </div>
                 ))
               }
+            </div>
+            <div
+              class="hero-sequence-detail mt-3.5 pl-5 text-[0.75rem] leading-6 text-slate-600"
+              data-hero-sequence-detail-output
+            >
+              standby
             </div>
           </div>
         </div>
@@ -260,6 +328,43 @@ const formatDate = (date: Date) =>
             </div>
           ))
         }
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-start">
+      <SectionHeading
+        eyebrow="Public defense"
+        title="Package malware doesn't just hit security teams."
+        description="Students, teachers, developers, maintainers, and businesses all depend on package managers they do not have time to treat like a daily threat surface. One typo can be enough. Vipyr operates to catch that abuse without asking those users to install an agent, buy a product, or change how they work."
+      />
+      <div class="grid gap-4">
+        <div
+          class="rounded-[1.75rem] border border-white/10 bg-[var(--vipyr-bg-panel)] p-6 shadow-[var(--vipyr-shadow)]"
+        >
+          <h2 class="text-xl font-semibold text-white">
+            Built to intervene before the victim knows there is a problem
+          </h2>
+          <p class="mt-3 text-base leading-8 text-slate-400">
+            Vipyr monitors package activity, scans suspicious releases, coordinates reports with ecosystem
+            administrators, and publishes what is learned. The protection is free, and the only meaningful user
+            involvement is the community work that helps improve the tooling and research.
+          </p>
+        </div>
+        <div class="grid gap-4 md:grid-cols-3">
+          {
+            protectedGroups.map((item) => (
+              <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5 shadow-[var(--vipyr-shadow)]">
+                <div class="flex h-11 w-11 items-center justify-center rounded-2xl border border-sky-400/20 bg-sky-400/10 text-sky-200">
+                  <Icon name={item.icon} class="h-5 w-5" />
+                </div>
+                <h2 class="mt-4 text-lg font-semibold text-white">{item.title}</h2>
+                <p class="mt-3 text-sm leading-7 text-slate-400">{item.description}</p>
+              </div>
+            ))
+          }
+        </div>
       </div>
     </div>
   </section>
@@ -514,15 +619,22 @@ const formatDate = (date: Date) =>
     .hero-sequence-detail {
       font-family: var(--font-mono);
       letter-spacing: 0.01em;
-      max-height: 0;
+      white-space: nowrap;
+      min-height: 1.75rem;
       opacity: 0;
       overflow: hidden;
+      text-overflow: ellipsis;
       transition:
-        max-height 320ms ease,
-        padding-top 320ms ease,
         color 320ms ease,
         opacity 320ms ease,
-        text-shadow 320ms ease;
+        text-shadow 320ms ease,
+        transform 320ms ease;
+      transform: translateY(4px);
+    }
+
+    .hero-sequence-package {
+      color: rgb(252 165 165 / 0.98);
+      text-shadow: 0 0 12px rgb(248 113 113 / 0.18);
     }
 
     .hero-sequence-row.is-active {
@@ -542,15 +654,14 @@ const formatDate = (date: Date) =>
       box-shadow: 0 0 18px rgb(86 188 255 / 0.4);
     }
 
-    .hero-sequence-row.is-active [data-hero-sequence-detail] {
-      max-height: 3rem;
-      padding-top: 0.5rem;
-      color: rgb(174 191 217);
-      opacity: 1;
-    }
-
     .hero-sequence-row:not(.is-active) [data-hero-sequence-dot] {
       opacity: 0.7;
+    }
+
+    .hero-sequence-detail.is-active {
+      color: rgb(174 191 217);
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .hero-response-card {
@@ -578,14 +689,102 @@ const formatDate = (date: Date) =>
     }
   </style>
 
+  <script
+    id="hero-sequence-config"
+    type="application/json"
+    is:inline
+    set:html={JSON.stringify({ topPackageSeeds, detectionCatalog })}
+  />
+
   <script is:inline>
     (() => {
+      const configElement = document.getElementById('hero-sequence-config');
+      if (!(configElement instanceof HTMLScriptElement)) return;
+
+      const parsedConfig = JSON.parse(configElement.textContent || '{}');
+      const packageSeeds = Array.isArray(parsedConfig.topPackageSeeds) ? parsedConfig.topPackageSeeds : [];
+      const detectionPool = Array.isArray(parsedConfig.detectionCatalog) ? parsedConfig.detectionCatalog : [];
+
+      const randomItem = (items) => items[Math.floor(Math.random() * items.length)];
+
+      const typoPackageName = (base) => {
+        if (!base || base.length < 3) return `${base || 'requests'}d`;
+
+        const letters = 'abcdefghijklmnopqrstuvwxyz';
+        const transforms = ['swap', 'duplicate', 'replace', 'drop'];
+        const chars = [...base];
+        const transform = randomItem(transforms);
+        const middleIndex = Math.min(Math.max(1, Math.floor(Math.random() * chars.length)), chars.length - 1);
+
+        if (transform === 'swap' && chars.length > 3) {
+          const index = Math.min(middleIndex, chars.length - 2);
+          const copy = [...chars];
+          [copy[index], copy[index + 1]] = [copy[index + 1], copy[index]];
+          return copy.join('');
+        }
+
+        if (transform === 'duplicate') {
+          const copy = [...chars];
+          copy.splice(middleIndex, 0, copy[middleIndex]);
+          return copy.join('');
+        }
+
+        if (transform === 'drop' && chars.length > 4) {
+          const copy = [...chars];
+          copy.splice(middleIndex, 1);
+          return copy.join('');
+        }
+
+        const replacementLetter = randomItem(
+          letters.split('').filter((letter) => letter !== chars[middleIndex]?.toLowerCase())
+        );
+        const copy = [...chars];
+        copy[middleIndex] = replacementLetter;
+        return copy.join('');
+      };
+
+      const randomVersion = () => {
+        const major = Math.floor(Math.random() * 3) + 1;
+        const minor = Math.floor(Math.random() * 10);
+        const patch = Math.floor(Math.random() * 10);
+        return `${major}.${minor}.${patch}`;
+      };
+
+      const pickDetections = () => {
+        const pool = [...detectionPool];
+        const selected = [];
+
+        while (pool.length && selected.length < 2) {
+          const index = Math.floor(Math.random() * pool.length);
+          selected.push(pool.splice(index, 1)[0]);
+        }
+
+        return selected;
+      };
+
+      const buildScenario = () => {
+        const seed = randomItem(packageSeeds);
+        const packageName = typoPackageName(seed);
+        const version = randomVersion();
+        const detections = pickDetections();
+        const packageMarkup = `<span class="hero-sequence-package">${packageName}@${version}</span>`;
+
+        return {
+          loader: `${packageMarkup} observed in package feed`,
+          dispatch: `${packageMarkup} queued for Dragonfly client review`,
+          results: `matched: ${detections.join(', ')}`,
+          action: `${packageMarkup} reported and removed from index`,
+        };
+      };
+
       const start = () => {
         const rows = Array.from(document.querySelectorAll('[data-hero-sequence-row]'));
         if (!rows.length) return;
+        const detailOutput = document.querySelector('[data-hero-sequence-detail-output]');
 
         const first = rows[0];
         if (!(first instanceof HTMLElement)) return;
+        if (!(detailOutput instanceof HTMLElement)) return;
         if (first.dataset.bound === 'true') return;
 
         rows.forEach((row) => {
@@ -598,26 +797,42 @@ const formatDate = (date: Date) =>
         let index = 0;
         let activeTimeout = 0;
         let cycleTimeout = 0;
+        let scenario = buildScenario();
 
         const clear = () => {
           rows.forEach((row) => row.classList.remove('is-active'));
+          detailOutput.classList.remove('is-active');
+        };
+
+        const applyDetail = (rowIndex) => {
+          const row = rows[rowIndex];
+          if (!(row instanceof HTMLElement)) return;
+          const type = row.dataset.heroSequenceDetailType;
+          if (!type) return;
+          detailOutput.innerHTML = scenario[type] ?? '';
+          detailOutput.classList.add('is-active');
         };
 
         const step = () => {
+          if (index === 0) {
+            scenario = buildScenario();
+          }
+
           clear();
           rows[index]?.classList.add('is-active');
+          applyDetail(index);
 
           window.clearTimeout(activeTimeout);
           window.clearTimeout(cycleTimeout);
 
           activeTimeout = window.setTimeout(() => {
             rows[index]?.classList.remove('is-active');
-          }, 920);
+          }, 2000);
 
           cycleTimeout = window.setTimeout(() => {
             index = (index + 1) % rows.length;
             step();
-          }, 1280);
+          }, 2800);
         };
 
         step();

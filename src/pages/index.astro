@@ -30,10 +30,10 @@ const operatingSequence = [
 ];
 
 const operatingStatusClasses = {
-  Queued: 'border-sky-400/20 bg-sky-400/10 text-sky-200',
-  Assigned: 'border-indigo-400/20 bg-indigo-400/10 text-indigo-200',
-  Returned: 'border-amber-400/20 bg-amber-400/10 text-amber-200',
-  Actioned: 'border-emerald-400/20 bg-emerald-400/10 text-emerald-200',
+  Queued: 'text-sky-200 hero-status-glow-sky',
+  Assigned: 'text-indigo-200 hero-status-glow-indigo',
+  Returned: 'text-amber-200 hero-status-glow-amber',
+  Actioned: 'text-emerald-200 hero-status-glow-emerald',
 };
 
 const capabilityCards = [
@@ -204,9 +204,8 @@ const formatDate = (date: Date) =>
                     </span>
                     <span
                       class:list={[
-                        'rounded-full border px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.24em]',
-                        operatingStatusClasses[step.status as keyof typeof operatingStatusClasses] ??
-                          'border-white/10 bg-white/[0.04] text-slate-300',
+                        'text-[0.68rem] font-semibold uppercase tracking-[0.24em] transition',
+                        operatingStatusClasses[step.status as keyof typeof operatingStatusClasses] ?? 'text-slate-300',
                       ]}
                     >
                       {step.status}
@@ -461,6 +460,22 @@ const formatDate = (date: Date) =>
 
     .hero-response-card {
       animation: heroCardGlow 3.4s ease-in-out infinite;
+    }
+
+    .hero-status-glow-sky {
+      text-shadow: 0 0 16px rgb(86 188 255 / 0.26);
+    }
+
+    .hero-status-glow-indigo {
+      text-shadow: 0 0 16px rgb(165 180 252 / 0.24);
+    }
+
+    .hero-status-glow-amber {
+      text-shadow: 0 0 16px rgb(251 191 36 / 0.22);
+    }
+
+    .hero-status-glow-emerald {
+      text-shadow: 0 0 16px rgb(52 211 153 / 0.24);
     }
   </style>
 </Layout>

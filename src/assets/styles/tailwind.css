@@ -132,6 +132,12 @@
   color: var(--vipyr-text-strong);
 }
 
+.article-toc-link.is-active {
+  color: rgb(238 244 255);
+  background: rgb(255 255 255 / 0.05);
+  box-shadow: inset 2px 0 0 rgb(86 188 255 / 0.8);
+}
+
 .vipyr-prose-code {
   @apply prose-headings:scroll-mt-[80px] prose-headings:font-heading prose-headings:font-semibold prose-headings:tracking-[-0.04em] prose-strong:text-white prose-a:text-sky-300 prose-img:rounded-[1rem] prose-img:border prose-img:border-white/10 prose-img:shadow-lg;
   color: rgb(205 216 234);

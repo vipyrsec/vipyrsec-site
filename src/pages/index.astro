@@ -14,8 +14,8 @@ const metadata = {
 };
 
 const stats = [
-  { title: 'Packages scanned', amount: '1.16M' },
-  { title: 'Package takedowns', amount: '1322' },
+  { title: 'Packages scanned', amount: '4.1M' },
+  { title: 'Malicious packages removed', amount: '2044' },
   { title: 'Detection signatures', amount: '150+' },
   { title: 'Contributors', amount: '16' },
 ];
@@ -119,6 +119,35 @@ const formatDate = (date: Date) =>
           <div class="mt-8 flex flex-col gap-3 sm:flex-row">
             <Button variant="primary" href="#capabilities" text="Explore capabilities" icon="tabler:arrow-down-right" />
             <Button variant="secondary" href={getBlogPermalink()} text="Read latest research" />
+          </div>
+          <div class="mt-10 grid gap-3 sm:grid-cols-2 xl:max-w-3xl">
+            {
+              stats.map((stat, index) => (
+                <div
+                  class:list={[
+                    'rounded-[1.5rem] border p-4 shadow-[var(--vipyr-shadow)] backdrop-blur transition',
+                    index < 2 ? 'border-sky-400/18 bg-sky-400/[0.07]' : 'border-white/10 bg-white/[0.03]',
+                  ]}
+                >
+                  <div
+                    class:list={[
+                      'text-3xl font-semibold tracking-[-0.05em] md:text-[2rem]',
+                      index < 2 ? 'text-white' : 'text-slate-100',
+                    ]}
+                  >
+                    {stat.amount}
+                  </div>
+                  <div
+                    class:list={[
+                      'mt-2 text-[0.68rem] font-semibold uppercase tracking-[0.26em]',
+                      index < 2 ? 'text-sky-200/90' : 'text-slate-500',
+                    ]}
+                  >
+                    {stat.title}
+                  </div>
+                </div>
+              ))
+            }
           </div>
           <div class="mt-10 flex flex-wrap gap-3 text-sm text-slate-400">
             {
@@ -236,24 +265,6 @@ const formatDate = (date: Date) =>
           ))
         }
       </div>
-    </div>
-  </section>
-
-  <section class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
-    <SectionHeading
-      title="Operational output that reads like a security organization, not a landing-page template."
-      description="Measured evidence matters more than hype. Vipyr’s footprint spans sustained package intake, malware scanning, package reporting, community review, and published technical analysis."
-      align="center"
-    />
-    <div class="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-      {
-        stats.map((stat) => (
-          <div class="rounded-[1.75rem] border border-white/10 bg-[var(--vipyr-bg-panel)] p-6 text-center shadow-[var(--vipyr-shadow)]">
-            <div class="text-4xl font-semibold tracking-[-0.05em] text-white md:text-5xl">{stat.amount}</div>
-            <div class="mt-3 text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-slate-500">{stat.title}</div>
-          </div>
-        ))
-      }
     </div>
   </section>
 

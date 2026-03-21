@@ -118,11 +118,8 @@ const formatDate = (date: Date) =>
             {
               proofCards.map((card) => (
                 <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5 shadow-[var(--vipyr-shadow)]">
-                  <div class="mb-3 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-sky-300">
-                    Why it matters
-                  </div>
                   <h2 class="text-lg font-semibold text-white">{card.title}</h2>
-                  <p class="mt-2 text-sm leading-7 text-slate-400">{card.description}</p>
+                  <p class="mt-3 text-sm leading-7 text-slate-400">{card.description}</p>
                 </div>
               ))
             }
@@ -220,7 +217,6 @@ const formatDate = (date: Date) =>
 
   <section class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
     <SectionHeading
-      eyebrow="Proof"
       title="Operational output that reads like a security organization, not a landing-page template."
       description="Measured evidence matters more than hype. Vipyr’s footprint spans sustained ecosystem scanning, takedown work, community contribution, and published technical analysis."
       align="center"
@@ -329,8 +325,7 @@ const formatDate = (date: Date) =>
     >
       <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
         <div>
-          <div class="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-sky-200">Next step</div>
-          <h2 class="mt-4 text-3xl font-semibold tracking-[-0.04em] text-white md:text-4xl">
+          <h2 class="text-3xl font-semibold tracking-[-0.04em] text-white md:text-4xl">
             Explore the research, inspect the tooling, and stay close to the signal.
           </h2>
           <p class="mt-4 max-w-2xl text-base leading-8 text-slate-400">

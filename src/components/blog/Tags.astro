@@ -18,7 +18,7 @@ const { tags, class: className = 'text-sm', title = undefined, isCategory = fals
   tags && Array.isArray(tags) && (
     <>
       {title !== undefined && (
-        <span class="align-super font-normal text-slate-400 underline decoration-2 underline-offset-4">{title}</span>
+        <span class="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-slate-500">{title}</span>
       )}
       <ul class={`flex flex-wrap gap-2 ${className}`}>
         {tags.map((tag) => (

@@ -7,14 +7,14 @@ import SectionHeading from '~/components/site/SectionHeading.astro';
 const metadata = {
   title: 'Projects',
   description:
-    'Explore Dragonfly and the core tooling Vipyr Security uses to support package ecosystem analysis and response.',
+    'Explore Dragonfly and the supporting Vipyr Security systems used for package intake, scanning, review, and reporting.',
 };
 
 const projects = [
   {
     title: 'Dragonfly Server',
     description:
-      'A FastAPI-based aggregation and job distribution service that coordinates workload flow and analysis intake across the broader Dragonfly workflow.',
+      'Mainframe service that coordinates workload flow, accepts analysis results, and backs package lookup, queue, and reporting flows used by operators.',
     role: 'Distribution and orchestration',
     stack: 'FastAPI, Python',
     href: 'https://github.com/vipyrsec/dragonfly-mainframe',
@@ -23,7 +23,7 @@ const projects = [
   {
     title: 'Dragonfly Client',
     description:
-      'A Rust scanner designed to safely process potentially malicious files and apply detection logic quickly across large package streams.',
+      'Rust compute node that authenticates, retrieves rule content, downloads package distributions, scans package files, and sends structured results back upstream.',
     role: 'Scanning and enrichment',
     stack: 'Rust',
     href: 'https://github.com/vipyrsec/dragonfly-client-rs',
@@ -32,11 +32,47 @@ const projects = [
   {
     title: 'Dragonfly Bot',
     description:
-      'A Discord interface that keeps community-assisted triage close to the underlying operational workflow instead of separating collaboration from action.',
+      'Discord interface that keeps community-assisted triage close to the operating workflow instead of separating collaboration from action.',
     role: 'Triage interface',
     stack: 'Discord integrations',
     href: 'https://github.com/vipyrsec/bot',
     icon: 'tabler:brand-discord',
+  },
+  {
+    title: 'Dragonfly Loader',
+    description:
+      'Automated job that reads new PyPI release activity from RSS and loads those releases into the mainframe for downstream scanning.',
+    role: 'Release intake',
+    stack: 'Python',
+    href: 'https://github.com/vipyrsec/dragonfly-loader',
+    icon: 'tabler:rss',
+  },
+  {
+    title: 'Dragonfly Reporter',
+    description:
+      'Reporting microservice used to submit malicious package reports back to PyPI once review has been completed.',
+    role: 'Package reporting',
+    stack: 'Python',
+    href: 'https://github.com/vipyrsec/dragonfly-reporter',
+    icon: 'tabler:flag-3',
+  },
+  {
+    title: 'Mainframe Frontend',
+    description:
+      'Authenticated Astro frontend for package lookup, queue handling, reporting flows, and recent package activity updates backed by the mainframe.',
+    role: 'Operator dashboard',
+    stack: 'Astro, Auth0',
+    href: 'https://github.com/vipyrsec/dragonfly-mainframe-frontend',
+    icon: 'tabler:layout-dashboard',
+  },
+  {
+    title: 'Snakehook Runner',
+    description:
+      'Public Python package triage sandbox with constrained execution and webhook reporting for focused package review.',
+    role: 'Sandboxed triage',
+    stack: 'Python, nsjail',
+    href: 'https://github.com/import-pandas-as-numpy/snakehook-runner',
+    icon: 'tabler:flask-2',
   },
 ];
 ---
@@ -50,7 +86,8 @@ const projects = [
         </h1>
         <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-400">
           The project portfolio should read like a coherent security workflow, not a disconnected list of repositories.
-          Dragonfly brings scanning, aggregation, and collaboration into one operating model.
+          Dragonfly spans release intake, job distribution, compute-node scanning, reporting services, and authenticated
+          operator surfaces.
         </p>
       </div>
 
@@ -61,19 +98,21 @@ const projects = [
             class="flex items-center justify-between rounded-full border border-white/8 bg-[var(--vipyr-bg-panel)] px-4 py-3 text-sm"
           >
             <span class="font-medium text-slate-200">Ingest package jobs</span>
-            <span class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">Server</span>
+            <span class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">Loader</span>
           </div>
           <div
             class="flex items-center justify-between rounded-full border border-white/8 bg-[var(--vipyr-bg-panel)] px-4 py-3 text-sm"
           >
-            <span class="font-medium text-slate-200">Scan and enrich results</span>
-            <span class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">Client</span>
+            <span class="font-medium text-slate-200">Assign and collect scan work</span>
+            <span class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">Mainframe</span>
           </div>
           <div
             class="flex items-center justify-between rounded-full border border-white/8 bg-[var(--vipyr-bg-panel)] px-4 py-3 text-sm"
           >
-            <span class="font-medium text-slate-200">Coordinate community triage</span>
-            <span class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">Bot</span>
+            <span class="font-medium text-slate-200">Scan, review, and report</span>
+            <span class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500"
+              >Client / UI / Reporter</span
+            >
           </div>
         </div>
       </div>
@@ -84,7 +123,7 @@ const projects = [
     <div class="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-start">
       <SectionHeading
         title="A distributed computing approach to package ecosystem threat detection."
-        description="Each Dragonfly component exists to support one stage of the workflow, but the real value is in how the pieces operate together."
+        description="Each Dragonfly component supports one stage of the workflow, but the value comes from how release intake, scanning, reporting, and operator review connect."
       />
       <div class="grid gap-4">
         {
@@ -121,7 +160,7 @@ const projects = [
     >
       <SectionHeading
         title="Additional tools can expand from this system without breaking the page."
-        description="The redesign keeps room for future scanners, utilities, and supporting services while keeping Dragonfly as the clearest story today."
+        description="Vipyr also maintains adjacent tooling around public intelligence layout testing and package triage sandboxes, but Dragonfly remains the clearest expression of the organization’s operating systems today."
       />
     </div>
   </section>

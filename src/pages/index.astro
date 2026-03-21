@@ -10,7 +10,7 @@ const metadata = {
   title: 'Home',
   ignoreTitleTemplate: true,
   description:
-    'Vipyr Security helps teams detect malicious packages, coordinate takedowns, and publish useful supply chain research.',
+    'Vipyr Security operates public systems for package intake, malware scanning, package reporting, and supply chain research.',
 };
 
 const stats = [
@@ -22,43 +22,46 @@ const stats = [
 
 const proofCards = [
   {
-    title: 'Research-led detections',
-    description: 'Threat analysis that stays readable, attributable, and useful to defenders across the ecosystem.',
+    title: 'Automated release intake',
+    description:
+      'Dragonfly Loader reads new PyPI release activity from RSS and turns it into queued jobs for downstream review.',
   },
   {
-    title: 'Fast triage workflows',
-    description: 'Detection-to-takedown operations structured for fast review, enrichment, and response.',
+    title: 'Distributed scanning',
+    description:
+      'Rust Dragonfly clients pull work from the mainframe, download package distributions, scan files, and return structured results upstream.',
   },
   {
-    title: 'Open tooling',
-    description: 'Composable services and analysis workflows that teams can inspect, extend, and operate themselves.',
+    title: 'Reporting and review surfaces',
+    description:
+      'The frontend, bot, and reporter keep package lookup, queue handling, package reporting, and operator review close to the analysis workflow.',
   },
 ];
 
 const operatingSequence = [
-  { title: 'Registry signals', status: 'Incoming' },
-  { title: 'Dragonfly analysis', status: 'Enriched' },
-  { title: 'Community triage', status: 'Aligned' },
-  { title: 'Takedown + writeup', status: 'Shipped' },
+  { title: 'PyPI RSS loader', status: 'Queued' },
+  { title: 'Mainframe job dispatch', status: 'Assigned' },
+  { title: 'Client scan results', status: 'Returned' },
+  { title: 'Reporter + analyst review', status: 'Actioned' },
 ];
 
 const capabilityCards = [
   {
     title: 'Observe package ecosystems',
     description:
-      'Vipyr monitors package activity and emerging abuse patterns so suspicious uploads can be reviewed before they fade into the stream.',
+      'Vipyr uses automated intake around package activity so new releases can be loaded into the Dragonfly workflow and reviewed before they disappear into the stream.',
     icon: 'tabler:radar-2',
   },
   {
     title: 'Investigate malicious artifacts',
     description:
-      'Static analysis, workflow enrichment, and community-assisted triage help separate low-signal noise from incidents that demand immediate action.',
+      'Dragonfly clients request work from the API, download distributions, scan package files, and return results in a form that can be reviewed and acted on.',
     icon: 'tabler:binary-tree-2',
   },
   {
     title: 'Coordinate remediation',
     description:
-      'Operational output is the point: takedowns, ecosystem notifications, and research that helps others update threat models quickly.',
+      'Queue, reporting, and recent-activity flows exist in Dragonfly’s frontend and supporting services so detections can move toward package reports and writeups.',
     icon: 'tabler:shield-check',
   },
 ];
@@ -67,23 +70,48 @@ const dragonflyProjects = [
   {
     title: 'Dragonfly Server',
     description:
-      'FastAPI-based aggregation and distribution for package review jobs, result intake, and workflow coordination.',
+      'Mainframe service responsible for job distribution, result intake, and the API surface behind package lookup, queue handling, and reporting flows.',
     href: 'https://github.com/vipyrsec/dragonfly-mainframe',
     icon: 'tabler:server-2',
   },
   {
     title: 'Dragonfly Client',
     description:
-      'Rust compute node built to safely scan suspect files against detection logic and analysis rules at speed.',
+      'Rust compute node that authenticates, retrieves rule content, downloads package distributions, scans files, and sends package results back upstream.',
     href: 'https://github.com/vipyrsec/dragonfly-client-rs',
     icon: 'tabler:cpu',
   },
   {
     title: 'Dragonfly Bot',
     description:
-      'Discord-facing interface that keeps community triage close to the underlying workflow instead of bolting it on later.',
+      'Discord-facing triage surface that keeps community review close to the operating workflow instead of isolating it in a separate channel.',
     href: 'https://github.com/vipyrsec/bot',
     icon: 'tabler:brand-discord',
+  },
+];
+
+const supportingSystems = [
+  {
+    title: 'Dragonfly Loader',
+    description: 'Automated job for loading newly observed PyPI releases into the mainframe.',
+    href: 'https://github.com/vipyrsec/dragonfly-loader',
+  },
+  {
+    title: 'Dragonfly Reporter',
+    description: 'Reporting microservice used to submit malicious package reports back to PyPI.',
+    href: 'https://github.com/vipyrsec/dragonfly-reporter',
+  },
+  {
+    title: 'Mainframe Frontend',
+    description:
+      'Authenticated Astro dashboard for package lookup, queue handling, reporting flows, and recent activity updates.',
+    href: 'https://github.com/vipyrsec/dragonfly-mainframe-frontend',
+  },
+  {
+    title: 'Snakehook Runner',
+    description:
+      'Public Python package triage sandbox with constrained execution and webhook reporting for focused package review.',
+    href: 'https://github.com/import-pandas-as-numpy/snakehook-runner',
   },
 ];
 
@@ -107,8 +135,8 @@ const formatDate = (date: Date) =>
             Bring calm, modern signal to package security.
           </h1>
           <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-400 sm:text-xl">
-            Vipyr helps teams detect malware, coordinate takedowns, and publish useful threat intelligence without
-            leaning on heavy-handed cyber aesthetics or noisy workflows.
+            Vipyr runs public systems for package intake, distributed scanning, malicious package reporting, and supply
+            chain research so suspicious releases can move from feed activity to actionable review.
           </p>
           <div class="mt-8 flex flex-col gap-3 sm:flex-row">
             <Button variant="primary" href="#capabilities" text="Explore capabilities" icon="tabler:arrow-down-right" />
@@ -193,7 +221,7 @@ const formatDate = (date: Date) =>
       <SectionHeading
         eyebrow="Why Vipyr exists"
         title="Modern package security needs both automation and human judgment."
-        description="Package ecosystems move fast, threat actors adapt quickly, and raw telemetry alone does not create useful security outcomes. Vipyr combines detection tooling, triage workflows, and public research to keep supply chain incidents explainable and actionable."
+        description="Package ecosystems move fast, but useful security work still depends on understandable workflows. Vipyr couples automated intake and scanning systems with review surfaces, reporting paths, and public writeups."
       />
       <div class="grid gap-4">
         {
@@ -218,7 +246,7 @@ const formatDate = (date: Date) =>
   <section class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
     <SectionHeading
       title="Operational output that reads like a security organization, not a landing-page template."
-      description="Measured evidence matters more than hype. Vipyr’s footprint spans sustained ecosystem scanning, takedown work, community contribution, and published technical analysis."
+      description="Measured evidence matters more than hype. Vipyr’s footprint spans sustained package intake, malware scanning, package reporting, community review, and published technical analysis."
       align="center"
     />
     <div class="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -238,7 +266,7 @@ const formatDate = (date: Date) =>
       <SectionHeading
         eyebrow="Dragonfly"
         title="A distributed malware analysis workflow built for package ecosystem response."
-        description="Dragonfly is the operational backbone behind Vipyr’s package analysis workflows. It combines ingestion, scanning, and triage surfaces into a system that can scale with the volume and ambiguity of supply chain incidents."
+        description="Dragonfly is the operational backbone behind Vipyr’s package analysis workflows. It spans automated intake, job distribution, compute-node scanning, reporting services, and authenticated review surfaces."
       />
       <div class="grid gap-4">
         {
@@ -270,11 +298,31 @@ const formatDate = (date: Date) =>
   </section>
 
   <section class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
+    <SectionHeading
+      title="The workflow extends beyond three repos."
+      description="Vipyr’s production-facing systems include release intake, operator dashboards, reporting services, and focused triage sandboxes around the core Dragonfly stack."
+    />
+    <div class="mt-10 grid gap-4 md:grid-cols-2">
+      {
+        supportingSystems.map((system) => (
+          <a
+            href={system.href}
+            class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5 shadow-[var(--vipyr-shadow)] transition hover:border-white/20 hover:bg-white/[0.05]"
+          >
+            <h2 class="text-lg font-semibold text-white">{system.title}</h2>
+            <p class="mt-3 text-sm leading-7 text-slate-400">{system.description}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
     <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
       <SectionHeading
         eyebrow="Research"
         title="Published threat analysis is part of the service, not an afterthought."
-        description="Vipyr’s research archive should help defenders understand the campaigns, techniques, and ecosystem issues behind package abuse."
+        description="Vipyr’s research archive explains real package abuse, reverse engineering work, and ecosystem issues observed through the organization’s operating systems."
       />
       <Button variant="secondary" href={getBlogPermalink()} text="Browse all research" />
     </div>
@@ -329,8 +377,9 @@ const formatDate = (date: Date) =>
             Explore the research, inspect the tooling, and stay close to the signal.
           </h2>
           <p class="mt-4 max-w-2xl text-base leading-8 text-slate-400">
-            The redesign work starts here: a clearer brand posture, a stronger operating narrative, and a site that
-            treats security research as proof rather than filler.
+            Follow the workflow from technical writeups to the systems behind them. The same public repos that support
+            intake, scanning, queue handling, reporting, and focused triage also make the organization easier to
+            understand from the outside.
           </p>
         </div>
         <div class="flex flex-col gap-3 sm:flex-row lg:flex-col">

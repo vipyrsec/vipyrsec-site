@@ -3,6 +3,7 @@ import Layout from '~/layouts/PageLayout.astro';
 import { Icon } from 'astro-icon/components';
 import Button from '~/components/ui/Button.astro';
 import SectionHeading from '~/components/site/SectionHeading.astro';
+import Image from '~/components/common/Image.astro';
 import { findLatestPosts } from '~/utils/blog';
 import { getBlogPermalink, getPermalink } from '~/utils/permalinks';
 
@@ -69,25 +70,6 @@ const dragonflyProjects = [
       'Discord-facing triage surface that keeps community review close to the operating workflow instead of isolating it in a separate channel.',
     href: 'https://github.com/vipyrsec/bot',
     icon: 'tabler:brand-discord',
-  },
-];
-
-const supportingSystems = [
-  {
-    title: 'Dragonfly Loader',
-    description: 'Automated job for loading newly observed PyPI releases into the mainframe.',
-    href: 'https://github.com/vipyrsec/dragonfly-loader',
-  },
-  {
-    title: 'Dragonfly Reporter',
-    description: 'Reporting microservice used to submit malicious package reports back to PyPI.',
-    href: 'https://github.com/vipyrsec/dragonfly-reporter',
-  },
-  {
-    title: 'Snakehook Runner',
-    description:
-      'Public Python package triage sandbox with constrained execution and webhook reporting for focused package review.',
-    href: 'https://github.com/import-pandas-as-numpy/snakehook-runner',
   },
 ];
 
@@ -293,52 +275,78 @@ const formatDate = (date: Date) =>
   </section>
 
   <section class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
-    <SectionHeading
-      title="The workflow extends beyond three repos."
-      description="Vipyr’s production-facing systems include release intake, reporting services, authenticated review surfaces, and focused triage sandboxes around the core Dragonfly stack."
-    />
-    <div class="mt-10 grid gap-4 md:grid-cols-2">
-      {
-        supportingSystems.map((system) => (
-          <a
-            href={system.href}
-            class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5 shadow-[var(--vipyr-shadow)] transition hover:border-white/20 hover:bg-white/[0.05]"
-          >
-            <h2 class="text-lg font-semibold text-white">{system.title}</h2>
-            <p class="mt-3 text-sm leading-7 text-slate-400">{system.description}</p>
-          </a>
-        ))
-      }
-    </div>
-  </section>
-
-  <section class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
     <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
       <SectionHeading
         eyebrow="Research"
-        title="Published threat analysis extends the response."
-        description="Vipyr’s research archive explains real package abuse, reverse engineering work, and ecosystem issues observed through the organization’s operating systems."
+        title="Analysis from live package ecosystem abuse."
+        description="Research is where Vipyr turns detections, reverse engineering, and ecosystem anomalies into work other defenders can inspect and reuse."
       />
       <Button variant="secondary" href={getBlogPermalink()} text="Browse all research" />
     </div>
 
     {
       featuredPost && (
-        <div class="mt-10 grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(300px,0.85fr)]">
+        <div class="mt-10 grid gap-4 lg:grid-cols-[minmax(0,1.08fr)_minmax(320px,0.92fr)]">
           <a
             href={getPermalink(featuredPost.permalink, 'post')}
-            class="rounded-[2rem] border border-white/10 bg-[var(--vipyr-bg-panel)] p-8 shadow-[var(--vipyr-shadow)] transition hover:border-white/20 hover:bg-[var(--vipyr-bg-panel-strong)]"
+            class="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-[var(--vipyr-bg-panel)] shadow-[var(--vipyr-shadow)] transition hover:border-white/20 hover:bg-[var(--vipyr-bg-panel-strong)]"
           >
-            <div class="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-slate-500">
-              Featured analysis {featuredPost.category ? `• ${featuredPost.category.title}` : ''}
-            </div>
-            <h2 class="mt-5 max-w-3xl text-3xl font-semibold tracking-[-0.04em] text-white md:text-4xl">
-              {featuredPost.title}
-            </h2>
-            <p class="mt-5 max-w-2xl text-base leading-8 text-slate-400">{featuredPost.excerpt}</p>
-            <div class="mt-8 flex items-center gap-4 text-sm text-slate-500">
-              <span>{formatDate(featuredPost.publishDate)}</span>
-              {featuredPost.readingTime && <span>{featuredPost.readingTime} min read</span>}
+            <div
+              class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(65,146,255,0.16),transparent_42%)]"
+              aria-hidden="true"
+            />
+            <div class="grid min-h-full lg:grid-cols-[minmax(0,0.92fr)_320px]">
+              <div class="relative flex min-h-[24rem] flex-col justify-end p-7 sm:p-8">
+                <div class="max-w-3xl">
+                  <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-slate-500">
+                    <span class="text-sky-200">Featured analysis</span>
+                    {featuredPost.category && (
+                      <>
+                        <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
+                        <span>{featuredPost.category.title}</span>
+                      </>
+                    )}
+                  </div>
+                  <h2 class="mt-5 max-w-3xl text-3xl font-semibold tracking-[-0.04em] text-white transition group-hover:text-slate-50 md:text-4xl">
+                    {featuredPost.title}
+                  </h2>
+                  <p class="mt-5 max-w-2xl text-base leading-8 text-slate-400">{featuredPost.excerpt}</p>
+                  <div class="mt-7 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-500">
+                    <span>{formatDate(featuredPost.publishDate)}</span>
+                    {featuredPost.readingTime && (
+                      <>
+                        <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
+                        <span>{featuredPost.readingTime} min read</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div class="relative min-h-[18rem] border-t border-white/10 lg:min-h-full lg:border-l lg:border-t-0">
+                {featuredPost.image ? (
+                  <Image
+                    src={featuredPost.image}
+                    class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.025]"
+                    widths={[480, 720, 960]}
+                    sizes="(max-width: 1024px) 100vw, 320px"
+                    alt={featuredPost.title}
+                    width={960}
+                    height={720}
+                    aspectRatio="4:3"
+                    layout="cover"
+                    loading="eager"
+                    decoding="async"
+                  />
+                ) : (
+                  <div class="flex h-full items-center justify-center bg-[linear-gradient(135deg,rgba(18,35,68,0.95),rgba(8,16,34,0.92))]">
+                    <Icon name="tabler:binary-tree-2" class="h-16 w-16 text-sky-200/60" />
+                  </div>
+                )}
+                <div
+                  class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(4,10,24,0.08),rgba(4,10,24,0.34))]"
+                  aria-hidden="true"
+                />
+              </div>
             </div>
           </a>
 
@@ -346,14 +354,47 @@ const formatDate = (date: Date) =>
             {recentPosts.map((post) => (
               <a
                 href={getPermalink(post.permalink, 'post')}
-                class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-6 shadow-[var(--vipyr-shadow)] transition hover:border-white/20 hover:bg-white/[0.05]"
+                class="group grid gap-5 rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5 shadow-[var(--vipyr-shadow)] transition hover:border-white/20 hover:bg-white/[0.05] sm:grid-cols-[128px_minmax(0,1fr)] sm:items-start"
               >
-                <div class="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-slate-500">
-                  {post.category?.title ?? 'Research'}
+                <div class="overflow-hidden rounded-[1.25rem] border border-white/10 bg-[var(--vipyr-bg-panel)]">
+                  {post.image ? (
+                    <Image
+                      src={post.image}
+                      class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
+                      widths={[256, 384]}
+                      sizes="128px"
+                      alt={post.title}
+                      width={384}
+                      height={288}
+                      aspectRatio="4:3"
+                      layout="cover"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ) : (
+                    <div class="flex h-full min-h-[8rem] items-center justify-center bg-[linear-gradient(135deg,rgba(18,35,68,0.95),rgba(8,16,34,0.92))]">
+                      <Icon name="tabler:file-search" class="h-10 w-10 text-sky-200/60" />
+                    </div>
+                  )}
                 </div>
-                <h3 class="mt-4 text-xl font-semibold text-white">{post.title}</h3>
-                <p class="mt-3 text-sm leading-7 text-slate-400">{post.excerpt}</p>
-                <div class="mt-5 text-sm text-slate-500">{formatDate(post.publishDate)}</div>
+                <div class="min-w-0">
+                  <div class="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-slate-500">
+                    {post.category?.title ?? 'Research'}
+                  </div>
+                  <h3 class="mt-3 text-xl font-semibold text-white transition group-hover:text-slate-50">
+                    {post.title}
+                  </h3>
+                  <p class="mt-3 text-sm leading-7 text-slate-400">{post.excerpt}</p>
+                  <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-slate-500">
+                    <span>{formatDate(post.publishDate)}</span>
+                    {post.readingTime && (
+                      <>
+                        <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
+                        <span>{post.readingTime} min read</span>
+                      </>
+                    )}
+                  </div>
+                </div>
               </a>
             ))}
           </div>

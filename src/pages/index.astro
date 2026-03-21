@@ -22,10 +22,26 @@ const stats = [
 ];
 
 const operatingSequence = [
-  { title: 'PyPI RSS loader', status: 'Queued' },
-  { title: 'Mainframe job dispatch', status: 'Assigned' },
-  { title: 'Client scan results', status: 'Returned' },
-  { title: 'Reporter + analyst review', status: 'Actioned' },
+  {
+    title: 'PyPI RSS loader',
+    status: 'Queued',
+    detail: 'requestd@1.1.0 observed in package feed',
+  },
+  {
+    title: 'Mainframe job dispatch',
+    status: 'Assigned',
+    detail: 'queued for Dragonfly client review',
+  },
+  {
+    title: 'Client scan results',
+    status: 'Returned',
+    detail: 'matched: suspicious_setup_file, base64_decode',
+  },
+  {
+    title: 'Reporter + analyst review',
+    status: 'Actioned',
+    detail: 'report filed; package removed from index',
+  },
 ];
 
 const capabilityCards = [
@@ -186,20 +202,31 @@ const formatDate = (date: Date) =>
               {
                 operatingSequence.map((step, index) => (
                   <div
-                    class="hero-sequence-row flex items-center justify-between rounded-full border border-white/6 bg-[#081427] px-4 py-3 text-sm"
+                    class="hero-sequence-row rounded-[1.25rem] border border-white/6 bg-[#081427] px-4 py-3 text-sm"
                     data-hero-sequence-row
                     data-hero-sequence-index={index}
                   >
-                    <span class="flex items-center gap-3 font-medium text-slate-200">
-                      <span class="h-2 w-2 rounded-full bg-sky-300/70 hero-sequence-dot" data-hero-sequence-dot />
-                      <span>{step.title}</span>
-                    </span>
-                    <span
-                      class="hero-sequence-status text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-slate-500 transition"
-                      data-hero-sequence-status={step.status}
+                    <div class="flex items-start justify-between gap-4">
+                      <span class="flex min-w-0 items-center gap-3 font-medium text-slate-200">
+                        <span
+                          class="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-sky-300/70 hero-sequence-dot"
+                          data-hero-sequence-dot
+                        />
+                        <span>{step.title}</span>
+                      </span>
+                      <span
+                        class="hero-sequence-status shrink-0 pt-0.5 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-slate-500 transition"
+                        data-hero-sequence-status={step.status}
+                      >
+                        {step.status}
+                      </span>
+                    </div>
+                    <div
+                      class="hero-sequence-detail pl-5 text-[0.75rem] leading-6 text-slate-600"
+                      data-hero-sequence-detail
                     >
-                      {step.status}
-                    </span>
+                      {step.detail}
+                    </div>
                   </div>
                 ))
               }
@@ -484,6 +511,20 @@ const formatDate = (date: Date) =>
         opacity 320ms ease;
     }
 
+    .hero-sequence-detail {
+      font-family: var(--font-mono);
+      letter-spacing: 0.01em;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition:
+        max-height 320ms ease,
+        padding-top 320ms ease,
+        color 320ms ease,
+        opacity 320ms ease,
+        text-shadow 320ms ease;
+    }
+
     .hero-sequence-row.is-active {
       border-color: rgb(102 160 255 / 0.18);
       background: rgb(10 25 48);
@@ -499,6 +540,13 @@ const formatDate = (date: Date) =>
       transform: scale(1.28);
       opacity: 1;
       box-shadow: 0 0 18px rgb(86 188 255 / 0.4);
+    }
+
+    .hero-sequence-row.is-active [data-hero-sequence-detail] {
+      max-height: 3rem;
+      padding-top: 0.5rem;
+      color: rgb(174 191 217);
+      opacity: 1;
     }
 
     .hero-sequence-row:not(.is-active) [data-hero-sequence-dot] {

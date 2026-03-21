@@ -93,7 +93,9 @@ const { post, url } = Astro.props;
         </div>
       </div>
     </header>
-    <div class="mx-auto mt-10 max-w-6xl px-5 sm:px-6 lg:mt-12 lg:grid lg:grid-cols-[minmax(0,1fr)_250px] lg:gap-12">
+    <div
+      class="mx-auto mt-10 max-w-6xl px-5 sm:px-6 lg:mt-12 lg:grid lg:grid-cols-[minmax(0,1fr)_250px] lg:items-start lg:gap-12"
+    >
       <div
         data-article-prose
         class="vipyr-prose-code prose prose-base prose-invert max-w-3xl px-0 prose-headings:text-slate-100 sm:px-0"
@@ -101,7 +103,7 @@ const { post, url } = Astro.props;
         <slot />
       </div>
       <aside data-article-toc class="hidden self-start lg:block">
-        <div class="sticky top-28 w-full max-w-[250px]">
+        <div class="sticky top-28 w-full max-w-[250px] max-h-[calc(100vh-8rem)] overflow-y-auto pr-1">
           <div class="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-slate-500">On this page</div>
           <nav class="mt-4" aria-label="Table of contents">
             <ol data-article-toc-list class="space-y-1"></ol>

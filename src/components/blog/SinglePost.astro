@@ -29,16 +29,26 @@ const { post, url } = Astro.props;
             >
               {
                 post.category && (
-                  <a class="transition hover:text-slate-300" href={getPermalink(post.category.slug, 'category')}>
-                    {post.category.title}
-                  </a>
+                  <>
+                    <a class="transition hover:text-slate-300" href={getPermalink(post.category.slug, 'category')}>
+                      {post.category.title}
+                    </a>
+                    <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
+                  </>
                 )
               }
               <span class="inline-flex items-center gap-2">
                 <Icon name="tabler:clock" class="h-4 w-4" />
                 <time datetime={String(post.publishDate)}>{getFormattedDate(post.publishDate)}</time>
               </span>
-              {post.readingTime && <span>{post.readingTime} min read</span>}
+              {
+                post.readingTime && (
+                  <>
+                    <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
+                    <span>{post.readingTime} min read</span>
+                  </>
+                )
+              }
               {post.author && <span>{post.author}</span>}
             </div>
 

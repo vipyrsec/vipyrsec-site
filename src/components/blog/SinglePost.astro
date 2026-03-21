@@ -20,87 +20,76 @@ const { post, url } = Astro.props;
 
 <section class="py-8 sm:py-16 lg:py-20 mx-auto">
   <article>
-    <header
-      class={post.image
-        ? 'intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade'
-        : 'intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade'}
-    >
-      <div
-        class="mx-auto mb-4 mt-0 flex max-w-3xl flex-col justify-between px-4 text-slate-500 sm:flex-row sm:items-center sm:px-6"
-      >
-        <p>
-          <Icon name="tabler:clock" class="inline-block h-4 w-4 -mt-0.5" />
-          <time datetime={String(post.publishDate)} class="inline-block">{getFormattedDate(post.publishDate)}</time>
-          {
-            post.author && (
-              <>
-                {' '}
-                · <Icon name="tabler:user" class="inline-block h-4 w-4 -mt-0.5" />
-                <span class="inline-block">{post.author}</span>
-              </>
-            )
-          }
-          {
-            post.category && (
-              <>
-                {' '}
-                ·{' '}
-                <a
-                  class="inline-block transition hover:text-slate-200 hover:underline"
-                  href={getPermalink(post.category.slug, 'category')}
-                >
-                  {post.category.title}
-                </a>
-              </>
-            )
-          }
-          {
-            post.readingTime && (
-              <>
-                &nbsp;· <span>{post.readingTime}</span> min read
-              </>
-            )
-          }
-        </p>
-      </div>
+    <header class="intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade">
+      <div class="mx-auto max-w-5xl px-4 sm:px-6">
+        <div
+          class="overflow-hidden rounded-[2rem] border border-white/10 bg-[var(--vipyr-bg-elevated)] shadow-[var(--vipyr-shadow)]"
+        >
+          <div class="px-5 py-6 sm:px-8 sm:py-8">
+            <div
+              class="flex flex-wrap items-center gap-3 text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-slate-500"
+            >
+              {
+                post.category && (
+                  <a
+                    class="inline-flex items-center rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 transition hover:border-white/20 hover:text-slate-300"
+                    href={getPermalink(post.category.slug, 'category')}
+                  >
+                    {post.category.title}
+                  </a>
+                )
+              }
+              <span class="inline-flex items-center gap-2">
+                <Icon name="tabler:clock" class="h-4 w-4" />
+                <time datetime={String(post.publishDate)}>{getFormattedDate(post.publishDate)}</time>
+              </span>
+              {post.readingTime && <span>{post.readingTime} min read</span>}
+              {post.author && <span>{post.author}</span>}
+            </div>
 
-      <h1 class="mx-auto max-w-3xl px-4 text-4xl font-semibold tracking-[-0.05em] text-white sm:px-6 md:text-6xl">
-        {post.title}
-      </h1>
-      <p class="mx-auto mb-8 mt-5 max-w-3xl px-4 text-lg leading-8 text-slate-400 sm:px-6 md:text-2xl">
-        {post.excerpt}
-      </p>
+            <h1 class="mt-5 max-w-4xl text-3xl font-semibold tracking-[-0.05em] text-white sm:text-4xl lg:text-5xl">
+              {post.title}
+            </h1>
+            <p class="mt-4 max-w-3xl text-base leading-7 text-slate-400 sm:text-lg sm:leading-8">
+              {post.excerpt}
+            </p>
 
-      {
-        post.image ? (
-          <Image
-            src={post.image}
-            class="mx-auto mb-6 max-w-full border border-white/10 bg-gray-400 sm:rounded-[1.5rem] dark:bg-slate-700 lg:max-w-[960px]"
-            widths={[400, 900]}
-            sizes="(max-width: 900px) 400px, 900px"
-            alt={post?.excerpt || ''}
-            width={900}
-            height={506}
-            loading="eager"
-            decoding="async"
-          />
-        ) : (
-          <div class="max-w-3xl mx-auto px-4 sm:px-6">
-            <div class="border-t border-white/10" />
+            <div
+              class="mt-6 flex flex-col gap-5 border-t border-white/10 pt-5 sm:flex-row sm:items-end sm:justify-between"
+            >
+              <PostTags tags={post.tags} class="text-sm" title="Topics" />
+              <SocialShare url={url} text={post.title} class="sm:justify-end" />
+            </div>
           </div>
-        )
-      }
+
+          {
+            post.image ? (
+              <div class="border-t border-white/10 bg-[var(--vipyr-bg-panel)] px-5 py-5 sm:px-8 sm:py-6">
+                <div class="overflow-hidden rounded-[1.5rem] border border-white/10 bg-gray-400">
+                  <Image
+                    src={post.image}
+                    class="w-full"
+                    widths={[640, 1200]}
+                    sizes="(max-width: 1280px) 100vw, 1200px"
+                    alt={post?.excerpt || ''}
+                    width={1200}
+                    height={675}
+                    aspectRatio="16:9"
+                    layout="cover"
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+            ) : null
+          }
+        </div>
+      </div>
     </header>
     <div
-      class="vipyr-prose-code prose prose-md prose-invert mx-auto mt-10 max-w-3xl px-6 prose-headings:text-slate-100 lg:prose-xl sm:px-6"
+      class="vipyr-prose-code prose prose-base prose-invert mx-auto mt-10 max-w-3xl px-5 prose-headings:text-slate-100 sm:px-6 lg:mt-12"
     >
       <slot />
-    </div>
-    <div
-      class="mx-auto mt-10 flex max-w-3xl flex-col justify-between gap-6 rounded-[1.75rem] border border-white/10 bg-[var(--vipyr-bg-panel)] px-6 py-6 sm:flex-row sm:px-6"
-    >
-      <PostTags tags={post.tags} class="mr-5 rtl:mr-0 rtl:ml-5" />
-      <SocialShare url={url} text={post.title} class="align-middle text-gray-500 dark:text-slate-600 sm:mt-1" />
     </div>
   </article>
 </section>

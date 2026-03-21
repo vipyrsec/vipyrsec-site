@@ -61,10 +61,7 @@ const metadata = {
 
 <Layout metadata={metadata}>
   <section class="mx-auto max-w-7xl px-6 py-12 sm:px-6 sm:py-16 lg:py-20">
-    <Headline
-      eyebrow="Research"
-      subtitle="Threat analysis, malware writeups, and package ecosystem intelligence from Vipyr Security."
-    >
+    <Headline subtitle="Threat analysis, malware writeups, and package ecosystem intelligence from Vipyr Security.">
       Research
     </Headline>
 
@@ -97,50 +94,60 @@ const metadata = {
 
     {
       currentPage === 1 && leadPost && (
-        <div class="mx-auto mt-10 grid max-w-6xl gap-5 lg:grid-cols-[minmax(0,1.06fr)_minmax(320px,0.94fr)]">
+        <div class="mx-auto mt-10 grid max-w-5xl gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.8fr)]">
           <article class="group overflow-hidden rounded-[2rem] border border-white/10 bg-[var(--vipyr-bg-panel)] shadow-[var(--vipyr-shadow)]">
-            {leadImage && (
-              <a href={getPermalink(leadPost.permalink, 'post')} class="block overflow-hidden border-b border-white/10">
-                <Image
-                  src={leadImage}
-                  class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
-                  widths={[720, 1280]}
-                  width={1280}
-                  sizes="(max-width: 1024px) 100vw, 720px"
-                  alt={leadPost.title}
-                  aspectRatio="16:9"
-                  layout="cover"
-                  loading="eager"
-                  decoding="async"
-                />
-              </a>
-            )}
-            <div class="p-7 sm:p-8">
-              <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-slate-500">
-                <span class="text-sky-200">Featured analysis</span>
-                {leadPost.category && (
-                  <>
-                    <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
-                    <a class="transition hover:text-slate-300" href={getPermalink(leadPost.category.slug, 'category')}>
-                      {leadPost.category.title}
-                    </a>
-                  </>
-                )}
-                <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
-                <time datetime={String(leadPost.publishDate)}>{getFormattedDate(leadPost.publishDate)}</time>
-                {leadPost.readingTime && (
-                  <>
-                    <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
-                    <span>{leadPost.readingTime} min read</span>
-                  </>
-                )}
+            <div class:list={['grid gap-0', leadImage ? 'lg:grid-cols-[minmax(0,1fr)_248px]' : '']}>
+              <div class="p-6 sm:p-7">
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-slate-500">
+                  <span class="text-sky-200">Featured analysis</span>
+                  {leadPost.category && (
+                    <>
+                      <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
+                      <a
+                        class="transition hover:text-slate-300"
+                        href={getPermalink(leadPost.category.slug, 'category')}
+                      >
+                        {leadPost.category.title}
+                      </a>
+                    </>
+                  )}
+                  <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
+                  <time datetime={String(leadPost.publishDate)}>{getFormattedDate(leadPost.publishDate)}</time>
+                  {leadPost.readingTime && (
+                    <>
+                      <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
+                      <span>{leadPost.readingTime} min read</span>
+                    </>
+                  )}
+                </div>
+                <h2 class="mt-4 text-2xl font-semibold tracking-[-0.04em] text-white sm:text-[2rem]">
+                  <a class="transition group-hover:text-slate-50" href={getPermalink(leadPost.permalink, 'post')}>
+                    {leadPost.title}
+                  </a>
+                </h2>
+                <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-400 sm:text-[0.98rem] sm:leading-8">
+                  {leadPost.excerpt}
+                </p>
               </div>
-              <h2 class="mt-5 text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">
-                <a class="transition group-hover:text-slate-50" href={getPermalink(leadPost.permalink, 'post')}>
-                  {leadPost.title}
+              {leadImage && (
+                <a
+                  href={getPermalink(leadPost.permalink, 'post')}
+                  class="block overflow-hidden border-t border-white/10 lg:border-l lg:border-t-0"
+                >
+                  <Image
+                    src={leadImage}
+                    class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+                    widths={[480, 720]}
+                    width={720}
+                    sizes="(max-width: 1024px) 100vw, 248px"
+                    alt={leadPost.title}
+                    aspectRatio="4:3"
+                    layout="cover"
+                    loading="eager"
+                    decoding="async"
+                  />
                 </a>
-              </h2>
-              <p class="mt-5 max-w-3xl text-base leading-8 text-slate-400">{leadPost.excerpt}</p>
+              )}
             </div>
           </article>
 

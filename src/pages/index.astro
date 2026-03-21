@@ -196,15 +196,16 @@ const formatDate = (date: Date) =>
                 operatingSequence.map((step, index) => (
                   <div
                     class="hero-sequence-row flex items-center justify-between rounded-full border border-white/6 bg-[#081427] px-4 py-3 text-sm"
-                    style={`--hero-sequence-delay:${index * 1.1}s`}
+                    data-hero-sequence-row
+                    data-hero-sequence-index={index}
                   >
                     <span class="flex items-center gap-3 font-medium text-slate-200">
-                      <span class="h-2 w-2 rounded-full bg-sky-300/70 hero-sequence-dot" />
+                      <span class="h-2 w-2 rounded-full bg-sky-300/70 hero-sequence-dot" data-hero-sequence-dot />
                       <span>{step.title}</span>
                     </span>
                     <span
                       class:list={[
-                        'text-[0.68rem] font-semibold uppercase tracking-[0.24em] transition',
+                        'hero-sequence-status text-[0.68rem] font-semibold uppercase tracking-[0.24em] transition',
                         operatingStatusClasses[step.status as keyof typeof operatingStatusClasses] ?? 'text-slate-300',
                       ]}
                     >
@@ -407,27 +408,6 @@ const formatDate = (date: Date) =>
       }
     }
 
-    @keyframes heroSequencePulse {
-      0%,
-      100% {
-        border-color: rgb(255 255 255 / 0.06);
-        background: rgb(8 20 39);
-        box-shadow:
-          inset 0 1px 0 rgb(255 255 255 / 0.02),
-          0 0 0 rgb(70 153 255 / 0);
-        transform: translateX(0) scale(1);
-      }
-      50% {
-        border-color: rgb(102 160 255 / 0.18);
-        background: rgb(10 25 48);
-        box-shadow:
-          inset 0 1px 0 rgb(255 255 255 / 0.04),
-          0 10px 24px rgb(12 31 64 / 0.22),
-          0 0 24px rgb(70 153 255 / 0.1);
-        transform: translateX(4px) scale(1.02);
-      }
-    }
-
     @keyframes heroCardGlow {
       0%,
       100% {
@@ -447,15 +427,52 @@ const formatDate = (date: Date) =>
     }
 
     .hero-sequence-row {
-      animation: heroSequencePulse 4.8s ease-in-out infinite;
-      animation-delay: var(--hero-sequence-delay, 0s);
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.02);
+      opacity: 0.78;
       transform-origin: left center;
-      will-change: transform, box-shadow, border-color, background-color;
+      transition:
+        transform 320ms ease,
+        box-shadow 320ms ease,
+        border-color 320ms ease,
+        background-color 320ms ease,
+        opacity 320ms ease;
+      will-change: transform, box-shadow, border-color, background-color, opacity;
     }
 
     .hero-sequence-dot {
-      animation: heroPresencePulse 2.2s ease-in-out infinite;
-      animation-delay: var(--hero-sequence-delay, 0s);
+      transition:
+        transform 320ms ease,
+        opacity 320ms ease,
+        box-shadow 320ms ease,
+        background-color 320ms ease;
+    }
+
+    .hero-sequence-status {
+      transition:
+        color 320ms ease,
+        text-shadow 320ms ease,
+        opacity 320ms ease;
+    }
+
+    .hero-sequence-row.is-active {
+      border-color: rgb(102 160 255 / 0.18);
+      background: rgb(10 25 48);
+      box-shadow:
+        inset 0 1px 0 rgb(255 255 255 / 0.04),
+        0 10px 24px rgb(12 31 64 / 0.22),
+        0 0 24px rgb(70 153 255 / 0.1);
+      opacity: 1;
+      transform: translateX(4px) scale(1.02);
+    }
+
+    .hero-sequence-row.is-active [data-hero-sequence-dot] {
+      transform: scale(1.28);
+      opacity: 1;
+      box-shadow: 0 0 18px rgb(86 188 255 / 0.4);
+    }
+
+    .hero-sequence-row:not(.is-active) [data-hero-sequence-dot] {
+      opacity: 0.7;
     }
 
     .hero-response-card {
@@ -478,4 +495,59 @@ const formatDate = (date: Date) =>
       text-shadow: 0 0 16px rgb(52 211 153 / 0.24);
     }
   </style>
+
+  <script is:inline>
+    (() => {
+      const start = () => {
+        const rows = Array.from(document.querySelectorAll('[data-hero-sequence-row]'));
+        if (!rows.length) return;
+
+        const first = rows[0];
+        if (!(first instanceof HTMLElement)) return;
+        if (first.dataset.bound === 'true') return;
+
+        rows.forEach((row) => {
+          if (row instanceof HTMLElement) {
+            row.dataset.bound = 'true';
+            row.classList.remove('is-active');
+          }
+        });
+
+        let index = 0;
+        let activeTimeout = 0;
+        let cycleTimeout = 0;
+
+        const clear = () => {
+          rows.forEach((row) => row.classList.remove('is-active'));
+        };
+
+        const step = () => {
+          clear();
+          rows[index]?.classList.add('is-active');
+
+          window.clearTimeout(activeTimeout);
+          window.clearTimeout(cycleTimeout);
+
+          activeTimeout = window.setTimeout(() => {
+            rows[index]?.classList.remove('is-active');
+          }, 920);
+
+          cycleTimeout = window.setTimeout(() => {
+            index = (index + 1) % rows.length;
+            step();
+          }, 1280);
+        };
+
+        step();
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', start, { once: true });
+      } else {
+        start();
+      }
+
+      document.addEventListener('astro:page-load', start);
+    })();
+  </script>
 </Layout>

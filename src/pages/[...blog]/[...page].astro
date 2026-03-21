@@ -2,12 +2,15 @@
 import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
 
 import Layout from '~/layouts/PageLayout.astro';
+import Image from '~/components/common/Image.astro';
 import BlogList from '~/components/blog/List.astro';
 import Headline from '~/components/blog/Headline.astro';
 import Pagination from '~/components/blog/Pagination.astro';
-// import PostTags from "~/components/blog/Tags.astro";
 
-import { blogListRobots, getStaticPathsBlogList } from '~/utils/blog';
+import { blogListRobots, fetchPosts, getStaticPathsBlogList } from '~/utils/blog';
+import { findImage } from '~/utils/images';
+import { getPermalink } from '~/utils/permalinks';
+import { getFormattedDate } from '~/utils/utils';
 
 export const prerender = true;
 
@@ -19,9 +22,30 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { page } = Astro.props as Props;
 const currentPage = page.currentPage ?? 1;
+const allPosts = await fetchPosts();
+const categoryMap = new Map<string, { slug: string; title: string; count: number }>();
 
-// const allCategories = await findCategories();
-// const allTags = await findTags();
+allPosts.forEach((post) => {
+  if (!post.category?.slug || !post.category.title) return;
+
+  const existing = categoryMap.get(post.category.slug);
+  if (existing) {
+    existing.count += 1;
+    return;
+  }
+
+  categoryMap.set(post.category.slug, {
+    slug: post.category.slug,
+    title: post.category.title,
+    count: 1,
+  });
+});
+
+const categories = Array.from(categoryMap.values()).sort((a, b) => b.count - a.count || a.title.localeCompare(b.title));
+const [leadPost, ...remainingPosts] = page.data;
+const secondaryPosts = currentPage === 1 ? remainingPosts.slice(0, 2) : [];
+const archivePosts = currentPage === 1 ? remainingPosts.slice(2) : page.data;
+const leadImage = leadPost ? await findImage(leadPost.image) : undefined;
 
 const metadata = {
   title: `Research${currentPage > 1 ? ` — Page ${currentPage}` : ''}`,
@@ -36,20 +60,170 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <section class="mx-auto max-w-6xl px-6 py-12 sm:px-6 sm:py-16 lg:py-20">
+  <section class="mx-auto max-w-7xl px-6 py-12 sm:px-6 sm:py-16 lg:py-20">
     <Headline
       eyebrow="Research"
       subtitle="Threat analysis, malware writeups, and package ecosystem intelligence from Vipyr Security."
     >
       Research
     </Headline>
-    <BlogList posts={page.data} />
+
+    <div class="mx-auto max-w-6xl">
+      <div
+        class="flex flex-col gap-5 rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5 shadow-[var(--vipyr-shadow)] sm:p-6"
+      >
+        <div
+          class="flex flex-wrap items-center gap-x-4 gap-y-2 text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-slate-500"
+        >
+          <span>{allPosts.length} published analyses</span>
+          <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600"></span>
+          <span>{categories.length} research areas</span>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          {
+            categories.map((category) => (
+              <a
+                href={getPermalink(category.slug, 'category')}
+                class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-slate-300 transition hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
+              >
+                <span>{category.title}</span>
+                <span class="text-xs text-slate-500">{category.count}</span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    {
+      currentPage === 1 && leadPost && (
+        <div class="mx-auto mt-10 grid max-w-6xl gap-5 lg:grid-cols-[minmax(0,1.06fr)_minmax(320px,0.94fr)]">
+          <article class="group overflow-hidden rounded-[2rem] border border-white/10 bg-[var(--vipyr-bg-panel)] shadow-[var(--vipyr-shadow)]">
+            {leadImage && (
+              <a href={getPermalink(leadPost.permalink, 'post')} class="block overflow-hidden border-b border-white/10">
+                <Image
+                  src={leadImage}
+                  class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+                  widths={[720, 1280]}
+                  width={1280}
+                  sizes="(max-width: 1024px) 100vw, 720px"
+                  alt={leadPost.title}
+                  aspectRatio="16:9"
+                  layout="cover"
+                  loading="eager"
+                  decoding="async"
+                />
+              </a>
+            )}
+            <div class="p-7 sm:p-8">
+              <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-slate-500">
+                <span class="text-sky-200">Featured analysis</span>
+                {leadPost.category && (
+                  <>
+                    <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
+                    <a class="transition hover:text-slate-300" href={getPermalink(leadPost.category.slug, 'category')}>
+                      {leadPost.category.title}
+                    </a>
+                  </>
+                )}
+                <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
+                <time datetime={String(leadPost.publishDate)}>{getFormattedDate(leadPost.publishDate)}</time>
+                {leadPost.readingTime && (
+                  <>
+                    <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
+                    <span>{leadPost.readingTime} min read</span>
+                  </>
+                )}
+              </div>
+              <h2 class="mt-5 text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">
+                <a class="transition group-hover:text-slate-50" href={getPermalink(leadPost.permalink, 'post')}>
+                  {leadPost.title}
+                </a>
+              </h2>
+              <p class="mt-5 max-w-3xl text-base leading-8 text-slate-400">{leadPost.excerpt}</p>
+            </div>
+          </article>
+
+          <div class="grid gap-5">
+            {await Promise.all(
+              secondaryPosts.map(async (post) => {
+                const image = await findImage(post.image);
+
+                return (
+                  <article class="group overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.03] shadow-[var(--vipyr-shadow)]">
+                    <a
+                      href={getPermalink(post.permalink, 'post')}
+                      class="grid h-full gap-0 sm:grid-cols-[148px_minmax(0,1fr)]"
+                    >
+                      <div class="overflow-hidden border-b border-white/10 sm:border-b-0 sm:border-r">
+                        {image ? (
+                          <Image
+                            src={image}
+                            class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
+                            widths={[320, 480]}
+                            width={480}
+                            sizes="148px"
+                            alt={post.title}
+                            aspectRatio="4:3"
+                            layout="cover"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : (
+                          <div class="h-full min-h-[10rem] bg-[linear-gradient(135deg,rgba(18,35,68,0.95),rgba(8,16,34,0.92))]" />
+                        )}
+                      </div>
+                      <div class="p-5">
+                        <div class="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-slate-500">
+                          {post.category?.title ?? 'Research'}
+                        </div>
+                        <h3 class="mt-3 text-xl font-semibold leading-tight text-white transition group-hover:text-slate-50">
+                          {post.title}
+                        </h3>
+                        <p class="mt-3 text-sm leading-7 text-slate-400">{post.excerpt}</p>
+                        <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-slate-500">
+                          <span>{getFormattedDate(post.publishDate)}</span>
+                          {post.readingTime && (
+                            <>
+                              <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
+                              <span>{post.readingTime} min read</span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </a>
+                  </article>
+                );
+              })
+            )}
+          </div>
+        </div>
+      )
+    }
+
+    <div class="mx-auto mt-10 max-w-6xl">
+      <div class="flex flex-col gap-2 border-t border-white/10 pt-8 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <div class="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-slate-500">
+            {currentPage === 1 ? 'Archive' : `Page ${currentPage}`}
+          </div>
+          <h2 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-white sm:text-3xl">
+            {currentPage === 1 ? 'Recent analysis and field notes' : 'Research archive'}
+          </h2>
+        </div>
+        <p class="max-w-2xl text-sm leading-7 text-slate-400">
+          Longer investigations, ecosystem observations, and malware analysis published from Vipyr’s package response
+          work.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <BlogList posts={archivePosts} />
+    </div>
+
     <div class="mt-10">
       <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} />
     </div>
-    <!--
-      <PostTags tags={allCategories} class="mb-2" title="Search by Categories:" isCategory />
-      <PostTags tags={allTags}  title="Search by Tags:" />
-    -->
   </section>
 </Layout>

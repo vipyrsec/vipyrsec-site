@@ -197,33 +197,40 @@ const { post, url } = Astro.props;
       };
 
       let activeId = headings[0].id;
-      setActive(activeId);
+      let ticking = false;
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          const visible = entries
-            .filter((entry) => entry.isIntersecting)
-            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+      const resolveActiveHeading = () => {
+        const threshold = 160;
+        const nextActive =
+          [...headings].reverse().find((heading) => heading.getBoundingClientRect().top <= threshold)?.id ??
+          headings[0].id;
 
-          if (visible.length) {
-            activeId = visible[0].target.id;
-            setActive(activeId);
-            return;
-          }
-
-          const passed = [...headings].reverse().find((heading) => heading.getBoundingClientRect().top < 140);
-          if (passed && passed.id !== activeId) {
-            activeId = passed.id;
-            setActive(activeId);
-          }
-        },
-        {
-          rootMargin: '-18% 0px -65% 0px',
-          threshold: [0, 1],
+        if (nextActive !== activeId) {
+          activeId = nextActive;
+          setActive(activeId);
         }
-      );
+      };
 
-      headings.forEach((heading) => observer.observe(heading));
+      const onScroll = () => {
+        if (ticking) return;
+
+        ticking = true;
+        window.requestAnimationFrame(() => {
+          resolveActiveHeading();
+          ticking = false;
+        });
+      };
+
+      setActive(activeId);
+      resolveActiveHeading();
+      window.__vipyrArticleTocUpdate = onScroll;
+
+      if (!window.__vipyrArticleTocScrollBound) {
+        window.__vipyrArticleTocScrollBound = true;
+        const delegate = () => window.__vipyrArticleTocUpdate?.();
+        window.addEventListener('scroll', delegate, { passive: true });
+        window.addEventListener('resize', delegate);
+      }
     };
 
     if (!window.__vipyrArticleTocBound) {

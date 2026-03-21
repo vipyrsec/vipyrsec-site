@@ -134,8 +134,7 @@
 
 .article-toc-link.is-active {
   color: rgb(238 244 255);
-  background: rgb(255 255 255 / 0.05);
-  box-shadow: inset 2px 0 0 rgb(86 188 255 / 0.8);
+  border-color: rgb(86 188 255 / 0.8);
 }
 
 .vipyr-prose-code {

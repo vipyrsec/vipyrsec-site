@@ -101,12 +101,10 @@ const { post, url } = Astro.props;
         <slot />
       </div>
       <aside data-article-toc class="hidden self-start lg:block">
-        <div
-          class="sticky top-28 rounded-[1.5rem] border border-white/10 bg-[var(--vipyr-bg-panel)] px-4 py-5 shadow-[var(--vipyr-shadow)]"
-        >
+        <div class="sticky top-28 w-full max-w-[250px]">
           <div class="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-slate-500">On this page</div>
           <nav class="mt-4" aria-label="Table of contents">
-            <ol data-article-toc-list class="space-y-1.5"></ol>
+            <ol data-article-toc-list class="space-y-1"></ol>
           </nav>
         </div>
       </aside>
@@ -176,8 +174,8 @@ const { post, url } = Astro.props;
         link.dataset.articleTocLink = heading.id;
         link.className = [
           'article-toc-link',
-          'block rounded-lg px-3 py-2 text-sm leading-6 text-slate-400 transition hover:text-white',
-          level === 'h3' ? 'pl-6 text-[0.92rem]' : '',
+          'block border-l border-white/8 py-1.5 pl-3 text-[0.92rem] leading-5 text-slate-400 transition hover:border-sky-300/30 hover:text-white',
+          level === 'h3' ? 'pl-5 text-[0.88rem] text-slate-500' : '',
         ]
           .filter(Boolean)
           .join(' ');

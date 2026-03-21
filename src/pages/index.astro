@@ -29,12 +29,22 @@ const operatingSequence = [
   { title: 'Reporter + analyst review', status: 'Actioned' },
 ];
 
-const responseTimeline = [
-  { value: '72h', label: 'review backlog' },
-  { value: '24h', label: 'priority escalation' },
-  { value: '6h', label: 'confirmed investigation' },
-  { value: '45m', label: 'report preparation' },
-  { value: '10m', label: 'average takedown pace' },
+const responseCountdown = [
+  '90d',
+  '60d',
+  '45d',
+  '30d',
+  '14d',
+  '7d',
+  '3d',
+  '24h',
+  '12h',
+  '6h',
+  '3h',
+  '60m',
+  '30m',
+  '15m',
+  '10m',
 ];
 
 const capabilityCards = [
@@ -170,13 +180,15 @@ const formatDate = (date: Date) =>
               </p>
             </div>
             <div class="hero-response-card rounded-[1.5rem] border border-white/8 bg-[var(--vipyr-bg-panel)] p-5">
-              <div class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">Response</div>
+              <div class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">
+                Average takedown time
+              </div>
               <div class="mt-3 text-4xl font-semibold tracking-[-0.05em] text-white">
-                <span data-response-value>{responseTimeline[0].value}</span>
+                <span data-response-value>{responseCountdown[0]}</span>
               </div>
               <p class="mt-3 text-sm leading-7 text-slate-400">
-                <span data-response-label>{responseTimeline[0].label}</span> on the way toward a typical 10 minute takedown
-                pace.
+                Malicious packages can sit undetected for days or months. Confirmed packages we report are typically
+                acted on in about 10 minutes.
               </p>
             </div>
           </div>
@@ -451,22 +463,19 @@ const formatDate = (date: Date) =>
     }
   </style>
 
-  <script is:inline define:vars={{ responseTimeline }}>
+  <script is:inline define:vars={{ responseCountdown }}>
     (() => {
-      const values = Array.isArray(responseTimeline) ? responseTimeline : [];
+      const values = Array.isArray(responseCountdown) ? responseCountdown : [];
       if (!values.length) return;
 
       const start = () => {
         const valueNode = document.querySelector('[data-response-value]');
-        const labelNode = document.querySelector('[data-response-label]');
-        if (!(valueNode instanceof HTMLElement) || !(labelNode instanceof HTMLElement)) return;
+        if (!(valueNode instanceof HTMLElement)) return;
 
         let index = 0;
         let timer = 0;
         const render = () => {
-          const item = values[index];
-          valueNode.textContent = item.value;
-          labelNode.textContent = item.label;
+          valueNode.textContent = values[index];
         };
 
         if (valueNode.dataset.bound === 'true') return;
@@ -487,7 +496,7 @@ const formatDate = (date: Date) =>
           }
         };
 
-        timer = window.setInterval(advance, 1300);
+        timer = window.setInterval(advance, 120);
       };
 
       if (document.readyState === 'loading') {

@@ -25,15 +25,17 @@ const { post, url } = Astro.props;
         ? 'intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade'
         : 'intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade'}
     >
-      <div class="flex justify-between flex-col sm:flex-row max-w-3xl mx-auto mt-0 mb-2 px-4 sm:px-6 sm:items-center">
+      <div
+        class="mx-auto mb-4 mt-0 flex max-w-3xl flex-col justify-between px-4 text-slate-500 sm:flex-row sm:items-center sm:px-6"
+      >
         <p>
-          <Icon name="tabler:clock" class="w-4 h-4 inline-block -mt-0.5 dark:text-gray-400" />
+          <Icon name="tabler:clock" class="inline-block h-4 w-4 -mt-0.5" />
           <time datetime={String(post.publishDate)} class="inline-block">{getFormattedDate(post.publishDate)}</time>
           {
             post.author && (
               <>
                 {' '}
-                · <Icon name="tabler:user" class="w-4 h-4 inline-block -mt-0.5 dark:text-gray-400" />
+                · <Icon name="tabler:user" class="inline-block h-4 w-4 -mt-0.5" />
                 <span class="inline-block">{post.author}</span>
               </>
             )
@@ -43,7 +45,10 @@ const { post, url } = Astro.props;
               <>
                 {' '}
                 ·{' '}
-                <a class="hover:underline inline-block" href={getPermalink(post.category.slug, 'category')}>
+                <a
+                  class="inline-block transition hover:text-slate-200 hover:underline"
+                  href={getPermalink(post.category.slug, 'category')}
+                >
                   {post.category.title}
                 </a>
               </>
@@ -59,14 +64,10 @@ const { post, url } = Astro.props;
         </p>
       </div>
 
-      <h1
-        class="px-4 sm:px-6 max-w-3xl mx-auto text-4xl md:text-5xl font-bold leading-tighter tracking-tighter font-heading"
-      >
+      <h1 class="mx-auto max-w-3xl px-4 text-4xl font-semibold tracking-[-0.05em] text-white sm:px-6 md:text-6xl">
         {post.title}
       </h1>
-      <p
-        class="max-w-3xl mx-auto mt-4 mb-8 px-4 sm:px-6 text-xl md:text-2xl text-muted dark:text-slate-400 text-justify"
-      >
+      <p class="mx-auto mb-8 mt-5 max-w-3xl px-4 text-lg leading-8 text-slate-400 sm:px-6 md:text-2xl">
         {post.excerpt}
       </p>
 
@@ -74,7 +75,7 @@ const { post, url } = Astro.props;
         post.image ? (
           <Image
             src={post.image}
-            class="max-w-full lg:max-w-[900px] mx-auto mb-6 sm:rounded-md bg-gray-400 dark:bg-slate-700"
+            class="mx-auto mb-6 max-w-full border border-white/10 bg-gray-400 sm:rounded-[1.5rem] dark:bg-slate-700 lg:max-w-[960px]"
             widths={[400, 900]}
             sizes="(max-width: 900px) 400px, 900px"
             alt={post?.excerpt || ''}
@@ -85,19 +86,21 @@ const { post, url } = Astro.props;
           />
         ) : (
           <div class="max-w-3xl mx-auto px-4 sm:px-6">
-            <div class="border-t dark:border-slate-700" />
+            <div class="border-t border-white/10" />
           </div>
         )
       }
     </header>
     <div
-      class="mx-auto px-6 sm:px-6 max-w-3xl prose prose-md lg:prose-xl dark:prose-invert dark:prose-headings:text-slate-300 prose-headings:font-heading prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-primary dark:prose-a:text-blue-400 prose-img:rounded-md prose-img:shadow-lg mt-8 prose-headings:scroll-mt-[80px] prose-li:my-0"
+      class="prose prose-md mx-auto mt-10 max-w-3xl px-6 prose-headings:scroll-mt-[80px] prose-headings:font-heading prose-headings:font-semibold prose-headings:tracking-[-0.04em] prose-li:my-0 prose-pre:border prose-pre:border-white/10 prose-pre:bg-[#081427] prose-strong:text-white prose-a:text-sky-300 prose-code:text-sky-200 prose-img:rounded-[1rem] prose-img:border prose-img:border-white/10 prose-img:shadow-lg dark:prose-invert dark:prose-headings:text-slate-100 lg:prose-xl sm:px-6"
     >
       <slot />
     </div>
-    <div class="mx-auto px-6 sm:px-6 max-w-3xl mt-8 flex justify-between flex-col sm:flex-row">
+    <div
+      class="mx-auto mt-10 flex max-w-3xl flex-col justify-between gap-6 rounded-[1.75rem] border border-white/10 bg-[var(--vipyr-bg-panel)] px-6 py-6 sm:flex-row sm:px-6"
+    >
       <PostTags tags={post.tags} class="mr-5 rtl:mr-0 rtl:ml-5" />
-      <SocialShare url={url} text={post.title} class="mt-5 sm:mt-1 align-middle text-gray-500 dark:text-slate-600" />
+      <SocialShare url={url} text={post.title} class="align-middle text-gray-500 dark:text-slate-600 sm:mt-1" />
     </div>
   </article>
 </section>

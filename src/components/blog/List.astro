@@ -9,10 +9,10 @@ export interface Props {
 const { posts } = Astro.props;
 ---
 
-<ul>
+<ul class="space-y-6 md:space-y-8">
   {
     posts.map((post) => (
-      <li class="mb-12 md:mb-20">
+      <li>
         <Item post={post} />
       </li>
     ))

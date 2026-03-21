@@ -79,7 +79,7 @@ export const METADATA: SiteMetadataConfig = {
     default: 'Vipyr Security',
     template: '%s — Vipyr Security',
   },
-  description: 'Open source supply chain security research, malware detection, and takedown coordination.',
+  description: 'Open source supply chain security research, malicious package detection, and takedown coordination.',
   robots: {
     index: true,
     follow: true,

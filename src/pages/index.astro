@@ -10,7 +10,7 @@ const metadata = {
   title: 'Home',
   ignoreTitleTemplate: true,
   description:
-    'Vipyr Security operates public systems for package intake, malware scanning, package reporting, and supply chain research.',
+    'Vipyr Security operates public systems for malicious package intake, distributed analysis, package reporting, and supply chain research.',
 };
 
 const stats = [
@@ -234,7 +234,7 @@ const formatDate = (date: Date) =>
       <SectionHeading
         eyebrow="Why Vipyr exists"
         title="Modern package security needs both automation and human judgment."
-        description="Package ecosystems move fast, but useful security work still depends on understandable workflows. Vipyr couples automated intake and scanning systems with review surfaces, reporting paths, and public writeups."
+        description="Package ecosystems move fast, but useful security work still depends on understandable workflows. Vipyr couples automated intake and scanning systems with review, reporting, and public research."
       />
       <div class="grid gap-4">
         {
@@ -261,7 +261,7 @@ const formatDate = (date: Date) =>
       <SectionHeading
         eyebrow="Dragonfly"
         title="A distributed malware analysis workflow built for package ecosystem response."
-        description="Dragonfly is the operational backbone behind Vipyr’s package analysis workflows. It spans automated intake, job distribution, compute-node scanning, reporting services, and authenticated review surfaces."
+        description="Dragonfly is the operating system behind Vipyr’s package analysis workflows. It spans automated intake, job distribution, compute-node scanning, reporting services, and analyst review."
       />
       <div class="grid gap-4">
         {
@@ -316,7 +316,7 @@ const formatDate = (date: Date) =>
     <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
       <SectionHeading
         eyebrow="Research"
-        title="Published threat analysis is part of how Vipyr works."
+        title="Published threat analysis extends the response."
         description="Vipyr’s research archive explains real package abuse, reverse engineering work, and ecosystem issues observed through the organization’s operating systems."
       />
       <Button variant="secondary" href={getBlogPermalink()} text="Browse all research" />

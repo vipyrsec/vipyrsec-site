@@ -170,8 +170,9 @@
 }
 
 .vipyr-prose-code :where(table) {
-  display: block;
-  width: 100%;
+  display: inline-block;
+  width: auto;
+  min-width: min(100%, max-content);
   max-width: 100%;
   max-height: min(30rem, 68vh);
   overflow: auto;
@@ -179,6 +180,7 @@
   border-radius: 1rem;
   background: rgb(10 18 36 / 0.76);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04);
+  vertical-align: top;
 }
 
 .vipyr-prose-code :where(thead) {

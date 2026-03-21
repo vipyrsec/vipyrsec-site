@@ -1,116 +1,348 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-
-import Hero from '~/components/widgets/Hero.astro';
-import Note from '~/components/widgets/Note.astro';
-import Features from '~/components/widgets/Features.astro';
-import Content from '~/components/widgets/Content.astro';
-import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
-import Stats from '~/components/widgets/Stats.astro';
+import { Icon } from 'astro-icon/components';
+import Button from '~/components/ui/Button.astro';
+import SectionHeading from '~/components/site/SectionHeading.astro';
+import { findLatestPosts } from '~/utils/blog';
+import { getBlogPermalink, getPermalink } from '~/utils/permalinks';
 
 const metadata = {
   title: 'Home',
   ignoreTitleTemplate: true,
   description:
-    'Vipyr Security is a community-driven open source project that provides malware detection and takedown services for the open source software supply chain.',
+    'Vipyr Security helps teams detect malicious packages, coordinate takedowns, and publish useful supply chain research.',
 };
+
+const stats = [
+  { title: 'Packages scanned', amount: '1.16M' },
+  { title: 'Package takedowns', amount: '1322' },
+  { title: 'Detection signatures', amount: '150+' },
+  { title: 'Contributors', amount: '16' },
+];
+
+const proofCards = [
+  {
+    title: 'Research-led detections',
+    description: 'Threat analysis that stays readable, attributable, and useful to defenders across the ecosystem.',
+  },
+  {
+    title: 'Fast triage workflows',
+    description: 'Detection-to-takedown operations structured for fast review, enrichment, and response.',
+  },
+  {
+    title: 'Open tooling',
+    description: 'Composable services and analysis workflows that teams can inspect, extend, and operate themselves.',
+  },
+];
+
+const operatingSequence = [
+  { title: 'Registry signals', status: 'Incoming' },
+  { title: 'Dragonfly analysis', status: 'Enriched' },
+  { title: 'Community triage', status: 'Aligned' },
+  { title: 'Takedown + writeup', status: 'Shipped' },
+];
+
+const capabilityCards = [
+  {
+    title: 'Observe package ecosystems',
+    description:
+      'Vipyr monitors package activity and emerging abuse patterns so suspicious uploads can be reviewed before they fade into the stream.',
+    icon: 'tabler:radar-2',
+  },
+  {
+    title: 'Investigate malicious artifacts',
+    description:
+      'Static analysis, workflow enrichment, and community-assisted triage help separate low-signal noise from incidents that demand immediate action.',
+    icon: 'tabler:binary-tree-2',
+  },
+  {
+    title: 'Coordinate remediation',
+    description:
+      'Operational output is the point: takedowns, ecosystem notifications, and research that helps others update threat models quickly.',
+    icon: 'tabler:shield-check',
+  },
+];
+
+const dragonflyProjects = [
+  {
+    title: 'Dragonfly Server',
+    description:
+      'FastAPI-based aggregation and distribution for package review jobs, result intake, and workflow coordination.',
+    href: 'https://github.com/vipyrsec/dragonfly-mainframe',
+    icon: 'tabler:server-2',
+  },
+  {
+    title: 'Dragonfly Client',
+    description:
+      'Rust compute node built to safely scan suspect files against detection logic and analysis rules at speed.',
+    href: 'https://github.com/vipyrsec/dragonfly-client-rs',
+    icon: 'tabler:cpu',
+  },
+  {
+    title: 'Dragonfly Bot',
+    description:
+      'Discord-facing interface that keeps community triage close to the underlying workflow instead of bolting it on later.',
+    href: 'https://github.com/vipyrsec/bot',
+    icon: 'tabler:brand-discord',
+  },
+];
+
+const posts = await findLatestPosts({ count: 3 });
+const [featuredPost, ...recentPosts] = posts;
+const formatDate = (date: Date) =>
+  new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(date);
 ---
 
 <Layout metadata={metadata}>
-  <Hero
-    actions={[{ variant: 'primary', text: 'See How', href: '#features', icon: 'tabler:circle-arrow-down-filled' }]}
-    image={{ src: '~/assets/images/hero.svg', alt: 'Hero' }}
-  >
-    <Fragment slot="title">
-      Your Packaging Ecosystem<br />
-      <span class="text-primary dark:text-white highlight">Malware Free</span>
-    </Fragment>
+  <section class="relative overflow-hidden">
+    <div class="mx-auto max-w-7xl px-4 pb-18 pt-10 sm:px-6 md:pb-24 md:pt-16">
+      <div class="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)] lg:items-center">
+        <div class="max-w-3xl">
+          <div
+            class="mb-5 inline-flex rounded-full border border-sky-400/20 bg-sky-400/10 px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-sky-200"
+          >
+            Open source supply chain defense
+          </div>
+          <h1 class="max-w-4xl text-5xl font-semibold tracking-[-0.06em] text-white sm:text-6xl lg:text-7xl">
+            Bring calm, modern signal to package security.
+          </h1>
+          <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-400 sm:text-xl">
+            Vipyr helps teams detect malware, coordinate takedowns, and publish useful threat intelligence without
+            leaning on heavy-handed cyber aesthetics or noisy workflows.
+          </p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Button variant="primary" href="#capabilities" text="Explore capabilities" icon="tabler:arrow-down-right" />
+            <Button variant="secondary" href={getBlogPermalink()} text="Read latest research" />
+          </div>
+          <div class="mt-10 grid gap-4 sm:grid-cols-3">
+            {
+              proofCards.map((card) => (
+                <div class="rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5 shadow-[var(--vipyr-shadow)]">
+                  <div class="mb-3 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-sky-300">
+                    Why it matters
+                  </div>
+                  <h2 class="text-lg font-semibold text-white">{card.title}</h2>
+                  <p class="mt-2 text-sm leading-7 text-slate-400">{card.description}</p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
 
-    <Fragment slot="subtitle">
-      <span class="hidden sm:inline">
-        Developing <span class="font-semibold">open source tools</span> to promote
-        <span class="font-semibold">open source security</span>.
-      </span>
-    </Fragment>
-  </Hero>
+        <div
+          class="rounded-[2rem] border border-white/10 bg-[var(--vipyr-bg-elevated)] p-6 shadow-[var(--vipyr-shadow)] backdrop-blur"
+        >
+          <div class="flex items-center justify-between">
+            <div class="text-[0.72rem] font-semibold uppercase tracking-[0.3em] text-slate-500">
+              Live operating view
+            </div>
+            <div
+              class="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-emerald-300"
+            >
+              Active
+            </div>
+          </div>
+          <h2 class="mt-5 text-3xl font-semibold tracking-[-0.05em] text-white">Detection to takedown</h2>
 
-  <Note title="Our Goal:" description="A safer supply chain and a more resilient open source ecosystem." />
+          <div class="mt-6 grid gap-4 md:grid-cols-2">
+            <div class="rounded-[1.5rem] border border-white/8 bg-[var(--vipyr-bg-panel)] p-5">
+              <div class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">Coverage</div>
+              <div class="mt-3 text-4xl font-semibold tracking-[-0.05em] text-white">24/7</div>
+              <p class="mt-3 text-sm leading-7 text-slate-400">
+                Continuous package scanning and incident review for emerging supply chain abuse.
+              </p>
+            </div>
+            <div class="rounded-[1.5rem] border border-white/8 bg-[var(--vipyr-bg-panel)] p-5">
+              <div class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">Response</div>
+              <div class="mt-3 text-4xl font-semibold tracking-[-0.05em] text-white">10m</div>
+              <p class="mt-3 text-sm leading-7 text-slate-400">
+                Average takedown pace across confirmed malicious package incidents.
+              </p>
+            </div>
+          </div>
 
-  <Features
-    id="features"
-    tagline="Features"
-    title="How does Vipyr Security protect you?"
-    subtitle="Here are a few reasons we think we stand out from the crowd."
-    items={[
-      {
-        title: '1000+ Positive Detections',
-        description:
-          'A structured incident response pipeline triaging and analyzing potential malware with an average takedown of 10 minutes or less.',
-        icon: 'tabler:bug-off',
-      },
-      {
-        title: 'Open Source Development',
-        description:
-          'End user configurable, language agnostic design can be extended to scan and triage any type of file, and scaled to fit any workload.',
-        icon: 'tabler:git-merge',
-      },
-      {
-        title: 'All Volunteer Team',
-        description:
-          "Maintained by a dedicated team of open source security enthusiasts rapidly adapting to tomorrow's cyber threat landscape.",
-        icon: 'tabler:users',
-      },
-      {
-        title: '24/7 Packaging Ecosystem Scanning',
-        description:
-          'Utilizing cloud-native application development and cutting-edge monitoring to maintain constant vigilance over the open source supply chain.',
-        icon: 'tabler:rotate-clockwise',
-      },
-    ]}
-  />
+          <div class="mt-4 rounded-[1.5rem] border border-white/8 bg-[var(--vipyr-bg-panel)] p-5">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">
+                Operating sequence
+              </div>
+              <div
+                class="rounded-full border border-sky-400/20 bg-sky-400/10 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-sky-200"
+              >
+                Structured
+              </div>
+            </div>
+            <p class="mt-4 text-lg font-semibold text-white">Observe, triage, remediate, publish</p>
+            <div class="mt-5 space-y-3">
+              {
+                operatingSequence.map((step) => (
+                  <div class="flex items-center justify-between rounded-full border border-white/6 bg-[#081427] px-4 py-3 text-sm">
+                    <span class="font-medium text-slate-200">{step.title}</span>
+                    <span class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">
+                      {step.status}
+                    </span>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <Stats
-    stats={[
-      { title: 'Packages Scanned', amount: '1.16M' },
-      { title: 'Package Takedowns', amount: '1322' },
-      { title: 'Detection Signatures', amount: '150+' },
-      { title: 'Contributors', amount: '16' },
-    ]}
-  />
+  <section id="capabilities" class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
+      <SectionHeading
+        eyebrow="Why Vipyr exists"
+        title="Modern package security needs both automation and human judgment."
+        description="Package ecosystems move fast, threat actors adapt quickly, and raw telemetry alone does not create useful security outcomes. Vipyr combines detection tooling, triage workflows, and public research to keep supply chain incidents explainable and actionable."
+      />
+      <div class="grid gap-4">
+        {
+          capabilityCards.map((item) => (
+            <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-6 shadow-[var(--vipyr-shadow)]">
+              <div class="flex items-start gap-4">
+                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-sky-400/20 bg-sky-400/10 text-sky-200">
+                  <Icon name={item.icon} class="h-6 w-6" />
+                </div>
+                <div>
+                  <h2 class="text-xl font-semibold text-white">{item.title}</h2>
+                  <p class="mt-3 text-base leading-8 text-slate-400">{item.description}</p>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 
-  <Content
-    tagline="projects"
-    title="Supply Chain Security"
-    items={[
+  <section class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
+    <SectionHeading
+      eyebrow="Proof"
+      title="Operational output that reads like a security organization, not a landing-page template."
+      description="Measured evidence matters more than hype. Vipyr’s footprint spans sustained ecosystem scanning, takedown work, community contribution, and published technical analysis."
+      align="center"
+    />
+    <div class="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {
-        title: 'Dragonfly - Client',
-        description:
-          'A dockerized malware scanner written in Rust to safely perform static analysis on files using VirusTotal YARA rules.',
-      },
-      {
-        title: 'Dragonfly - Server',
-        description:
-          'A FastAPI-based command and control server performing data aggregation and file distribution functions for use with the client scanning application.',
-      },
-      {
-        title: 'Dragonfly - Bot',
-        description:
-          'A Discord front end to allow for community triaging and analysis of potentially malicious files detected by the Dragonfly framework.',
-      },
-    ]}
-    image={{
-      src: '~/assets/images/chris-ried-unsplash.jpg',
-      alt: 'Python Code',
-    }}
-  >
-    <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Dragonfly</h3>
-      A scalable suite of detection applications and automated triaging for analysis results.
-    </Fragment>
-  </Content>
+        stats.map((stat) => (
+          <div class="rounded-[1.75rem] border border-white/10 bg-[var(--vipyr-bg-panel)] p-6 text-center shadow-[var(--vipyr-shadow)]">
+            <div class="text-4xl font-semibold tracking-[-0.05em] text-white md:text-5xl">{stat.amount}</div>
+            <div class="mt-3 text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-slate-500">{stat.title}</div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
 
-  <BlogLatestPosts
-    title="Catch up with our latest research!"
-    information="Want to know what threats are affecting the software supply chain? Check out some of the articles by our team of malware analysts and engineers."
-  />
+  <section class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-start">
+      <SectionHeading
+        eyebrow="Dragonfly"
+        title="A distributed malware analysis workflow built for package ecosystem response."
+        description="Dragonfly is the operational backbone behind Vipyr’s package analysis workflows. It combines ingestion, scanning, and triage surfaces into a system that can scale with the volume and ambiguity of supply chain incidents."
+      />
+      <div class="grid gap-4">
+        {
+          dragonflyProjects.map((project) => (
+            <div class="rounded-[1.75rem] border border-white/10 bg-[var(--vipyr-bg-panel)] p-6 shadow-[var(--vipyr-shadow)]">
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex gap-4">
+                  <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-sky-200">
+                    <Icon name={project.icon} class="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h2 class="text-xl font-semibold text-white">{project.title}</h2>
+                    <p class="mt-3 text-base leading-8 text-slate-400">{project.description}</p>
+                  </div>
+                </div>
+                <a
+                  href={project.href}
+                  class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-slate-300 transition hover:border-white/20 hover:bg-white/[0.08] hover:text-white"
+                  aria-label={`View source for ${project.title}`}
+                >
+                  <Icon name="tabler:arrow-up-right" class="h-5 w-5" />
+                </a>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
+    <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <SectionHeading
+        eyebrow="Research"
+        title="Published threat analysis is part of the service, not an afterthought."
+        description="Vipyr’s research archive should help defenders understand the campaigns, techniques, and ecosystem issues behind package abuse."
+      />
+      <Button variant="secondary" href={getBlogPermalink()} text="Browse all research" />
+    </div>
+
+    {
+      featuredPost && (
+        <div class="mt-10 grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(300px,0.85fr)]">
+          <a
+            href={getPermalink(featuredPost.permalink, 'post')}
+            class="rounded-[2rem] border border-white/10 bg-[var(--vipyr-bg-panel)] p-8 shadow-[var(--vipyr-shadow)] transition hover:border-white/20 hover:bg-[var(--vipyr-bg-panel-strong)]"
+          >
+            <div class="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-slate-500">
+              Featured analysis {featuredPost.category ? `• ${featuredPost.category.title}` : ''}
+            </div>
+            <h2 class="mt-5 max-w-3xl text-3xl font-semibold tracking-[-0.04em] text-white md:text-4xl">
+              {featuredPost.title}
+            </h2>
+            <p class="mt-5 max-w-2xl text-base leading-8 text-slate-400">{featuredPost.excerpt}</p>
+            <div class="mt-8 flex items-center gap-4 text-sm text-slate-500">
+              <span>{formatDate(featuredPost.publishDate)}</span>
+              {featuredPost.readingTime && <span>{featuredPost.readingTime} min read</span>}
+            </div>
+          </a>
+
+          <div class="grid gap-4">
+            {recentPosts.map((post) => (
+              <a
+                href={getPermalink(post.permalink, 'post')}
+                class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-6 shadow-[var(--vipyr-shadow)] transition hover:border-white/20 hover:bg-white/[0.05]"
+              >
+                <div class="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-slate-500">
+                  {post.category?.title ?? 'Research'}
+                </div>
+                <h3 class="mt-4 text-xl font-semibold text-white">{post.title}</h3>
+                <p class="mt-3 text-sm leading-7 text-slate-400">{post.excerpt}</p>
+                <div class="mt-5 text-sm text-slate-500">{formatDate(post.publishDate)}</div>
+              </a>
+            ))}
+          </div>
+        </div>
+      )
+    }
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 pb-12 pt-18 sm:px-6 md:pb-20 md:pt-24">
+    <div
+      class="rounded-[2rem] border border-white/10 bg-[linear-gradient(135deg,rgba(21,38,79,0.94),rgba(8,16,34,0.94))] p-8 shadow-[var(--vipyr-shadow)] md:p-10"
+    >
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+        <div>
+          <div class="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-sky-200">Next step</div>
+          <h2 class="mt-4 text-3xl font-semibold tracking-[-0.04em] text-white md:text-4xl">
+            Explore the research, inspect the tooling, and stay close to the signal.
+          </h2>
+          <p class="mt-4 max-w-2xl text-base leading-8 text-slate-400">
+            The redesign work starts here: a clearer brand posture, a stronger operating narrative, and a site that
+            treats security research as proof rather than filler.
+          </p>
+        </div>
+        <div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
+          <Button variant="primary" href={getBlogPermalink()} text="Read research" />
+          <Button variant="secondary" href={getPermalink('/projects')} text="Review projects" />
+        </div>
+      </div>
+    </div>
+  </section>
 </Layout>

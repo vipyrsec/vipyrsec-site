@@ -1,5 +1,6 @@
 ---
 import type { InferGetStaticPropsType, GetStaticPaths } from 'astro';
+import { Icon } from 'astro-icon/components';
 
 import Layout from '~/layouts/PageLayout.astro';
 import Image from '~/components/common/Image.astro';
@@ -42,6 +43,24 @@ allPosts.forEach((post) => {
 });
 
 const categories = Array.from(categoryMap.values()).sort((a, b) => b.count - a.count || a.title.localeCompare(b.title));
+const categoryPresentation = {
+  'application-security': {
+    icon: 'tabler:shield-code',
+    description: 'Dependency risk, resolver behavior, and application-layer package security issues.',
+  },
+  documentation: {
+    icon: 'tabler:book-2',
+    description: 'Operational notes, internals, and reference material for Vipyr systems and workflows.',
+  },
+  'malware-analysis': {
+    icon: 'tabler:bug',
+    description: 'Reverse engineering, payload behavior, and package-level malware tradecraft.',
+  },
+  'threat-intelligence': {
+    icon: 'tabler:radar-2',
+    description: 'Campaign tracking, ecosystem abuse patterns, and malicious package activity.',
+  },
+} satisfies Record<string, { icon: string; description: string }>;
 const [leadPost, ...remainingPosts] = page.data;
 const secondaryPosts = currentPage === 1 ? remainingPosts.slice(0, 2) : [];
 const archivePosts = currentPage === 1 ? remainingPosts.slice(2) : page.data;
@@ -64,33 +83,6 @@ const metadata = {
     <Headline subtitle="Threat analysis, malware writeups, and package ecosystem intelligence from Vipyr Security.">
       Research
     </Headline>
-
-    <div class="mx-auto max-w-6xl">
-      <div
-        class="flex flex-col gap-5 rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5 shadow-[var(--vipyr-shadow)] sm:p-6"
-      >
-        <div
-          class="flex flex-wrap items-center gap-x-4 gap-y-2 text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-slate-500"
-        >
-          <span>{allPosts.length} published analyses</span>
-          <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600"></span>
-          <span>{categories.length} research areas</span>
-        </div>
-        <div class="flex flex-wrap gap-2">
-          {
-            categories.map((category) => (
-              <a
-                href={getPermalink(category.slug, 'category')}
-                class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-slate-300 transition hover:border-white/20 hover:bg-white/[0.06] hover:text-white"
-              >
-                <span>{category.title}</span>
-                <span class="text-xs text-slate-500">{category.count}</span>
-              </a>
-            ))
-          }
-        </div>
-      </div>
-    </div>
 
     {
       currentPage === 1 && leadPost && (
@@ -207,6 +199,47 @@ const metadata = {
         </div>
       )
     }
+
+    <div class="mx-auto mt-10 max-w-6xl">
+      <div class="flex flex-col gap-3 border-t border-white/10 pt-8 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <div class="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-slate-500">Topics</div>
+          <h2 class="mt-2 text-2xl font-semibold tracking-[-0.04em] text-white sm:text-3xl">Research areas</h2>
+        </div>
+        <p class="max-w-2xl text-sm leading-7 text-slate-400">
+          Browse the archive by the kind of work Vipyr publishes, from campaign tracking to package malware reverse
+          engineering.
+        </p>
+      </div>
+      <div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {
+          categories.map((category) => {
+            const presentation = categoryPresentation[category.slug] ?? {
+              icon: 'tabler:folder-search',
+              description: 'Research collected under this topic area.',
+            };
+
+            return (
+              <a
+                href={getPermalink(category.slug, 'category')}
+                class="group rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5 shadow-[var(--vipyr-shadow)] transition hover:border-white/20 hover:bg-white/[0.05]"
+              >
+                <div class="flex h-11 w-11 items-center justify-center rounded-2xl border border-sky-400/20 bg-sky-400/10 text-sky-200">
+                  <Icon name={presentation.icon} class="h-5 w-5" />
+                </div>
+                <div class="mt-5 flex items-center justify-between gap-3">
+                  <h3 class="text-lg font-semibold text-white transition group-hover:text-slate-50">
+                    {category.title}
+                  </h3>
+                  <span class="text-sm font-medium text-slate-500">{category.count}</span>
+                </div>
+                <p class="mt-3 text-sm leading-7 text-slate-400">{presentation.description}</p>
+              </a>
+            );
+          })
+        }
+      </div>
+    </div>
 
     <div class="mx-auto mt-10 max-w-6xl">
       <div class="flex flex-col gap-2 border-t border-white/10 pt-8 sm:flex-row sm:items-end sm:justify-between">

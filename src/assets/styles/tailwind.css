@@ -148,6 +148,10 @@
   margin-bottom: 0.65em;
 }
 
+.vipyr-prose-code > :first-child {
+  margin-top: 0 !important;
+}
+
 .vipyr-prose-code :where(p, ul, ol, blockquote, pre, table) {
   margin-top: 1.1em;
   margin-bottom: 1.1em;

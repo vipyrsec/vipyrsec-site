@@ -34,7 +34,7 @@ const proofCards = [
   {
     title: 'Reporting and review surfaces',
     description:
-      'The frontend, bot, and reporter keep package lookup, queue handling, package reporting, and operator review close to the analysis workflow.',
+      'The bot, reporter, and authenticated review surfaces keep package lookup, queue handling, package reporting, and operator review close to the analysis workflow.',
   },
 ];
 
@@ -61,7 +61,7 @@ const capabilityCards = [
   {
     title: 'Coordinate remediation',
     description:
-      'Queue, reporting, and recent-activity flows exist in Dragonfly’s frontend and supporting services so detections can move toward package reports and writeups.',
+      'Queue, reporting, and recent-activity flows exist across Dragonfly services so detections can move toward package reports and writeups.',
     icon: 'tabler:shield-check',
   },
 ];
@@ -100,12 +100,6 @@ const supportingSystems = [
     title: 'Dragonfly Reporter',
     description: 'Reporting microservice used to submit malicious package reports back to PyPI.',
     href: 'https://github.com/vipyrsec/dragonfly-reporter',
-  },
-  {
-    title: 'Mainframe Frontend',
-    description:
-      'Authenticated Astro dashboard for package lookup, queue handling, reporting flows, and recent activity updates.',
-    href: 'https://github.com/vipyrsec/dragonfly-mainframe-frontend',
   },
   {
     title: 'Snakehook Runner',
@@ -300,7 +294,7 @@ const formatDate = (date: Date) =>
   <section class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
     <SectionHeading
       title="The workflow extends beyond three repos."
-      description="Vipyr’s production-facing systems include release intake, operator dashboards, reporting services, and focused triage sandboxes around the core Dragonfly stack."
+      description="Vipyr’s production-facing systems include release intake, reporting services, authenticated review surfaces, and focused triage sandboxes around the core Dragonfly stack."
     />
     <div class="mt-10 grid gap-4 md:grid-cols-2">
       {

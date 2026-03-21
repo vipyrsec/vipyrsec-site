@@ -29,6 +29,13 @@ const operatingSequence = [
   { title: 'Reporter + analyst review', status: 'Actioned' },
 ];
 
+const operatingStatusClasses = {
+  Queued: 'border-sky-400/20 bg-sky-400/10 text-sky-200',
+  Assigned: 'border-indigo-400/20 bg-indigo-400/10 text-indigo-200',
+  Returned: 'border-amber-400/20 bg-amber-400/10 text-amber-200',
+  Actioned: 'border-emerald-400/20 bg-emerald-400/10 text-emerald-200',
+};
+
 const capabilityCards = [
   {
     title: 'Observe package ecosystems',
@@ -195,7 +202,13 @@ const formatDate = (date: Date) =>
                       <span class="h-2 w-2 rounded-full bg-sky-300/70 hero-sequence-dot" />
                       <span>{step.title}</span>
                     </span>
-                    <span class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">
+                    <span
+                      class:list={[
+                        'rounded-full border px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.24em]',
+                        operatingStatusClasses[step.status as keyof typeof operatingStatusClasses] ??
+                          'border-white/10 bg-white/[0.04] text-slate-300',
+                      ]}
+                    >
                       {step.status}
                     </span>
                   </div>
@@ -400,10 +413,19 @@ const formatDate = (date: Date) =>
       100% {
         border-color: rgb(255 255 255 / 0.06);
         background: rgb(8 20 39);
+        box-shadow:
+          inset 0 1px 0 rgb(255 255 255 / 0.02),
+          0 0 0 rgb(70 153 255 / 0);
+        transform: translateX(0) scale(1);
       }
       50% {
         border-color: rgb(102 160 255 / 0.18);
         background: rgb(10 25 48);
+        box-shadow:
+          inset 0 1px 0 rgb(255 255 255 / 0.04),
+          0 10px 24px rgb(12 31 64 / 0.22),
+          0 0 24px rgb(70 153 255 / 0.1);
+        transform: translateX(4px) scale(1.02);
       }
     }
 
@@ -428,7 +450,8 @@ const formatDate = (date: Date) =>
     .hero-sequence-row {
       animation: heroSequencePulse 4.8s ease-in-out infinite;
       animation-delay: var(--hero-sequence-delay, 0s);
-      box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.02);
+      transform-origin: left center;
+      will-change: transform, box-shadow, border-color, background-color;
     }
 
     .hero-sequence-dot {

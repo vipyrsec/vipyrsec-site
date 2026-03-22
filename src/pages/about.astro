@@ -1,71 +1,163 @@
 ---
+import { Icon } from 'astro-icon/components';
 import Layout from '~/layouts/PageLayout.astro';
-import Content from '~/components/widgets/Content.astro';
-import FAQs from '~/components/widgets/FAQs.astro';
+import Button from '~/components/ui/Button.astro';
+import SectionHeading from '~/components/site/SectionHeading.astro';
 
 const metadata = {
   title: 'About',
+  description:
+    'Learn how Vipyr Security handles malicious package intake, analysis, reporting, and public research across its supply chain security systems.',
 };
+
+const principles = [
+  {
+    title: 'Signal over noise',
+    description:
+      'The goal is to understand packages well enough to act on them: what was published, what it contains, how it behaved, and what response it needs.',
+    icon: 'tabler:binary-tree-2',
+  },
+  {
+    title: 'Open collaboration',
+    description:
+      'Vipyr operates in public, keeps major workflow components inspectable, and coordinates through public tooling and community-facing interfaces.',
+    icon: 'tabler:git-branch',
+  },
+  {
+    title: 'Practical remediation',
+    description:
+      'Detection is only useful when it leads to action, whether that means package reporting, queue triage, ecosystem coordination, or published analysis.',
+    icon: 'tabler:shield-check',
+  },
+];
+
+const faqs = [
+  {
+    title: 'How did Vipyr Security start?',
+    description:
+      'In March 2023, a surge of malware was observed on PyPI. Manual review quickly turned into a repeatable operational need, and Vipyr grew out of the effort to detect, triage, and eliminate malicious packages at scale.',
+  },
+  {
+    title: 'Why operate without a product to sell?',
+    description:
+      'Vipyr is focused on operating useful security systems, not packaging a commercial story around them. The priority is public capability: package intake, scanning workflows, reporting paths, and research defenders can actually apply, without requiring end users to install anything first.',
+  },
+  {
+    title: 'How can people get involved?',
+    description:
+      'The repositories are open source, the research is public, and the community remains accessible. The best contributions are practical ones: engineering, analysis, documentation, and responsible collaboration.',
+  },
+];
 ---
 
 <Layout metadata={metadata}>
-  <Content
-    isReversed
-    tagline="about"
-    title="Vipyr Security"
-    items={[
-      {
-        title: 'Not For Profit',
-        description:
-          "We don't have a product to sell, our costs are fixed and reasonably low. If you want to help with our projects, we simply ask that you get involved and program with security in mind!",
-      },
-      {
-        title: 'Community First',
-        description:
-          'We value each of our contributors. We offer an environment to co-develop and host cybersecurity applications to streamline the implementation of new security concepts.',
-      },
-      {
-        title: 'By Everyone, For Everyone',
-        description:
-          'We continually make a deliberate and meaningful effort to share threat information responsibly, to ensure that security analysts and detection engineers are equipped to update threat models, without hoarding proprietary data.',
-      },
-    ]}
-    image={{
-      src: '~/assets/images/chris-ried-unsplash.jpg',
-      alt: 'Python Code',
-    }}
-  >
-    <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Who Are We?</h3>
-      A community of open source software enthusiasts trying to improve and ensure the supply chain security of various packaging
-      ecosystems and software sources.
-    </Fragment>
-  </Content>
+  <section class="mx-auto max-w-7xl px-4 pb-18 pt-10 sm:px-6 md:pb-24 md:pt-16">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(360px,0.9fr)] lg:items-start">
+      <div class="max-w-3xl">
+        <h1 class="text-5xl font-semibold tracking-[-0.06em] text-white sm:text-6xl">
+          An open security organization focused on practical supply chain defense.
+        </h1>
+        <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-400">
+          Vipyr Security exists to make software supply chains more resilient. We run systems that ingest package
+          activity, distribute analysis jobs, scan package contents, support package reporting, and publish research
+          that helps defenders stay current. The model is simple: protect people who use package ecosystems every day
+          without asking them to become security operators first.
+        </p>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <Button variant="primary" href="/research" text="Read research" />
+          <Button variant="secondary" href="/projects" text="Review projects" />
+        </div>
+      </div>
 
-  <FAQs
-    title="Frequently Asked Questions"
-    tagline="FAQ"
-    items={[
+      <div class="rounded-[2rem] border border-white/10 bg-[var(--vipyr-bg-elevated)] p-6 shadow-[var(--vipyr-shadow)]">
+        <div class="text-[0.72rem] font-semibold uppercase tracking-[0.3em] text-slate-500">Operating scope</div>
+        <div class="mt-6 space-y-4">
+          <div class="rounded-[1.5rem] border border-white/8 bg-[var(--vipyr-bg-panel)] p-5">
+            <div class="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Monitor</div>
+            <p class="mt-3 text-base leading-8 text-slate-300">
+              Use package feed intake and supporting tooling to identify new releases worth immediate review.
+            </p>
+          </div>
+          <div class="rounded-[1.5rem] border border-white/8 bg-[var(--vipyr-bg-panel)] p-5">
+            <div class="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Respond</div>
+            <p class="mt-3 text-base leading-8 text-slate-300">
+              Route analysis through queue, review, and reporting systems that can turn detections into package reports
+              and follow-up.
+            </p>
+          </div>
+          <div class="rounded-[1.5rem] border border-white/8 bg-[var(--vipyr-bg-panel)] p-5">
+            <div class="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Publish</div>
+            <p class="mt-3 text-base leading-8 text-slate-300">
+              Document campaigns, techniques, and ecosystem lessons in public research instead of keeping signal
+              private.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-start">
+      <SectionHeading
+        title="Vipyr is designed to strengthen open source ecosystems, not just describe the problem."
+        description="Vipyr Security contributes practical security work across package intake, malware analysis, reporting, authenticated review surfaces, and public documentation. The emphasis stays on explainability and usefulness."
+      />
+      <div class="grid gap-4">
+        <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-6 shadow-[var(--vipyr-shadow)]">
+          <h2 class="text-xl font-semibold text-white">What the work looks like</h2>
+          <p class="mt-3 text-base leading-8 text-slate-400">
+            Load new releases from package feeds, assign work through Dragonfly, scan distributions and files, review
+            the results, report malicious packages, and publish what was learned.
+          </p>
+        </div>
+        <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-6 shadow-[var(--vipyr-shadow)]">
+          <h2 class="text-xl font-semibold text-white">Who that protects</h2>
+          <p class="mt-3 text-base leading-8 text-slate-400">
+            Students, teachers, developers, maintainers, and businesses can all be hit by one typo package or one
+            malicious dependency. Vipyr exists to narrow that gap for free, while staying community-rooted and open to
+            practical contributions.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
+    <SectionHeading
+      title="Clear standards for how Vipyr conducts security work."
+      description="We value explainable analysis, public collaboration, and practical remediation that leads to real outcomes."
+      align="center"
+    />
+    <div class="mt-10 grid gap-4 md:grid-cols-3">
       {
-        title: 'How did Vipyr Security start?',
-        description:
-          'In March 2023, a surge of malware was noted on PyPI. We began combing recently added and uploaded packages by hand. The amount of data and triaging requirements necessitated a full SOC be stood up. We occupied a space out of a passion for securing the community and eliminating malware.',
-      },
+        principles.map((item) => (
+          <div class="rounded-[1.75rem] border border-white/10 bg-[var(--vipyr-bg-panel)] p-6 shadow-[var(--vipyr-shadow)]">
+            <div class="flex h-12 w-12 items-center justify-center rounded-2xl border border-sky-400/20 bg-sky-400/10 text-sky-200">
+              <Icon name={item.icon} class="h-6 w-6" />
+            </div>
+            <h2 class="mt-5 text-xl font-semibold text-white">{item.title}</h2>
+            <p class="mt-3 text-base leading-8 text-slate-400">{item.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 pb-12 pt-18 sm:px-6 md:pb-20 md:pt-24">
+    <SectionHeading
+      title="Context that still matters."
+      description="A few direct answers help explain how Vipyr started, why it operates in public, and how people can contribute."
+    />
+    <div class="mt-10 grid gap-4">
       {
-        title: 'How can you operate without a product to sell?',
-        description:
-          'Security is and will continue to be relevant to everyone, developer and end-user alike. We aim to provide the same level of quality and support that you can expect through standard open source software, all with the goal of maintaining a more secure supply chain.',
-      },
-      {
-        title: 'How can I get involved?',
-        description:
-          'Our repositories are open source and our Discord is available for everyone to join and engage in. We want communication with the community to be open and free, and encourage anyone with an idea that might improve the software supply chain to reach out to us.',
-      },
-      {
-        title: 'What are your plans for the future?',
-        description:
-          "Our method of operation is simple, eliminate malware. Whether that be in a different package ecosystem, or every packaging ecosystem, we're continually looking for new ways to provide a more secure open source ecosystem for all users.",
-      },
-    ]}
-  />
+        faqs.map((item) => (
+          <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-6 shadow-[var(--vipyr-shadow)]">
+            <h2 class="text-xl font-semibold text-white">{item.title}</h2>
+            <p class="mt-3 text-base leading-8 text-slate-400">{item.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
 </Layout>

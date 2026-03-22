@@ -1,53 +1,195 @@
 ---
+import { Icon } from 'astro-icon/components';
 import Layout from '~/layouts/PageLayout.astro';
-import Features2 from '~/components/widgets/Features2.astro';
+import Button from '~/components/ui/Button.astro';
+import SectionHeading from '~/components/site/SectionHeading.astro';
 
 const metadata = {
   title: 'Projects',
+  description:
+    'Explore Dragonfly and the supporting Vipyr Security systems used for malicious package intake, scanning, review, and reporting.',
 };
+
+const projects = [
+  {
+    title: 'Dragonfly Server',
+    description:
+      'Mainframe service that coordinates workload flow, accepts analysis results, and backs package lookup, queue, and reporting flows used by operators.',
+    role: 'Distribution and orchestration',
+    stack: 'FastAPI, Python',
+    href: 'https://github.com/vipyrsec/dragonfly-mainframe',
+    icon: 'tabler:server-2',
+  },
+  {
+    title: 'Dragonfly Client',
+    description:
+      'Rust compute node that authenticates, retrieves rule content, downloads package distributions, scans package files, and sends structured results back upstream.',
+    role: 'Scanning and enrichment',
+    stack: 'Rust',
+    href: 'https://github.com/vipyrsec/dragonfly-client-rs',
+    icon: 'tabler:cpu',
+  },
+  {
+    title: 'Dragonfly Bot',
+    description:
+      'Discord interface that keeps community-assisted triage close to the operating workflow instead of separating collaboration from action.',
+    role: 'Triage interface',
+    stack: 'Discord integrations',
+    href: 'https://github.com/vipyrsec/bot',
+    icon: 'tabler:brand-discord',
+  },
+  {
+    title: 'Dragonfly Loader',
+    description:
+      'Automated job that reads new PyPI release activity from RSS and loads those releases into the mainframe for downstream scanning.',
+    role: 'Release intake',
+    stack: 'Python',
+    href: 'https://github.com/vipyrsec/dragonfly-loader',
+    icon: 'tabler:rss',
+  },
+  {
+    title: 'Dragonfly Reporter',
+    description:
+      'Reporting microservice used to submit malicious package reports back to PyPI once review has been completed.',
+    role: 'Package reporting',
+    stack: 'Python',
+    href: 'https://github.com/vipyrsec/dragonfly-reporter',
+    icon: 'tabler:flag-3',
+  },
+];
+
+const adjacentTools = [
+  {
+    title: 'Vipyrsec-Deobfuscator',
+    description:
+      'Public deobfuscation tooling used to support malware analysis work around protected or packed Python samples encountered during investigations.',
+    role: 'Analysis support',
+    stack: 'Python',
+    href: 'https://github.com/vipyrsec/vipyrsec-deobfuscator',
+    icon: 'tabler:binary-tree-2',
+  },
+  {
+    title: 'Snakehook Runner',
+    description:
+      'Public Python package triage sandbox with constrained execution and webhook reporting for focused package review.',
+    role: 'Sandboxed triage',
+    stack: 'Python, nsjail',
+    href: 'https://github.com/import-pandas-as-numpy/snakehook-runner',
+    icon: 'tabler:flask-2',
+  },
+];
 ---
 
 <Layout metadata={metadata}>
-  <Features2
-    id="project"
-    tagline="Anti-Malware"
-    title="Dragonfly"
-    subtitle="A distributed computing approach to threat detection."
-    columns={3}
-    items={[
-      {
-        title: 'Server',
-        description:
-          'A FastAPI job distribution and threat aggregation framework currently being utilized to parse Python Package Index metadata.',
-        icon: 'tabler:brand-python',
-        callToAction: {
-          icon: 'tabler:external-link',
-          text: 'Source',
-          href: 'https://github.com/vipyrsec/dragonfly-mainframe',
-        },
-      },
-      {
-        title: 'Client',
-        description:
-          'A blazing fast Rust scanner designed to safely handle and process potentially malicious files against VirusTotal YARA rules.',
-        icon: 'tabler:brand-rust',
-        callToAction: {
-          icon: 'tabler:external-link',
-          text: 'Source',
-          href: 'https://github.com/vipyrsec/dragonfly-client-rs',
-        },
-      },
-      {
-        title: 'Bot',
-        description:
-          'A Discord front end for the Dragonfly framework to allow community analysis and triaging of potentially malicious files based on results from the Client scanning service.',
-        icon: 'tabler:brand-discord',
-        callToAction: {
-          icon: 'tabler:external-link',
-          text: 'Source',
-          href: 'https://github.com/vipyrsec/bot',
-        },
-      },
-    ]}
-  />
+  <section class="mx-auto max-w-7xl px-4 pb-18 pt-10 sm:px-6 md:pb-24 md:pt-16">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(360px,0.9fr)] lg:items-start">
+      <div class="max-w-3xl">
+        <h1 class="text-5xl font-semibold tracking-[-0.06em] text-white sm:text-6xl">
+          Dragonfly is the operational tooling layer behind the research and response work.
+        </h1>
+        <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-400">
+          Dragonfly spans release intake, job distribution, compute-node scanning, reporting services, and operator
+          review workflows. The surrounding repos fit together as one response system for package ecosystem abuse.
+        </p>
+      </div>
+
+      <div class="rounded-[2rem] border border-white/10 bg-[var(--vipyr-bg-elevated)] p-6 shadow-[var(--vipyr-shadow)]">
+        <div class="text-[0.72rem] font-semibold uppercase tracking-[0.3em] text-slate-500">System view</div>
+        <div class="mt-6 space-y-3">
+          <div
+            class="flex items-center justify-between rounded-full border border-white/8 bg-[var(--vipyr-bg-panel)] px-4 py-3 text-sm"
+          >
+            <span class="font-medium text-slate-200">Ingest package jobs</span>
+            <span class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">Loader</span>
+          </div>
+          <div
+            class="flex items-center justify-between rounded-full border border-white/8 bg-[var(--vipyr-bg-panel)] px-4 py-3 text-sm"
+          >
+            <span class="font-medium text-slate-200">Assign and collect scan work</span>
+            <span class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">Mainframe</span>
+          </div>
+          <div
+            class="flex items-center justify-between rounded-full border border-white/8 bg-[var(--vipyr-bg-panel)] px-4 py-3 text-sm"
+          >
+            <span class="font-medium text-slate-200">Scan, review, and report</span>
+            <span class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500"
+              >Client / Review / Reporter</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-start">
+      <SectionHeading
+        title="A distributed computing approach to package ecosystem threat detection."
+        description="Each Dragonfly component supports one stage of the workflow, but the value comes from how release intake, scanning, reporting, and operator review connect."
+      />
+      <div class="grid gap-4">
+        {
+          projects.map((project) => (
+            <div class="rounded-[1.75rem] border border-white/10 bg-[var(--vipyr-bg-panel)] p-6 shadow-[var(--vipyr-shadow)]">
+              <div class="flex items-start gap-4">
+                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-sky-400/20 bg-sky-400/10 text-sky-200">
+                  <Icon name={project.icon} class="h-6 w-6" />
+                </div>
+                <div class="min-w-0 flex-1">
+                  <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                    <h2 class="text-xl font-semibold text-white">{project.title}</h2>
+                    <div class="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-slate-500">
+                      {project.role}
+                    </div>
+                  </div>
+                  <p class="mt-3 text-base leading-8 text-slate-400">{project.description}</p>
+                  <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div class="text-sm text-slate-500">{project.stack}</div>
+                    <Button variant="secondary" href={project.href} text="View source" icon="tabler:arrow-up-right" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 pb-12 pt-18 sm:px-6 md:pb-20 md:pt-24">
+    <div
+      class="rounded-[2rem] border border-white/10 bg-[linear-gradient(135deg,rgba(21,38,79,0.94),rgba(8,16,34,0.94))] p-8 shadow-[var(--vipyr-shadow)] md:p-10"
+    >
+      <SectionHeading
+        title="Additional tools support adjacent parts of the workflow."
+        description="Vipyr also maintains tooling for package triage sandboxes and public intelligence work, while Dragonfly remains the core operating system for package response."
+      />
+      <div class="mt-10 grid gap-4 md:grid-cols-2">
+        {
+          adjacentTools.map((project) => (
+            <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-6 shadow-[var(--vipyr-shadow)]">
+              <div class="flex items-start gap-4">
+                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-sky-400/20 bg-sky-400/10 text-sky-200">
+                  <Icon name={project.icon} class="h-6 w-6" />
+                </div>
+                <div class="min-w-0 flex-1">
+                  <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                    <h2 class="text-xl font-semibold text-white">{project.title}</h2>
+                    <div class="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-slate-500">
+                      {project.role}
+                    </div>
+                  </div>
+                  <p class="mt-3 text-base leading-8 text-slate-300">{project.description}</p>
+                  <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div class="text-sm text-slate-500">{project.stack}</div>
+                    <Button variant="secondary" href={project.href} text="View source" icon="tabler:arrow-up-right" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 </Layout>

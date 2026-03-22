@@ -1,0 +1,129 @@
+---
+import Image from '~/components/common/Image.astro';
+import { getPermalink } from '~/utils/permalinks';
+import { findImage } from '~/utils/images';
+import { getFormattedDate } from '~/utils/utils';
+import type { Post } from '~/types';
+
+export interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+const [leadPost, ...remainingPosts] = posts;
+const secondaryPosts = remainingPosts.slice(0, 2);
+const leadImage = leadPost ? await findImage(leadPost.image) : undefined;
+---
+
+{
+  leadPost && (
+    <div class="mx-auto grid max-w-5xl gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.8fr)]">
+      <article class="group h-full overflow-hidden rounded-[2rem] border border-white/10 bg-[var(--vipyr-bg-panel)] shadow-[var(--vipyr-shadow)]">
+        <div class:list={['grid h-full items-stretch gap-0', leadImage ? 'lg:grid-cols-[minmax(0,1fr)_248px]' : '']}>
+          <div class="p-6 sm:p-7">
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-slate-500">
+              <span class="text-sky-200">Featured analysis</span>
+              {leadPost.category && (
+                <>
+                  <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
+                  <a class="transition hover:text-slate-300" href={getPermalink(leadPost.category.slug, 'category')}>
+                    {leadPost.category.title}
+                  </a>
+                </>
+              )}
+              <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
+              <time datetime={String(leadPost.publishDate)}>{getFormattedDate(leadPost.publishDate)}</time>
+              {leadPost.readingTime && (
+                <>
+                  <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
+                  <span>{leadPost.readingTime} min read</span>
+                </>
+              )}
+            </div>
+            <h2 class="mt-4 text-2xl font-semibold tracking-[-0.04em] text-white sm:text-[2rem]">
+              <a class="transition group-hover:text-slate-50" href={getPermalink(leadPost.permalink, 'post')}>
+                {leadPost.title}
+              </a>
+            </h2>
+            <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-400 sm:text-[0.98rem] sm:leading-8">
+              {leadPost.excerpt}
+            </p>
+          </div>
+          {leadImage && (
+            <a
+              href={getPermalink(leadPost.permalink, 'post')}
+              class="block h-full overflow-hidden border-t border-white/10 lg:border-l lg:border-t-0"
+            >
+              <Image
+                src={leadImage}
+                class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+                widths={[480, 720]}
+                width={720}
+                sizes="(max-width: 1024px) 100vw, 248px"
+                alt={leadPost.title}
+                aspectRatio="4:3"
+                layout="cover"
+                loading="eager"
+                decoding="async"
+              />
+            </a>
+          )}
+        </div>
+      </article>
+
+      <div class="grid gap-5">
+        {await Promise.all(
+          secondaryPosts.map(async (post) => {
+            const image = await findImage(post.image);
+
+            return (
+              <article class="group overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.03] shadow-[var(--vipyr-shadow)]">
+                <a
+                  href={getPermalink(post.permalink, 'post')}
+                  class="grid h-full gap-0 sm:grid-cols-[148px_minmax(0,1fr)]"
+                >
+                  <div class="overflow-hidden border-b border-white/10 sm:border-b-0 sm:border-r">
+                    {image ? (
+                      <Image
+                        src={image}
+                        class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
+                        widths={[320, 480]}
+                        width={480}
+                        sizes="148px"
+                        alt={post.title}
+                        aspectRatio="4:3"
+                        layout="cover"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ) : (
+                      <div class="h-full min-h-[10rem] bg-[linear-gradient(135deg,rgba(18,35,68,0.95),rgba(8,16,34,0.92))]" />
+                    )}
+                  </div>
+                  <div class="p-5">
+                    <div class="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-slate-500">
+                      {post.category?.title ?? 'Research'}
+                    </div>
+                    <h3 class="mt-3 text-xl font-semibold leading-tight text-white transition group-hover:text-slate-50">
+                      {post.title}
+                    </h3>
+                    <p class="mt-3 text-sm leading-7 text-slate-400">{post.excerpt}</p>
+                    <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-slate-500">
+                      <span>{getFormattedDate(post.publishDate)}</span>
+                      {post.readingTime && (
+                        <>
+                          <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
+                          <span>{post.readingTime} min read</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </a>
+              </article>
+            );
+          })
+        )}
+      </div>
+    </div>
+  )
+}

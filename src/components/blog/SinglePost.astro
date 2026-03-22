@@ -19,85 +19,227 @@ const { post, url } = Astro.props;
 ---
 
 <section class="py-8 sm:py-16 lg:py-20 mx-auto">
-  <article>
-    <header
-      class={post.image
-        ? 'intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade'
-        : 'intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade'}
-    >
-      <div class="flex justify-between flex-col sm:flex-row max-w-3xl mx-auto mt-0 mb-2 px-4 sm:px-6 sm:items-center">
-        <p>
-          <Icon name="tabler:clock" class="w-4 h-4 inline-block -mt-0.5 dark:text-gray-400" />
-          <time datetime={String(post.publishDate)} class="inline-block">{getFormattedDate(post.publishDate)}</time>
-          {
-            post.author && (
-              <>
-                {' '}
-                · <Icon name="tabler:user" class="w-4 h-4 inline-block -mt-0.5 dark:text-gray-400" />
-                <span class="inline-block">{post.author}</span>
-              </>
-            )
-          }
-          {
-            post.category && (
-              <>
-                {' '}
-                ·{' '}
-                <a class="hover:underline inline-block" href={getPermalink(post.category.slug, 'category')}>
-                  {post.category.title}
-                </a>
-              </>
-            )
-          }
-          {
-            post.readingTime && (
-              <>
-                &nbsp;· <span>{post.readingTime}</span> min read
-              </>
-            )
-          }
-        </p>
-      </div>
+  <article data-article-root>
+    <header class="intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6">
+        <div class:list={['gap-10', post.image ? 'lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start' : '']}>
+          <div class="min-w-0 max-w-3xl">
+            <div
+              class="flex flex-wrap items-center gap-x-4 gap-y-2 text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-slate-500"
+            >
+              {
+                post.category && (
+                  <>
+                    <a class="transition hover:text-slate-300" href={getPermalink(post.category.slug, 'category')}>
+                      {post.category.title}
+                    </a>
+                    <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
+                  </>
+                )
+              }
+              <span class="inline-flex items-center gap-2">
+                <Icon name="tabler:clock" class="h-4 w-4" />
+                <time datetime={String(post.publishDate)}>{getFormattedDate(post.publishDate)}</time>
+              </span>
+              {
+                post.readingTime && (
+                  <>
+                    <span aria-hidden="true" class="h-1 w-1 rounded-full bg-slate-600" />
+                    <span>{post.readingTime} min read</span>
+                  </>
+                )
+              }
+              {post.author && <span>{post.author}</span>}
+            </div>
 
-      <h1
-        class="px-4 sm:px-6 max-w-3xl mx-auto text-4xl md:text-5xl font-bold leading-tighter tracking-tighter font-heading"
-      >
-        {post.title}
-      </h1>
-      <p
-        class="max-w-3xl mx-auto mt-4 mb-8 px-4 sm:px-6 text-xl md:text-2xl text-muted dark:text-slate-400 text-justify"
-      >
-        {post.excerpt}
-      </p>
+            <h1
+              class="mt-4 max-w-4xl text-3xl font-semibold tracking-[-0.05em] text-white sm:text-4xl lg:text-[3.15rem]"
+            >
+              {post.title}
+            </h1>
+            <p class="mt-4 max-w-3xl text-base leading-7 text-slate-400 sm:text-[1.05rem] sm:leading-8">
+              {post.excerpt}
+            </p>
 
-      {
-        post.image ? (
-          <Image
-            src={post.image}
-            class="max-w-full lg:max-w-[900px] mx-auto mb-6 sm:rounded-md bg-gray-400 dark:bg-slate-700"
-            widths={[400, 900]}
-            sizes="(max-width: 900px) 400px, 900px"
-            alt={post?.excerpt || ''}
-            width={900}
-            height={506}
-            loading="eager"
-            decoding="async"
-          />
-        ) : (
-          <div class="max-w-3xl mx-auto px-4 sm:px-6">
-            <div class="border-t dark:border-slate-700" />
+            <div
+              class="mt-6 flex flex-col gap-4 border-t border-white/10 pt-5 sm:flex-row sm:items-start sm:justify-between"
+            >
+              <PostTags tags={post.tags} class="text-sm" title="Topics" />
+              <SocialShare url={url} text={post.title} class="sm:justify-end" />
+            </div>
           </div>
-        )
-      }
+
+          {
+            post.image ? (
+              <div class="lg:pt-1">
+                <div class="overflow-hidden rounded-[1.5rem] border border-white/10 bg-[var(--vipyr-bg-panel)] shadow-[var(--vipyr-shadow)]">
+                  <Image
+                    src={post.image}
+                    class="w-full"
+                    widths={[480, 720]}
+                    sizes="(max-width: 1024px) 100vw, 340px"
+                    alt={post?.excerpt || ''}
+                    width={720}
+                    height={540}
+                    aspectRatio="4:3"
+                    layout="cover"
+                    loading="eager"
+                    decoding="async"
+                  />
+                </div>
+              </div>
+            ) : null
+          }
+        </div>
+      </div>
     </header>
     <div
-      class="mx-auto px-6 sm:px-6 max-w-3xl prose prose-md lg:prose-xl dark:prose-invert dark:prose-headings:text-slate-300 prose-headings:font-heading prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-primary dark:prose-a:text-blue-400 prose-img:rounded-md prose-img:shadow-lg mt-8 prose-headings:scroll-mt-[80px] prose-li:my-0"
+      class="mx-auto mt-8 max-w-6xl px-5 sm:px-6 lg:mt-10 lg:grid lg:grid-cols-[minmax(0,1fr)_250px] lg:items-start lg:gap-12"
     >
-      <slot />
-    </div>
-    <div class="mx-auto px-6 sm:px-6 max-w-3xl mt-8 flex justify-between flex-col sm:flex-row">
-      <PostTags tags={post.tags} class="mr-5 rtl:mr-0 rtl:ml-5" />
-      <SocialShare url={url} text={post.title} class="mt-5 sm:mt-1 align-middle text-gray-500 dark:text-slate-600" />
+      <div
+        data-article-prose
+        class="vipyr-prose-code prose prose-base prose-invert max-w-3xl px-0 prose-headings:text-slate-100 sm:px-0"
+      >
+        <slot />
+      </div>
+      <aside data-article-toc class="hidden self-start lg:sticky lg:top-28 lg:block">
+        <div class="w-full max-w-[250px] max-h-[calc(100vh-8rem)] overflow-y-auto pr-1">
+          <div class="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-slate-500">On this page</div>
+          <nav class="mt-4" aria-label="Table of contents">
+            <ol data-article-toc-list class="space-y-1"></ol>
+          </nav>
+        </div>
+      </aside>
     </div>
   </article>
 </section>
+
+<script is:inline>
+  (() => {
+    const selector = '[data-article-root]';
+
+    const slugify = (value) =>
+      value
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+
+    const setupToc = () => {
+      const root = document.querySelector(selector);
+      if (!(root instanceof HTMLElement)) return;
+
+      const prose = root.querySelector('[data-article-prose]');
+      const toc = root.querySelector('[data-article-toc]');
+      const list = root.querySelector('[data-article-toc-list]');
+
+      if (!(prose instanceof HTMLElement) || !(toc instanceof HTMLElement) || !(list instanceof HTMLElement)) return;
+
+      const headings = Array.from(prose.querySelectorAll('h2, h3')).filter((heading) => heading.textContent?.trim());
+
+      list.innerHTML = '';
+
+      if (!headings.length) {
+        toc.classList.add('hidden');
+        return;
+      }
+
+      toc.classList.remove('hidden');
+
+      const seenIds = new Set();
+
+      headings.forEach((heading) => {
+        if (!heading.id) {
+          heading.id = slugify(heading.textContent || 'section');
+        }
+
+        let candidateId = heading.id;
+        let counter = 2;
+        while (seenIds.has(candidateId)) {
+          candidateId = `${heading.id}-${counter}`;
+          counter += 1;
+        }
+
+        if (candidateId !== heading.id) {
+          heading.id = candidateId;
+        }
+
+        seenIds.add(heading.id);
+
+        const item = document.createElement('li');
+        const link = document.createElement('a');
+        const level = heading.tagName.toLowerCase();
+
+        link.href = `#${heading.id}`;
+        link.textContent = heading.textContent || '';
+        link.dataset.articleTocLink = heading.id;
+        link.className = [
+          'article-toc-link',
+          'block border-l border-white/8 py-1.5 pl-3 text-[0.92rem] leading-5 text-slate-400 transition hover:border-sky-300/30 hover:text-white',
+          level === 'h3' ? 'pl-5 text-[0.88rem] text-slate-500' : '',
+        ]
+          .filter(Boolean)
+          .join(' ');
+
+        item.append(link);
+        list.append(item);
+      });
+
+      const links = Array.from(list.querySelectorAll('[data-article-toc-link]'));
+
+      const setActive = (id) => {
+        links.forEach((link) => {
+          const isActive = link.getAttribute('data-article-toc-link') === id;
+          link.classList.toggle('is-active', isActive);
+          link.setAttribute('aria-current', isActive ? 'true' : 'false');
+        });
+      };
+
+      let activeId = headings[0].id;
+      let ticking = false;
+
+      const resolveActiveHeading = () => {
+        const threshold = 160;
+        const nextActive =
+          [...headings].reverse().find((heading) => heading.getBoundingClientRect().top <= threshold)?.id ??
+          headings[0].id;
+
+        if (nextActive !== activeId) {
+          activeId = nextActive;
+          setActive(activeId);
+        }
+      };
+
+      const onScroll = () => {
+        if (ticking) return;
+
+        ticking = true;
+        window.requestAnimationFrame(() => {
+          resolveActiveHeading();
+          ticking = false;
+        });
+      };
+
+      setActive(activeId);
+      resolveActiveHeading();
+      window.__vipyrArticleTocUpdate = onScroll;
+
+      if (!window.__vipyrArticleTocScrollBound) {
+        window.__vipyrArticleTocScrollBound = true;
+        const delegate = () => window.__vipyrArticleTocUpdate?.();
+        window.addEventListener('scroll', delegate, { passive: true });
+        window.addEventListener('resize', delegate);
+      }
+    };
+
+    if (!window.__vipyrArticleTocBound) {
+      window.__vipyrArticleTocBound = true;
+      window.addEventListener('load', setupToc);
+      document.addEventListener('astro:page-load', setupToc);
+      document.addEventListener('astro:after-swap', setupToc);
+    }
+
+    setupToc();
+  })();
+</script>

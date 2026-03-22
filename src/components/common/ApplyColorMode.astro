@@ -20,12 +20,6 @@ const defaultTheme = UI.theme || 'system';
     const fallbackTheme = defaultTheme.replace(':only', '');
     const getRoot = () => document.documentElement;
 
-    const syncThemeControls = (theme) => {
-      document.querySelectorAll('[data-aw-toggle-color-scheme]').forEach((button) => {
-        button.setAttribute('aria-pressed', String(theme === 'dark'));
-      });
-    };
-
     const resolveTheme = () => {
       if (isLockedTheme) {
         return fallbackTheme;
@@ -53,8 +47,6 @@ const defaultTheme = UI.theme || 'system';
       if (persist && !isLockedTheme) {
         localStorage.setItem(storageKey, theme);
       }
-
-      syncThemeControls(theme);
 
       requestAnimationFrame(() => {
         root.removeAttribute('data-aw-theme-transition');
@@ -88,7 +80,6 @@ const defaultTheme = UI.theme || 'system';
       resetTheme,
       resolveTheme,
       setTheme,
-      syncThemeControls,
     };
 
     applyTheme(resolveTheme());

@@ -31,7 +31,7 @@ export const footerData = {
       title: 'Info',
       links: [
         { text: 'About', href: aboutPermalink },
-        { text: 'Blog', href: blogPermalink },
+        { text: 'Research', href: blogPermalink },
       ],
     },
     {

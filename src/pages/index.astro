@@ -1,116 +1,739 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
-
-import Hero from '~/components/widgets/Hero.astro';
-import Note from '~/components/widgets/Note.astro';
-import Features from '~/components/widgets/Features.astro';
-import Content from '~/components/widgets/Content.astro';
-import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
-import Stats from '~/components/widgets/Stats.astro';
+import { Icon } from 'astro-icon/components';
+import Button from '~/components/ui/Button.astro';
+import SectionHeading from '~/components/site/SectionHeading.astro';
+import FeaturedPosts from '~/components/blog/FeaturedPosts.astro';
+import { findLatestPosts } from '~/utils/blog';
+import { getBlogPermalink, getPermalink } from '~/utils/permalinks';
 
 const metadata = {
   title: 'Home',
   ignoreTitleTemplate: true,
   description:
-    'Vipyr Security is a community-driven open source project that provides malware detection and takedown services for the open source software supply chain.',
+    'Vipyr Security operates public systems for malicious package intake, distributed analysis, package reporting, and supply chain research.',
 };
+
+const stats = [
+  { title: 'Packages scanned', amount: '4.1M' },
+  { title: 'Malicious packages removed', amount: '2044' },
+  { title: 'Detection signatures', amount: '150+' },
+  { title: 'Contributors', amount: '16' },
+];
+
+const topPackageSeeds = [
+  'boto3',
+  'urllib3',
+  'packaging',
+  'setuptools',
+  'certifi',
+  'requests',
+  'typing-extensions',
+  'idna',
+  'charset-normalizer',
+  'botocore',
+  'python-dateutil',
+  'six',
+  'aiobotocore',
+  'cryptography',
+  'pyyaml',
+  'pip',
+  'cffi',
+  'numpy',
+  'pycparser',
+  'pluggy',
+];
+
+const detectionCatalog = [
+  'suspicious_setup_file',
+  'exec_base64',
+  'data_exfil',
+  'read_secrets',
+  'win_persist',
+  'lin_persist',
+  'raw_exec',
+  'fetch_exec',
+  'pyarmor_obf',
+  'known_threat_actor',
+  'apt_lazarus',
+  'infostealer',
+  'read_chrome_pass',
+  'regex_cryptowallets',
+];
+
+const operatingSequence = [
+  {
+    title: 'PyPI RSS loader',
+    status: 'Queued',
+    detailType: 'loader',
+  },
+  {
+    title: 'Mainframe job dispatch',
+    status: 'Assigned',
+    detailType: 'dispatch',
+  },
+  {
+    title: 'Client scan results',
+    status: 'Returned',
+    detailType: 'results',
+  },
+  {
+    title: 'Reporter + analyst review',
+    status: 'Actioned',
+    detailType: 'action',
+  },
+];
+
+const capabilityCards = [
+  {
+    title: 'Observe package ecosystems',
+    description:
+      'Vipyr uses automated intake around package activity so new releases can be loaded into the Dragonfly workflow and reviewed before they disappear into the stream.',
+    icon: 'tabler:radar-2',
+  },
+  {
+    title: 'Investigate malicious artifacts',
+    description:
+      'Dragonfly clients request work from the API, download distributions, scan package files, and return results in a form that can be reviewed and acted on.',
+    icon: 'tabler:binary-tree-2',
+  },
+  {
+    title: 'Coordinate remediation',
+    description:
+      'Queue, reporting, and recent-activity flows exist across Dragonfly services so detections can move toward package reports and writeups.',
+    icon: 'tabler:shield-check',
+  },
+];
+
+const protectedGroups = [
+  {
+    title: 'Students and teachers',
+    description:
+      'A single typo during coursework, classroom setup, or lab work can turn a routine install into credential theft or device compromise.',
+    icon: 'tabler:school',
+  },
+  {
+    title: 'Developers and operators',
+    description:
+      'Typos such as `pip install requestss` or a misplaced `uv` command can pull in a malicious package before anyone notices the mistake.',
+    icon: 'tabler:terminal-2',
+  },
+  {
+    title: 'Businesses and communities',
+    description:
+      'One package can expose local secrets, cloud credentials, or customer data. Vipyr exists to reduce that blast radius before it spreads.',
+    icon: 'tabler:building-community',
+  },
+];
+
+const dragonflyProjects = [
+  {
+    title: 'Dragonfly Server',
+    description:
+      'Mainframe service responsible for job distribution, result intake, and the API surface behind package lookup, queue handling, and reporting flows.',
+    href: 'https://github.com/vipyrsec/dragonfly-mainframe',
+    icon: 'tabler:server-2',
+  },
+  {
+    title: 'Dragonfly Client',
+    description:
+      'Rust compute node that authenticates, retrieves rule content, downloads package distributions, scans files, and sends package results back upstream.',
+    href: 'https://github.com/vipyrsec/dragonfly-client-rs',
+    icon: 'tabler:cpu',
+  },
+  {
+    title: 'Dragonfly Bot',
+    description:
+      'Discord-facing triage surface that keeps community review close to the operating workflow instead of isolating it in a separate channel.',
+    href: 'https://github.com/vipyrsec/bot',
+    icon: 'tabler:brand-discord',
+  },
+];
+
+const posts = await findLatestPosts({ count: 3 });
 ---
 
 <Layout metadata={metadata}>
-  <Hero
-    actions={[{ variant: 'primary', text: 'See How', href: '#features', icon: 'tabler:circle-arrow-down-filled' }]}
-    image={{ src: '~/assets/images/hero.svg', alt: 'Hero' }}
-  >
-    <Fragment slot="title">
-      Your Packaging Ecosystem<br />
-      <span class="text-primary dark:text-white highlight">Malware Free</span>
-    </Fragment>
+  <section class="relative overflow-hidden">
+    <div class="mx-auto max-w-7xl px-4 pb-18 pt-10 sm:px-6 md:pb-24 md:pt-16">
+      <div class="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(360px,0.85fr)] lg:items-start">
+        <div class="max-w-3xl">
+          <div
+            class="mb-5 inline-flex rounded-full border border-sky-400/20 bg-sky-400/10 px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-sky-200"
+          >
+            Open source supply chain defense
+          </div>
+          <h1 class="max-w-4xl text-5xl font-semibold tracking-[-0.06em] text-white sm:text-6xl lg:text-7xl">
+            Removing malware from package ecosystems.
+          </h1>
+          <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-400 sm:text-xl">
+            Vipyr runs public systems for package intake, distributed scanning, malicious package reporting, and supply
+            chain research so suspicious releases can move from feed activity to actionable review.
+          </p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Button variant="primary" href="#capabilities" text="Explore capabilities" icon="tabler:arrow-down-right" />
+            <Button variant="secondary" href={getBlogPermalink()} text="Read latest research" />
+          </div>
+          <div class="mt-10 grid gap-3 sm:grid-cols-2 xl:max-w-3xl">
+            {
+              stats.map((stat, index) => (
+                <div
+                  class:list={[
+                    'rounded-[1.5rem] border p-4 shadow-[var(--vipyr-shadow)] backdrop-blur transition',
+                    index < 2 ? 'border-sky-400/18 bg-sky-400/[0.07]' : 'border-white/10 bg-white/[0.03]',
+                  ]}
+                >
+                  <div
+                    class:list={[
+                      'text-3xl font-semibold tracking-[-0.05em] md:text-[2rem]',
+                      index < 2 ? 'text-white' : 'text-slate-100',
+                    ]}
+                  >
+                    {stat.amount}
+                  </div>
+                  <div
+                    class:list={[
+                      'mt-2 text-[0.68rem] font-semibold uppercase tracking-[0.26em]',
+                      index < 2 ? 'text-sky-200/90' : 'text-slate-500',
+                    ]}
+                  >
+                    {stat.title}
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
 
-    <Fragment slot="subtitle">
-      <span class="hidden sm:inline">
-        Developing <span class="font-semibold">open source tools</span> to promote
-        <span class="font-semibold">open source security</span>.
-      </span>
-    </Fragment>
-  </Hero>
+        <div
+          class="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[var(--vipyr-bg-elevated)] p-6 shadow-[var(--vipyr-shadow)] backdrop-blur"
+        >
+          <div
+            class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-300/35 to-transparent"
+            aria-hidden="true"
+          >
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="text-[0.72rem] font-semibold uppercase tracking-[0.3em] text-slate-500">
+              Live operating view
+            </div>
+            <div
+              class="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-emerald-300"
+            >
+              <span class="h-2 w-2 rounded-full bg-emerald-300 hero-presence-dot"></span>
+              <span>Active</span>
+            </div>
+          </div>
+          <h2 class="mt-5 text-3xl font-semibold tracking-[-0.05em] text-white">Detection to takedown</h2>
 
-  <Note title="Our Goal:" description="A safer supply chain and a more resilient open source ecosystem." />
+          <div class="mt-6 grid gap-4 md:grid-cols-2">
+            <div class="rounded-[1.5rem] border border-white/8 bg-[var(--vipyr-bg-panel)] p-5">
+              <div class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">Coverage</div>
+              <div class="mt-3 text-4xl font-semibold tracking-[-0.05em] text-white">24/7</div>
+              <p class="mt-3 text-sm leading-7 text-slate-400">
+                Continuous package scanning and incident review for emerging supply chain abuse.
+              </p>
+            </div>
+            <div class="rounded-[1.5rem] border border-white/8 bg-[var(--vipyr-bg-panel)] p-5">
+              <div class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">Response</div>
+              <div class="mt-3 flex items-end gap-2 text-white">
+                <span class="text-4xl font-semibold tracking-[-0.05em]">10</span>
+                <span class="pb-1 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-slate-300">Minutes</span
+                >
+              </div>
+              <p class="mt-3 text-sm leading-7 text-slate-400">
+                Confirmed packages Vipyr reports are usually actioned in about 10 minutes, not days or months.
+              </p>
+            </div>
+          </div>
 
-  <Features
-    id="features"
-    tagline="Features"
-    title="How does Vipyr Security protect you?"
-    subtitle="Here are a few reasons we think we stand out from the crowd."
-    items={[
-      {
-        title: '1000+ Positive Detections',
-        description:
-          'A structured incident response pipeline triaging and analyzing potential malware with an average takedown of 10 minutes or less.',
-        icon: 'tabler:bug-off',
-      },
-      {
-        title: 'Open Source Development',
-        description:
-          'End user configurable, language agnostic design can be extended to scan and triage any type of file, and scaled to fit any workload.',
-        icon: 'tabler:git-merge',
-      },
-      {
-        title: 'All Volunteer Team',
-        description:
-          "Maintained by a dedicated team of open source security enthusiasts rapidly adapting to tomorrow's cyber threat landscape.",
-        icon: 'tabler:users',
-      },
-      {
-        title: '24/7 Packaging Ecosystem Scanning',
-        description:
-          'Utilizing cloud-native application development and cutting-edge monitoring to maintain constant vigilance over the open source supply chain.',
-        icon: 'tabler:rotate-clockwise',
-      },
-    ]}
+          <div
+            data-hero-sequence-panel
+            class="hero-sequence-panel mt-4 rounded-[1.5rem] border border-white/8 bg-[var(--vipyr-bg-panel)] px-4 py-3.5"
+          >
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div class="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-slate-500">
+                Operating sequence
+              </div>
+            </div>
+            <p class="mt-3 text-lg font-semibold text-white">Observe, triage, remediate, publish</p>
+            <div class="mt-3.5 space-y-3">
+              {
+                operatingSequence.map((step, index) => (
+                  <div
+                    class="hero-sequence-row rounded-[1.25rem] border border-white/6 bg-[#081427] px-4 py-3 text-sm"
+                    data-hero-sequence-row
+                    data-hero-sequence-detail-type={step.detailType}
+                    data-hero-sequence-index={index}
+                  >
+                    <div class="flex items-start justify-between gap-4">
+                      <span class="flex min-w-0 items-center gap-3 font-medium text-slate-200">
+                        <span
+                          class="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-sky-300/70 hero-sequence-dot"
+                          data-hero-sequence-dot
+                        />
+                        <span>{step.title}</span>
+                      </span>
+                      <span
+                        class="hero-sequence-status shrink-0 pt-0.5 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-slate-500 transition"
+                        data-hero-sequence-status={step.status}
+                      >
+                        {step.status}
+                      </span>
+                    </div>
+                  </div>
+                ))
+              }
+            </div>
+            <div
+              class="hero-sequence-detail mt-3.5 pl-5 text-[0.75rem] leading-6 text-slate-600"
+              data-hero-sequence-detail-output
+            >
+              standby
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="capabilities" class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
+      <SectionHeading
+        eyebrow="Why Vipyr exists"
+        title="Modern package security needs both automation and human judgment."
+        description="Package ecosystems move fast, but useful security work still depends on understandable workflows. Vipyr couples automated intake and scanning systems with review, reporting, and public research."
+      />
+      <div class="grid gap-4">
+        {
+          capabilityCards.map((item) => (
+            <div class="rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-6 shadow-[var(--vipyr-shadow)]">
+              <div class="flex items-start gap-4">
+                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-sky-400/20 bg-sky-400/10 text-sky-200">
+                  <Icon name={item.icon} class="h-6 w-6" />
+                </div>
+                <div>
+                  <h2 class="text-xl font-semibold text-white">{item.title}</h2>
+                  <p class="mt-3 text-base leading-8 text-slate-400">{item.description}</p>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-start">
+      <SectionHeading
+        eyebrow="Public defense"
+        title="Package malware doesn't just hit security teams."
+        description="Students, teachers, developers, maintainers, and businesses all depend on package managers they do not have time to treat like a daily threat surface. One typo can be enough. Vipyr operates to catch that abuse without asking those users to install an agent, buy a product, or change how they work."
+      />
+      <div class="grid gap-4">
+        <div
+          class="rounded-[1.75rem] border border-white/10 bg-[var(--vipyr-bg-panel)] p-6 shadow-[var(--vipyr-shadow)]"
+        >
+          <h2 class="text-xl font-semibold text-white">
+            Built to intervene before the victim knows there is a problem
+          </h2>
+          <p class="mt-3 text-base leading-8 text-slate-400">
+            Vipyr monitors package activity, scans suspicious releases, coordinates reports with ecosystem
+            administrators, and publishes what is learned. The protection is free, and the only meaningful user
+            involvement is the community work that helps improve the tooling and research.
+          </p>
+        </div>
+        <div class="grid gap-4 md:grid-cols-3">
+          {
+            protectedGroups.map((item) => (
+              <div class="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5 shadow-[var(--vipyr-shadow)]">
+                <div class="flex h-11 w-11 items-center justify-center rounded-2xl border border-sky-400/20 bg-sky-400/10 text-sky-200">
+                  <Icon name={item.icon} class="h-5 w-5" />
+                </div>
+                <h2 class="mt-4 text-lg font-semibold text-white">{item.title}</h2>
+                <p class="mt-3 text-sm leading-7 text-slate-400">{item.description}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
+    <div class="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-start">
+      <SectionHeading
+        eyebrow="Dragonfly"
+        title="A distributed malware analysis workflow built for package ecosystem response."
+        description="Dragonfly is the operating system behind Vipyr’s package analysis workflows. It spans automated intake, job distribution, compute-node scanning, reporting services, and analyst review."
+      />
+      <div class="grid gap-4">
+        {
+          dragonflyProjects.map((project) => (
+            <div class="rounded-[1.75rem] border border-white/10 bg-[var(--vipyr-bg-panel)] p-6 shadow-[var(--vipyr-shadow)]">
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex gap-4">
+                  <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] text-sky-200">
+                    <Icon name={project.icon} class="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h2 class="text-xl font-semibold text-white">{project.title}</h2>
+                    <p class="mt-3 text-base leading-8 text-slate-400">{project.description}</p>
+                  </div>
+                </div>
+                <a
+                  href={project.href}
+                  class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-slate-300 transition hover:border-white/20 hover:bg-white/[0.08] hover:text-white"
+                  aria-label={`View source for ${project.title}`}
+                >
+                  <Icon name="tabler:arrow-up-right" class="h-5 w-5" />
+                </a>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
+    <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <SectionHeading
+        eyebrow="Research"
+        title="Analysis from live package ecosystem abuse."
+        description="Research is where Vipyr turns detections, reverse engineering, and ecosystem anomalies into work other defenders can inspect and reuse."
+      />
+      <Button variant="secondary" href={getBlogPermalink()} text="Browse all research" />
+    </div>
+
+    {
+      posts.length > 0 && (
+        <div class="mt-10">
+          <FeaturedPosts posts={posts} />
+        </div>
+      )
+    }
+  </section>
+
+  <section class="mx-auto max-w-7xl px-4 pb-12 pt-18 sm:px-6 md:pb-20 md:pt-24">
+    <div
+      class="rounded-[2rem] border border-white/10 bg-[linear-gradient(135deg,rgba(21,38,79,0.94),rgba(8,16,34,0.94))] p-8 shadow-[var(--vipyr-shadow)] md:p-10"
+    >
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+        <div>
+          <h2 class="text-3xl font-semibold tracking-[-0.04em] text-white md:text-4xl">
+            Explore the research, inspect the tooling, and stay close to the signal.
+          </h2>
+          <p class="mt-4 max-w-2xl text-base leading-8 text-slate-400">
+            Follow the workflow from technical writeups to the systems behind them. The same public repos that support
+            intake, scanning, queue handling, reporting, and focused triage also make Vipyr Security easier to
+            understand from the outside.
+          </p>
+        </div>
+        <div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
+          <Button variant="primary" href={getBlogPermalink()} text="Read research" />
+          <Button variant="secondary" href={getPermalink('/projects')} text="Review projects" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style is:inline>
+    @keyframes heroPresencePulse {
+      0%,
+      100% {
+        opacity: 0.55;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.12);
+      }
+    }
+
+    .hero-presence-dot {
+      animation: heroPresencePulse 2.2s ease-in-out infinite;
+    }
+
+    .hero-sequence-row {
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.02);
+      opacity: 0.78;
+      transform-origin: left center;
+      transition:
+        transform 320ms ease,
+        box-shadow 320ms ease,
+        border-color 320ms ease,
+        background-color 320ms ease,
+        opacity 320ms ease;
+      will-change: transform, box-shadow, border-color, background-color, opacity;
+    }
+
+    .hero-sequence-dot {
+      transition:
+        transform 320ms ease,
+        opacity 320ms ease,
+        box-shadow 320ms ease,
+        background-color 320ms ease;
+    }
+
+    .hero-sequence-status {
+      transition:
+        color 320ms ease,
+        text-shadow 320ms ease,
+        opacity 320ms ease;
+    }
+
+    .hero-sequence-detail {
+      font-family: var(--font-mono);
+      letter-spacing: 0.01em;
+      min-height: 1.75rem;
+      opacity: 0;
+      overflow: hidden;
+      overflow-wrap: anywhere;
+      transition:
+        color 320ms ease,
+        opacity 320ms ease,
+        text-shadow 320ms ease,
+        transform 320ms ease;
+      transform: translateY(4px);
+    }
+
+    @media (min-width: 640px) {
+      .hero-sequence-detail {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .hero-sequence-package {
+      color: rgb(252 165 165 / 0.98);
+      text-shadow: 0 0 12px rgb(248 113 113 / 0.18);
+    }
+
+    .hero-sequence-row.is-active {
+      border-color: rgb(102 160 255 / 0.18);
+      background: rgb(10 25 48);
+      box-shadow:
+        inset 0 1px 0 rgb(255 255 255 / 0.04),
+        0 10px 24px rgb(12 31 64 / 0.22),
+        0 0 24px rgb(70 153 255 / 0.1);
+      opacity: 1;
+      transform: translateX(4px) scale(1.02);
+    }
+
+    .hero-sequence-row.is-active [data-hero-sequence-dot] {
+      transform: scale(1.28);
+      opacity: 1;
+      box-shadow: 0 0 18px rgb(86 188 255 / 0.4);
+    }
+
+    .hero-sequence-row:not(.is-active) [data-hero-sequence-dot] {
+      opacity: 0.7;
+    }
+
+    .hero-sequence-detail.is-active {
+      color: rgb(174 191 217);
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-sequence-row.is-active .hero-sequence-status[data-hero-sequence-status='Queued'] {
+      color: rgb(186 230 253);
+      text-shadow: 0 0 16px rgb(86 188 255 / 0.26);
+    }
+
+    .hero-sequence-row.is-active .hero-sequence-status[data-hero-sequence-status='Assigned'] {
+      color: rgb(224 231 255);
+      text-shadow: 0 0 16px rgb(165 180 252 / 0.24);
+    }
+
+    .hero-sequence-row.is-active .hero-sequence-status[data-hero-sequence-status='Returned'] {
+      color: rgb(253 230 138);
+      text-shadow: 0 0 16px rgb(251 191 36 / 0.22);
+    }
+
+    .hero-sequence-row.is-active .hero-sequence-status[data-hero-sequence-status='Actioned'] {
+      color: rgb(167 243 208);
+      text-shadow: 0 0 16px rgb(52 211 153 / 0.24);
+    }
+  </style>
+
+  <script
+    id="hero-sequence-config"
+    type="application/json"
+    is:inline
+    set:html={JSON.stringify({ topPackageSeeds, detectionCatalog })}
   />
 
-  <Stats
-    stats={[
-      { title: 'Packages Scanned', amount: '1.16M' },
-      { title: 'Package Takedowns', amount: '1322' },
-      { title: 'Detection Signatures', amount: '150+' },
-      { title: 'Contributors', amount: '16' },
-    ]}
-  />
+  <script is:inline>
+    (() => {
+      window.__vipyrHeroSequence?.cleanup?.();
 
-  <Content
-    tagline="projects"
-    title="Supply Chain Security"
-    items={[
-      {
-        title: 'Dragonfly - Client',
-        description:
-          'A dockerized malware scanner written in Rust to safely perform static analysis on files using VirusTotal YARA rules.',
-      },
-      {
-        title: 'Dragonfly - Server',
-        description:
-          'A FastAPI-based command and control server performing data aggregation and file distribution functions for use with the client scanning application.',
-      },
-      {
-        title: 'Dragonfly - Bot',
-        description:
-          'A Discord front end to allow for community triaging and analysis of potentially malicious files detected by the Dragonfly framework.',
-      },
-    ]}
-    image={{
-      src: '~/assets/images/chris-ried-unsplash.jpg',
-      alt: 'Python Code',
-    }}
-  >
-    <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">Dragonfly</h3>
-      A scalable suite of detection applications and automated triaging for analysis results.
-    </Fragment>
-  </Content>
+      const configElement = document.getElementById('hero-sequence-config');
+      if (!(configElement instanceof HTMLScriptElement)) return;
 
-  <BlogLatestPosts
-    title="Catch up with our latest research!"
-    information="Want to know what threats are affecting the software supply chain? Check out some of the articles by our team of malware analysts and engineers."
-  />
+      const parsedConfig = JSON.parse(configElement.textContent || '{}');
+      const packageSeeds = Array.isArray(parsedConfig.topPackageSeeds) ? parsedConfig.topPackageSeeds : [];
+      const detectionPool = Array.isArray(parsedConfig.detectionCatalog) ? parsedConfig.detectionCatalog : [];
+      let activeTimeout = 0;
+      let cycleTimeout = 0;
+
+      const randomItem = (items) => items[Math.floor(Math.random() * items.length)];
+
+      const typoPackageName = (base) => {
+        if (!base || base.length < 3) return `${base || 'requests'}d`;
+
+        const letters = 'abcdefghijklmnopqrstuvwxyz';
+        const transforms = ['swap', 'duplicate', 'replace', 'drop'];
+        const chars = [...base];
+        const transform = randomItem(transforms);
+        const middleIndex = Math.min(Math.max(1, Math.floor(Math.random() * chars.length)), chars.length - 1);
+
+        if (transform === 'swap' && chars.length > 3) {
+          const index = Math.min(middleIndex, chars.length - 2);
+          const copy = [...chars];
+          [copy[index], copy[index + 1]] = [copy[index + 1], copy[index]];
+          return copy.join('');
+        }
+
+        if (transform === 'duplicate') {
+          const copy = [...chars];
+          copy.splice(middleIndex, 0, copy[middleIndex]);
+          return copy.join('');
+        }
+
+        if (transform === 'drop' && chars.length > 4) {
+          const copy = [...chars];
+          copy.splice(middleIndex, 1);
+          return copy.join('');
+        }
+
+        const replacementLetter = randomItem(
+          letters.split('').filter((letter) => letter !== chars[middleIndex]?.toLowerCase())
+        );
+        const copy = [...chars];
+        copy[middleIndex] = replacementLetter;
+        return copy.join('');
+      };
+
+      const randomVersion = () => {
+        const major = Math.floor(Math.random() * 3) + 1;
+        const minor = Math.floor(Math.random() * 10);
+        const patch = Math.floor(Math.random() * 10);
+        return `${major}.${minor}.${patch}`;
+      };
+
+      const pickDetections = () => {
+        const pool = [...detectionPool];
+        const selected = [];
+
+        while (pool.length && selected.length < 2) {
+          const index = Math.floor(Math.random() * pool.length);
+          selected.push(pool.splice(index, 1)[0]);
+        }
+
+        return selected;
+      };
+
+      const buildScenario = () => {
+        const seed = randomItem(packageSeeds);
+        const packageName = typoPackageName(seed);
+        const version = randomVersion();
+        const detections = pickDetections();
+        const packageMarkup = `<span class="hero-sequence-package">${packageName}@${version}</span>`;
+
+        return {
+          loader: `${packageMarkup} observed in package feed`,
+          dispatch: `${packageMarkup} queued for Dragonfly client review`,
+          results: `matched: ${detections.join(', ')}`,
+          action: `${packageMarkup} reported and removed from index`,
+        };
+      };
+
+      const start = () => {
+        const rows = Array.from(document.querySelectorAll('[data-hero-sequence-row]'));
+        if (!rows.length) return;
+        const detailOutput = document.querySelector('[data-hero-sequence-detail-output]');
+
+        const first = rows[0];
+        if (!(first instanceof HTMLElement)) return;
+        if (!(detailOutput instanceof HTMLElement)) return;
+
+        let index = 0;
+        let scenario = buildScenario();
+
+        const clear = () => {
+          window.clearTimeout(activeTimeout);
+          window.clearTimeout(cycleTimeout);
+          rows.forEach((row) => row.classList.remove('is-active'));
+          detailOutput.classList.remove('is-active');
+        };
+
+        const applyDetail = (rowIndex) => {
+          const row = rows[rowIndex];
+          if (!(row instanceof HTMLElement)) return;
+          const type = row.dataset.heroSequenceDetailType;
+          if (!type) return;
+          detailOutput.innerHTML = scenario[type] ?? '';
+          detailOutput.classList.add('is-active');
+        };
+
+        const step = () => {
+          if (index === 0) {
+            scenario = buildScenario();
+          }
+
+          clear();
+          rows[index]?.classList.add('is-active');
+          applyDetail(index);
+
+          window.clearTimeout(activeTimeout);
+          window.clearTimeout(cycleTimeout);
+
+          activeTimeout = window.setTimeout(() => {
+            rows[index]?.classList.remove('is-active');
+          }, 2000);
+
+          cycleTimeout = window.setTimeout(() => {
+            index = (index + 1) % rows.length;
+            step();
+          }, 2800);
+        };
+
+        step();
+      };
+
+      const cleanup = () => {
+        window.clearTimeout(activeTimeout);
+        window.clearTimeout(cycleTimeout);
+      };
+
+      const handlePageLoad = () => {
+        cleanup();
+        start();
+      };
+
+      const handleBeforeSwap = () => {
+        cleanup();
+      };
+
+      window.__vipyrHeroSequence = {
+        cleanup: () => {
+          cleanup();
+          document.removeEventListener('astro:page-load', handlePageLoad);
+          document.removeEventListener('astro:before-swap', handleBeforeSwap);
+        },
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', start, { once: true });
+      } else {
+        start();
+      }
+
+      document.addEventListener('astro:page-load', handlePageLoad);
+      document.addEventListener('astro:before-swap', handleBeforeSwap);
+    })();
+  </script>
 </Layout>

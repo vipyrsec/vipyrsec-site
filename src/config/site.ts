@@ -79,7 +79,7 @@ export const METADATA: SiteMetadataConfig = {
     default: 'Vipyr Security',
     template: '%s — Vipyr Security',
   },
-  description: 'Your Ecosystem - Malware Free',
+  description: 'Open source supply chain security research, malicious package detection, and takedown coordination.',
   robots: {
     index: true,
     follow: true,
@@ -150,5 +150,5 @@ export const ANALYTICS: AnalyticsConfig = {
 };
 
 export const UI: UIConfig = {
-  theme: 'system',
+  theme: 'dark:only',
 };

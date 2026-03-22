@@ -6,6 +6,33 @@
   "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/a-gap-in-the-armor",
+      "destination": "/research/a-gap-in-the-armor",
+      "permanent": true
+    },
+    {
+      "source": "/dependency-dilemma",
+      "destination": "/research/dependency-dilemma",
+      "permanent": true
+    },
+    {
+      "source": "/dragonfly-client-internals",
+      "destination": "/research/dragonfly-client-internals",
+      "permanent": true
+    },
+    {
+      "source": "/elf64-rat-malware",
+      "destination": "/research/elf64-rat-malware",
+      "permanent": true
+    },
+    {
+      "source": "/nuisance-malware",
+      "destination": "/research/nuisance-malware",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/_astro/(.*)",

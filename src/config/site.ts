@@ -109,7 +109,7 @@ export const APP_BLOG: AppBlogConfig = {
   relatedPostsCount: 4,
   post: {
     isEnabled: true,
-    permalink: '/%slug%',
+    permalink: '/research/%slug%',
     robots: {
       index: true,
       follow: true,

@@ -483,17 +483,23 @@ const posts = await findLatestPosts({ count: 3 });
     .hero-sequence-detail {
       font-family: var(--font-mono);
       letter-spacing: 0.01em;
-      white-space: nowrap;
       min-height: 1.75rem;
       opacity: 0;
       overflow: hidden;
-      text-overflow: ellipsis;
+      overflow-wrap: anywhere;
       transition:
         color 320ms ease,
         opacity 320ms ease,
         text-shadow 320ms ease,
         transform 320ms ease;
       transform: translateY(4px);
+    }
+
+    @media (min-width: 640px) {
+      .hero-sequence-detail {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
     }
 
     .hero-sequence-package {
@@ -558,12 +564,16 @@ const posts = await findLatestPosts({ count: 3 });
 
   <script is:inline>
     (() => {
+      window.__vipyrHeroSequence?.cleanup?.();
+
       const configElement = document.getElementById('hero-sequence-config');
       if (!(configElement instanceof HTMLScriptElement)) return;
 
       const parsedConfig = JSON.parse(configElement.textContent || '{}');
       const packageSeeds = Array.isArray(parsedConfig.topPackageSeeds) ? parsedConfig.topPackageSeeds : [];
       const detectionPool = Array.isArray(parsedConfig.detectionCatalog) ? parsedConfig.detectionCatalog : [];
+      let activeTimeout = 0;
+      let cycleTimeout = 0;
 
       const randomItem = (items) => items[Math.floor(Math.random() * items.length)];
 
@@ -645,21 +655,13 @@ const posts = await findLatestPosts({ count: 3 });
         const first = rows[0];
         if (!(first instanceof HTMLElement)) return;
         if (!(detailOutput instanceof HTMLElement)) return;
-        if (first.dataset.bound === 'true') return;
-
-        rows.forEach((row) => {
-          if (row instanceof HTMLElement) {
-            row.dataset.bound = 'true';
-            row.classList.remove('is-active');
-          }
-        });
 
         let index = 0;
-        let activeTimeout = 0;
-        let cycleTimeout = 0;
         let scenario = buildScenario();
 
         const clear = () => {
+          window.clearTimeout(activeTimeout);
+          window.clearTimeout(cycleTimeout);
           rows.forEach((row) => row.classList.remove('is-active'));
           detailOutput.classList.remove('is-active');
         };
@@ -698,13 +700,36 @@ const posts = await findLatestPosts({ count: 3 });
         step();
       };
 
+      const cleanup = () => {
+        window.clearTimeout(activeTimeout);
+        window.clearTimeout(cycleTimeout);
+      };
+
+      const handlePageLoad = () => {
+        cleanup();
+        start();
+      };
+
+      const handleBeforeSwap = () => {
+        cleanup();
+      };
+
+      window.__vipyrHeroSequence = {
+        cleanup: () => {
+          cleanup();
+          document.removeEventListener('astro:page-load', handlePageLoad);
+          document.removeEventListener('astro:before-swap', handleBeforeSwap);
+        },
+      };
+
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', start, { once: true });
       } else {
         start();
       }
 
-      document.addEventListener('astro:page-load', start);
+      document.addEventListener('astro:page-load', handlePageLoad);
+      document.addEventListener('astro:before-swap', handleBeforeSwap);
     })();
   </script>
 </Layout>

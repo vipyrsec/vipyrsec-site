@@ -130,7 +130,9 @@ const incorrectDestinations = legacyUrls.flatMap((legacyUrl) => {
     }));
 });
 const duplicateCanonicals = newUrls.filter((url, index) => newUrls.indexOf(url) !== index);
-const orphanedPosts = posts.filter((slug) => !legacyUrls.includes(toLegacyUrl(slug)) || !newUrls.includes(toNewUrl(slug)));
+const orphanedPosts = posts.filter(
+  (slug) => !legacyUrls.includes(toLegacyUrl(slug)) || !newUrls.includes(toNewUrl(slug))
+);
 
 const report = {
   postSlugs: posts,

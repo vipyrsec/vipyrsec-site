@@ -30,3 +30,9 @@ pnpm-debug.log*
 .history/
 
 .astro
+
+# Design references
+reference/
+
+# Local agent instructions
+AGENTS.md

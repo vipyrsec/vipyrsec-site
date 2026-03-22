@@ -3,6 +3,7 @@ import { Icon } from 'astro-icon/components';
 import Layout from '~/layouts/PageLayout.astro';
 import Button from '~/components/ui/Button.astro';
 import SectionHeading from '~/components/site/SectionHeading.astro';
+import TwoColumnGrid from '~/components/site/TwoColumnGrid.astro';
 
 const metadata = {
   title: 'Projects',
@@ -122,12 +123,13 @@ const adjacentTools = [
   </section>
 
   <section class="mx-auto max-w-7xl px-4 py-18 sm:px-6 md:py-24">
-    <div class="grid gap-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-start">
+    <div>
       <SectionHeading
         title="A distributed computing approach to package ecosystem threat detection."
         description="Each Dragonfly component supports one stage of the workflow, but the value comes from how release intake, scanning, reporting, and operator review connect."
+        align="center"
       />
-      <div class="grid gap-4">
+      <TwoColumnGrid class="mt-12 lg:items-start">
         {
           projects.map((project) => (
             <div class="rounded-[1.75rem] border border-white/10 bg-[var(--vipyr-bg-panel)] p-6 shadow-[var(--vipyr-shadow)]">
@@ -152,7 +154,7 @@ const adjacentTools = [
             </div>
           ))
         }
-      </div>
+      </TwoColumnGrid>
     </div>
   </section>
 

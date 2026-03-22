@@ -78,7 +78,10 @@ const leadImage = leadPost ? await findImage(leadPost.image) : undefined;
 
             return (
               <article class="group overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.03] shadow-[var(--vipyr-shadow)]">
-                <a href={getPermalink(post.permalink, 'post')} class="grid h-full gap-0 sm:grid-cols-[148px_minmax(0,1fr)]">
+                <a
+                  href={getPermalink(post.permalink, 'post')}
+                  class="grid h-full gap-0 sm:grid-cols-[148px_minmax(0,1fr)]"
+                >
                   <div class="overflow-hidden border-b border-white/10 sm:border-b-0 sm:border-r">
                     {image ? (
                       <Image

@@ -408,7 +408,11 @@ const posts = await findLatestPosts({ count: 3 });
     </div>
 
     {
-      posts.length > 0 && <div class="mt-10"><FeaturedPosts posts={posts} /></div>
+      posts.length > 0 && (
+        <div class="mt-10">
+          <FeaturedPosts posts={posts} />
+        </div>
+      )
     }
   </section>
 

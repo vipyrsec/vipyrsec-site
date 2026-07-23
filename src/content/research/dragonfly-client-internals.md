@@ -108,19 +108,17 @@ single consumer part of the mpsc channel (multiple producers, single
 consumers). The multiple producers (transmitting end) are in each scanner
 thread, which send their results to this sender thread when they're done
 scanning a package. This thread then sequentially sends these results over the
-API. Reauthentication can be handled here as well, greatly simplifying the need
-for concurrency and thread synchronization across many threads.
+API through the same authenticated HTTP client used by the loader.
 
-The client starts up by first authenticating with Auth0 to obtain an access
-token. It then stores this access token in a shared-state thread
-synchronization primitive that allows multiple concurrent readers but only one
-writer. This new access token is used to fetch the YARA rules from the
-Dragonfly API. The source code of the YARA rules is compiled (very much like
-compiling regex) and stored in the shared state. Then, the necessary threads
-are spawned in (with the exception of the "sender thread" which is, in fact,
-the main thread). Each scanner thread will pull jobs from the internal queue,
-scan it, and push the results across the mpsc channel to the sender thread. It
-will then attempt to do this process again by pulling a job from the queue. If
-there are none on the queue, it will sleep the thread for some amount of time
-configurable by the `DRAGONFLY_WAIT_DURATION` environment variable, then try
-again.
+The client starts by creating an HTTP client with an environment-specific
+Cloudflare Access service token. Every Dragonfly API request carries the
+service-token headers, so the scanner does not maintain mutable authentication
+state or run a refresh loop. The client uses this HTTP client to fetch the YARA
+rules, compiles the rules (much like compiling regular expressions), and stores
+them in shared state. Then, the necessary threads are spawned in (with the
+exception of the "sender thread" which is, in fact, the main thread). Each
+scanner thread will pull jobs from the internal queue, scan it, and push the
+results across the mpsc channel to the sender thread. It will then attempt to do
+this process again by pulling a job from the queue. If there are none on the
+queue, it will sleep the thread for some amount of time configurable by the
+`DRAGONFLY_WAIT_DURATION` environment variable, then try again.
